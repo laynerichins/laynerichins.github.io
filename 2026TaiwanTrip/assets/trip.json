@@ -1,6 +1,6 @@
 {
-  "title": "Melissa\u2019s Taiwan Adventure \u2728",
-  "subtitle": "A crafted 10\u2011day plan for 2026: Taipei weekend \u2192 Old England Manor \u2192 east coast nature \u2192 final night in Taipei.",
+  "title": "Melissa\u2019s Taiwan Adventure",
+  "subtitle": "A clear 10\u2011day plan: Taipei weekend \u2192 Cingjing mountains \u2192 East Coast (Taroko) \u2192 final night in Taipei.",
   "heroImages": [
     {
       "src": "./assets/img/hero_taipei.svg",
@@ -18,34 +18,40 @@
       "caption": "Old England Manor \u2022 mountain stay"
     },
     {
-      "src": "./assets/img/hero_taroko.svg",
-      "alt": "Taroko / Hualien",
-      "caption": "Hualien + Taroko area \u2022 nature day"
+      "src": "./assets/img/taroko.jpg",
+      "alt": "Taroko Gorge \u2022 Liwu River",
+      "caption": "Taroko Gorge \u2022 marble canyon views"
     },
     {
-      "src": "./assets/img/hero_nightmarket.svg",
-      "alt": "Night Markets",
-      "caption": "Night markets \u2022 street food \u2022 the fun part"
+      "src": "./assets/img/shilin.jpg",
+      "alt": "Shilin Night Market (Taipei)",
+      "caption": "Shilin Night Market \u2022 classic Taipei evening"
     }
   ],
   "stays": [
     {
       "name": "W Taipei",
       "brand": "Marriott",
-      "why": "Taipei weekend base: Xinyi District, easy to Taipei 101, great for late nights and walkable sightseeing.",
-      "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
-      "photos": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/photos/",
+      "location": "Taipei (Xinyi District)",
+      "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
       "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/2/25/W_Taipei_and_Uni-President_Hankyu_Taipei_20140826.jpg"
+      "why": "Weekend base in Xinyi\u2014walkable to Taipei 101, shopping, and late-night eats."
     },
     {
       "name": "The Old England Manor",
-      "brand": "Hilton (SLH)",
-      "why": "Cingjing signature stay: storybook manor feel, gardens, and mountain air \u2014 the \u2018wow\u2019 part of the trip.",
-      "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
-      "secondary": "https://www.theoldengland.com/en/main.php",
+      "brand": "Cingjing",
+      "location": "Cingjing, Nantou (mountains)",
+      "site": "https://www.theoldengland.com.tw/en/",
       "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg/1365px-The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg"
+      "why": "Signature mountain stay\u2014storybook manor vibe + crisp air + views."
+    },
+    {
+      "name": "Le M\u00e9ridien Hualien Resort",
+      "brand": "Marriott",
+      "location": "Hualien City (East Coast)",
+      "site": "https://www.marriott.com/en-us/hotels/hunmd-le-meridien-hualien-resort/overview/",
+      "map": "https://www.google.com/maps/search/?api=1&query=Le%20Meridien%20Hualien%20Resort",
+      "why": "One-night East Coast base\u2014luxury hot-spring resort style + convenient for Taroko."
     }
   ],
   "weeks": {
@@ -209,7 +215,7 @@
           "items": [
             {
               "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
-              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
               "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
             }
           ]
@@ -255,8 +261,8 @@
         "Night market is the perfect \u2018first Taiwan\u2019 moment."
       ],
       "transport": "",
-      "agenda": "Arrive Taipei \u2022 check in \u2022 Taipei 101 area \u2022 night market",
-      "staySummary": "W Taipei (Marriott) \u2014 Taipei"
+      "agenda": "Arrive \u2022 check-in \u2022 Xinyi stroll \u2022 Shilin night market",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei (Night 1)"
     },
     {
       "day": 3,
@@ -273,8 +279,8 @@
           "when": "Stay",
           "items": [
             {
-              "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
-              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "name": "Hotel: W Taipei (Marriott) \u2014 stay",
+              "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
               "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
             }
           ]
@@ -331,12 +337,12 @@
       ],
       "backupPlan": "If it rains: swap Elephant Mountain for the National Palace Museum or a hot springs evening.",
       "transport": "",
-      "agenda": "CKS Memorial \u2022 Lungshan \u2022 Songshan Park \u2022 sunset hike \u2022 night market",
-      "staySummary": "W Taipei (Marriott) \u2014 Taipei"
+      "agenda": "City highlights \u2022 optional Elephant Mountain \u2022 Raohe or Ningxia market",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei (Night 2)"
     },
     {
       "day": 4,
-      "title": "Sunday: Taipei \u2192 Cingjing + The Old England Manor",
+      "title": "Sunday: Taipei \u2192 Cingjing (mountains)",
       "location": "Nantou (Cingjing)",
       "pace": "Travel + relax",
       "tags": [
@@ -350,7 +356,7 @@
           "items": [
             {
               "name": "Hotel: The Old England Manor \u2014 check-in / stay",
-              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "site": "https://www.theoldengland.com.tw/en/",
               "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
             }
           ]
@@ -391,12 +397,12 @@
         "Keeps the first mountain day low-stress."
       ],
       "transport": "",
-      "agenda": "Travel to Cingjing \u2022 check in \u2022 manor photos \u2022 relax",
-      "staySummary": "The Old England Manor \u2014 Cingjing"
+      "agenda": "Travel \u2022 check-in \u2022 manor grounds \u2022 sunset viewpoint",
+      "staySummary": "The Old England Manor \u2014 Cingjing (Night 3)"
     },
     {
       "day": 5,
-      "title": "Monday: mountain air + easy hikes + big views",
+      "title": "Monday: Cingjing \u2022 hikes + views",
       "location": "Nantou (Cingjing)",
       "pace": "Choose-your-own",
       "tags": [
@@ -409,8 +415,8 @@
           "when": "Stay",
           "items": [
             {
-              "name": "Hotel: The Old England Manor \u2014 check-in / stay",
-              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "name": "Hotel: The Old England Manor \u2014 stay",
+              "site": "https://www.theoldengland.com.tw/en/",
               "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
             }
           ]
@@ -448,12 +454,12 @@
       ],
       "backupPlan": "If altitude hits: keep it to Skyline Trail + manor afternoon.",
       "transport": "",
-      "agenda": "Cingjing easy hikes \u2022 views \u2022 manor time",
-      "staySummary": "The Old England Manor \u2014 Cingjing"
+      "agenda": "Morning walk \u2022 Qingjing Farm area \u2022 tea time \u2022 relax",
+      "staySummary": "The Old England Manor \u2014 Cingjing (Night 4)"
     },
     {
       "day": 6,
-      "title": "Tuesday: mountains \u2192 Hualien (east coast base) + night market",
+      "title": "Tuesday: Cingjing \u2022 peak views day",
       "location": "Hualien",
       "pace": "Travel + easy evening",
       "tags": [
@@ -466,9 +472,9 @@
           "when": "Stay",
           "items": [
             {
-              "name": "Hotel: Hualien \u2014 choose later (options will be finalized after dates)",
-              "site": "",
-              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City%20hotel"
+              "name": "Hotel: The Old England Manor \u2014 stay",
+              "site": "https://www.theoldengland.com.tw/en/",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
             }
           ]
         },
@@ -499,12 +505,12 @@
         }
       ],
       "transport": "",
-      "agenda": "Travel to Hualien \u2022 check in \u2022 night market",
-      "staySummary": "Hualien (hotel TBD) \u2014 Hualien"
+      "agenda": "Scenic viewpoints \u2022 gentle trails \u2022 cozy manor evening",
+      "staySummary": "The Old England Manor \u2014 Cingjing (Night 5)"
     },
     {
       "day": 7,
-      "title": "Wednesday: Taroko-area scenery + short walks",
+      "title": "Wednesday: Cingjing \u2192 Hualien",
       "location": "Taroko / Hualien",
       "pace": "Nature day",
       "tags": [
@@ -517,9 +523,9 @@
           "when": "Stay",
           "items": [
             {
-              "name": "Hotel: Hualien \u2014 choose later (options will be finalized after dates)",
-              "site": "",
-              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City%20hotel"
+              "name": "Hotel: Le M\u00e9ridien Hualien Resort (Marriott) \u2014 check-in / stay",
+              "site": "https://www.marriott.com/en-us/hotels/hunmd-le-meridien-hualien-resort/overview/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Le%20Meridien%20Hualien%20Resort"
             }
           ]
         },
@@ -554,12 +560,12 @@
         "Keeps walks shorter so it\u2019s enjoyable, not exhausting."
       ],
       "transport": "",
-      "agenda": "Taroko / scenic viewpoints \u2022 return Hualien",
-      "staySummary": "Hualien (hotel TBD) \u2014 Hualien"
+      "agenda": "Travel to east coast \u2022 check-in \u2022 seaside stroll \u2022 Dongdamen market",
+      "staySummary": "Le M\u00e9ridien Hualien Resort (Marriott) \u2014 Hualien (Night 6)"
     },
     {
       "day": 8,
-      "title": "Thursday: back to Taipei + final night",
+      "title": "Thursday: Taroko day \u2192 back to Taipei",
       "location": "Taipei",
       "pace": "Fun + romantic",
       "tags": [
@@ -572,8 +578,8 @@
           "when": "Stay",
           "items": [
             {
-              "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
-              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "name": "Hotel: W Taipei (Marriott) \u2014 final night",
+              "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
               "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
             }
           ]
@@ -624,12 +630,12 @@
         "Special dinner night is set when you\u2019re settled, not mid-travel."
       ],
       "transport": "",
-      "agenda": "Back to Taipei \u2022 Dihua Street \u2022 Maokong \u2022 special dinner",
-      "staySummary": "W Taipei (Marriott) \u2014 Taipei (final night)"
+      "agenda": "Taroko highlights \u2022 return to Taipei \u2022 dinner + skyline",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei (Night 7 / final night)"
     },
     {
       "day": 9,
-      "title": "Fly home (Friday 5:00 PM) \u2192 Phoenix 2:30 PM",
+      "title": "Friday: Taipei \u2192 fly home",
       "location": "Travel",
       "pace": "Easy",
       "tags": [
@@ -675,7 +681,7 @@
       ],
       "proTip": "Leave extra buffer time\u2014Friday travel days feel better when you\u2019re not rushed.",
       "transport": "",
-      "agenda": "Final Taipei moments \u2022 airport \u2022 fly home",
+      "agenda": "Brunch \u2022 last-minute shopping \u2022 airport \u2022 depart 5:00 PM",
       "staySummary": "Fly home"
     }
   ],
