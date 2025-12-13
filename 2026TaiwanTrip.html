@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Taiwan Surprise Trip — Melissa</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#101a33; --card2:#0f1730;
+      --text:#eaf0ff; --muted:#b7c3e1; --line:rgba(255,255,255,.10);
+      --accent:#79c0ff; --accent2:#a8ffda;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius:18px; --radius2:24px; --pad:16px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(121,192,255,.35), transparent 60%),
+                  radial-gradient(900px 500px at 95% 0%, rgba(168,255,218,.20), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{color:var(--accent); text-decoration:none}
+    .app{min-height:100%; padding-bottom: calc(74px + var(--safe-bottom));}
+    .cover{
+      min-height:100vh;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding: calc(28px + var(--safe-top)) var(--pad) calc(26px + var(--safe-bottom));
+      position:relative; overflow:hidden;
+    }
+    .cover::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(to bottom, rgba(11,16,32,.35), rgba(11,16,32,.92) 70%),
+        url("https://upload.wikimedia.org/wikipedia/commons/0/05/Taipei_101_from_afar.jpg") center/cover no-repeat;
+      transform: scale(1.03);
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .cover > *{position:relative; z-index:1}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid var(--line);
+      width:max-content;
+      backdrop-filter: blur(10px);
+    }
+    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--accent2)}
+    .title{font-size:40px; line-height:1.05; margin:14px 0 8px; letter-spacing:-.02em}
+    .subtitle{color:var(--muted); font-size:16px; line-height:1.45; margin:0 0 18px; max-width:40ch}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      appearance:none; border:0;
+      padding:14px 16px; border-radius:14px;
+      font-weight:700; font-size:15px;
+      color: #061021;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: var(--shadow);
+      cursor:pointer;
+    }
+    .btn.secondary{
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow:none;
+      backdrop-filter: blur(10px);
+    }
+    .section{display:none; padding: 18px var(--pad) 0}
+    .section.active{display:block}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .card + .card{margin-top:14px}
+    h2{font-size:20px; margin:0 0 10px}
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .grid2{display:grid; grid-template-columns:1fr; gap:12px}
+    @media (min-width:720px){ .grid2{grid-template-columns:1fr 1fr} }
+    .heroImg{
+      width:100%; height:190px; border-radius: 16px;
+      object-fit:cover; display:block;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+    }
+    .imgRow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    .imgRow img{height:120px}
+    .pillRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .stickyTop{position:sticky; top:0; padding-top:10px; background: linear-gradient(to bottom, rgba(11,16,32,.96), rgba(11,16,32,.78) 70%, rgba(11,16,32,0)); z-index:10}
+    .chipbar{
+      display:flex; gap:8px; overflow-x:auto; padding: 10px 2px 12px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .chipbar::-webkit-scrollbar{display:none}
+    .chip{
+      flex:0 0 auto; scroll-snap-align:start;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight:800; font-size:13px;
+      cursor:pointer; user-select:none; white-space:nowrap;
+    }
+    .chip.active{background: rgba(121,192,255,.22); border-color: rgba(121,192,255,.35)}
+    details{border:1px solid var(--line); border-radius:18px; background: rgba(255,255,255,.04); overflow:hidden;}
+    details + details{margin-top:10px}
+    summary{list-style:none; padding: 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;}
+    summary::-webkit-details-marker{display:none}
+    .sumLeft{display:flex; flex-direction:column; gap:2px}
+    .sumTitle{font-weight:900}
+    .sumMeta{color:var(--muted); font-size:12px}
+    details[open] summary{background: rgba(255,255,255,.05); border-bottom:1px solid var(--line)}
+    .dayBody{padding: 0 14px 14px}
+    .timeline{margin: 10px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px}
+    .tItem{display:flex; gap:10px; align-items:flex-start}
+    .tTime{min-width:62px; font-weight:900; color: var(--accent2)}
+    .tBox{flex:1; background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); border-radius: 14px; padding:10px 12px;}
+    .tBox b{display:block; margin-bottom:2px}
+    .nav{
+      position:fixed; left:0; right:0; bottom:0;
+      padding: 10px var(--pad) calc(10px + var(--safe-bottom));
+      background: rgba(11,16,32,.86);
+      backdrop-filter: blur(12px);
+      border-top:1px solid var(--line);
+      z-index:100;
+    }
+    .navRow{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
+    .navBtn{border:1px solid var(--line); background: rgba(255,255,255,.06); color: var(--text); padding:12px 10px; border-radius: 16px; font-weight:900; cursor:pointer;}
+    .navBtn.active{background: rgba(168,255,218,.14); border-color: rgba(168,255,218,.30)}
+    .dateRow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    select{width:100%; padding:12px; border-radius:14px; border:1px solid var(--line); background: rgba(255,255,255,.06); color: var(--text); font-weight:800;}
+    .hint{font-size:12px; color:var(--muted); margin-top:8px}
+    .divider{height:1px; background: var(--line); margin:14px 0}
+    .foot{padding: 10px 0 0; color: var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <section class="cover" id="cover">
+      <div class="badge"><span class="dot"></span><span>Christmas Surprise • Taiwan</span></div>
+      <h1 class="title">Melissa’s Taiwan Adventure</h1>
+      <p class="subtitle">8 days of Taipei energy, mountain romance, and iconic scenery — planned for two travelers.</p>
+      <div class="ctaRow">
+        <button class="btn" id="openPlanBtn">Open the itinerary</button>
+        <button class="btn secondary" id="openStaysBtn">See the stays</button>
+      </div>
+      <div class="foot">Tip: open this on iPhone → tap <b>Share → Add to Home Screen</b> for an app-like experience.</div>
+    </section>
+
+    <section class="section" id="section-plan">
+      <div class="card">
+        <h2>Pick your week</h2>
+        <div class="dateRow">
+          <select id="weekSelect" aria-label="Select a week"></select>
+        </div>
+        <div class="hint">
+          Depart Phoenix <b>Wednesday evening</b> → arrive Taiwan <b>Friday afternoon</b>. Fly home <b>Friday 5:00 PM</b> (land about <b>2:30 PM</b> same day).
+        </div>
+        <div class="divider"></div>
+        <div class="muted small"><b>Trip flow:</b> Fri–Sat Taipei • Sun–Fri exploring (mountains + east coast) • Fri evening flight home</div>
+      </div>
+
+      <div class="stickyTop">
+        <div class="chipbar" id="dayChips" aria-label="Day selector"></div>
+      </div>
+
+      <div id="dayList"></div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Quick checklist</h2>
+        <div class="muted">Passports • eSIM/data • EasyCard • comfy walking shoes • light rain layer • small daypack • power adapter.</div>
+      </div>
+    </section>
+
+    <section class="section" id="section-stays">
+      <div class="card">
+        <h2>Where you’ll stay</h2>
+        <p class="muted" style="margin:0">Taipei weekend in a Marriott property, then the mountains at The Old England Manor.</p>
+      </div>
+
+      <div class="grid2" style="margin-top:14px">
+        <div class="card">
+          <h2 style="margin-bottom:6px">W Taipei (Marriott)</h2>
+          <div class="muted small">Xinyi District • city views • easy access to Taipei 101 + shopping</div>
+          <img class="heroImg" src="https://cache.marriott.com/is/image/marriotts7prod/wh-tpewh-hotel-entrance-40800-13878%3AFeature-Hor?fit=constrain&wid=1920" alt="W Taipei entrance at night" loading="lazy"/>
+          <div class="imgRow">
+            <img class="heroImg" src="https://cache.marriott.com/is/image/marriotts7prod/wh-tpewh-fsk-livingroom-night-view-19535%3AClassic-Hor?fit=constrain&wid=1300" alt="W Taipei room with Taipei skyline view" loading="lazy"/>
+            <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/3/35/Raohe_St._Night_Market_%285437592703%29.jpg" alt="Night market scene in Taipei" loading="lazy"/>
+          </div>
+          <div class="pillRow">
+            <span class="pill">Weekend base</span>
+            <span class="pill">Skyline vibes</span>
+            <span class="pill">Food + night markets</span>
+          </div>
+          <div class="foot">Images: Marriott media + Wikimedia (night market).</div>
+        </div>
+
+        <div class="card">
+          <h2 style="margin-bottom:6px">The Old England Manor (Hilton • SLH)</h2>
+          <div class="muted small">Cingjing • Tudor-style retreat • mountain views</div>
+          <img class="heroImg" src="https://images.trvl-media.com/lodging/10000000/9780000/9773700/9773627/547e833a.jpg?impolicy=resizecrop&ra=fit&rw=1200" alt="The Old England Manor exterior" loading="lazy"/>
+          <div class="imgRow">
+            <img class="heroImg" src="https://www.hilton.com/im/en/TXGEMLX/21100905/txgemlx-62150073-the-old-england-manor-2048x1360.jpg?impolicy=crop&rw=1400" alt="Old England Manor rooftop lounge with mountain views" loading="lazy"/>
+            <img class="heroImg" src="https://images.trvl-media.com/lodging/10000000/9780000/9773700/9773627/eb46ae93.jpg?impolicy=resizecrop&ra=fit&rw=1200" alt="Old England Manor interior lounge" loading="lazy"/>
+          </div>
+          <div class="pillRow">
+            <span class="pill">Mountain romance</span>
+            <span class="pill">Easy hikes nearby</span>
+            <span class="pill">Slow mornings</span>
+          </div>
+          <div class="foot">Images: Hilton media + travel media.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="section-views">
+      <div class="card">
+        <h2>What it will look like</h2>
+        <p class="muted" style="margin:0">A tiny “preview reel” of the vibe you can expect across the week.</p>
+      </div>
+
+      <div class="grid2" style="margin-top:14px">
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/0/05/Taipei_101_from_afar.jpg" alt="Taipei skyline with Taipei 101" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Taipei</b> • viewpoints • temples • night markets</div>
+        </div>
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Taiwan_2009_HuaLien_Taroko_Gorge_Temple_FRD_6719.jpg" alt="Taroko Gorge scenery" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Taroko Gorge</b> • marble cliffs • iconic hikes</div>
+        </div>
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/%E8%8A%B1%E8%93%AE%E7%B8%A3%E7%A7%80%E6%9E%97%E9%84%89_%E6%B8%85%E6%B0%B4%E6%96%B7%E5%B4%96_Cingshuei_Cliff%28Sioulin%2CHualien%29_-_panoramio_%284%29.jpg" alt="Qingshui Cliff coastline" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Qingshui Cliff</b> • ocean + mountains</div>
+        </div>
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/3/31/Hehuanshan.jpg" alt="Hehuanshan mountain ridge" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Hehuanshan</b> • alpine ridges • sunrise option</div>
+        </div>
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Cingjing_Farm_pavilion.jpg" alt="Cingjing Farm mountain views" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Cingjing</b> • rolling greens • crisp air</div>
+        </div>
+        <div class="card">
+          <img class="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/3/35/Raohe_St._Night_Market_%285437592703%29.jpg" alt="Raohe night market" loading="lazy"/>
+          <div class="muted small" style="margin-top:10px"><b>Night markets</b> • the best snacks in Taiwan</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Photo credits</h2>
+        <div class="muted small">
+          Wikimedia Commons photos used for Taipei skyline, Raohe Night Market, Taroko Gorge, Qingshui Cliff, Hehuanshan, and Cingjing.
+        </div>
+      </div>
+    </section>
+
+    <div class="nav" aria-label="Navigation">
+      <div class="navRow">
+        <button class="navBtn" data-target="plan">Plan</button>
+        <button class="navBtn" data-target="stays">Stays</button>
+        <button class="navBtn" data-target="views">Views</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function() {
+  const cover = document.getElementById('cover');
+  const sections = {
+    plan: document.getElementById('section-plan'),
+    stays: document.getElementById('section-stays'),
+    views: document.getElementById('section-views')
+  };
+  const navBtns = Array.from(document.querySelectorAll('.navBtn'));
+
+  function show(sectionKey) {
+    cover.style.display = 'none';
+    Object.entries(sections).forEach(([k,el]) => el.classList.toggle('active', k===sectionKey));
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.target===sectionKey));
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  document.getElementById('openPlanBtn').addEventListener('click', () => show('plan'));
+  document.getElementById('openStaysBtn').addEventListener('click', () => show('stays'));
+  navBtns.forEach(b => b.addEventListener('click', () => show(b.dataset.target)));
+
+  const weekSelect = document.getElementById('weekSelect');
+
+  // Wednesdays from Mar 18 through May 20 (shown as month/day; year is a placeholder)
+  const start = new Date('2026-03-18T00:00:00');
+  const end   = new Date('2026-05-20T00:00:00');
+
+  function nextWednesday(d) {
+    const nd = new Date(d);
+    const day = nd.getDay(); // Sun=0
+    const diff = (3 - day + 7) % 7; // Wed=3
+    nd.setDate(nd.getDate() + diff);
+    return nd;
+  }
+
+  function fmt(d) {
+    return d.toLocaleDateString(undefined, { month:'long', day:'numeric' });
+  }
+
+  let cur = nextWednesday(start);
+  const weeks = [];
+  while (cur <= end) {
+    weeks.push(new Date(cur));
+    cur.setDate(cur.getDate() + 7);
+  }
+
+  weeks.forEach((wed, i) => {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    const fri = new Date(wed); fri.setDate(fri.getDate() + 2);
+    opt.textContent = 'Week of ' + fmt(wed) + ' (depart Wed, arrive Fri ' + fmt(fri) + ')';
+    weekSelect.appendChild(opt);
+  });
+
+  const itinerary = [
+    {
+      title: "Day 1 • Friday — Arrive Taipei",
+      meta: "Check-in • easy first night • night market",
+      items: [
+        ["Afternoon","Arrive in Taiwan (Taipei). Private transfer or taxi to hotel."],
+        ["Evening","Check in at W Taipei. Stretch-walk around Xinyi + Taipei 101 area."],
+        ["Night","Night market bite + early night to reset the clock."]
+      ]
+    },
+    {
+      title: "Day 2 • Saturday — Taipei highlights",
+      meta: "Temples • views • food",
+      items: [
+        ["Morning","Longshan Temple + Bopiliao Historic Block."],
+        ["Midday","Ximending wander + lunch."],
+        ["Afternoon","Taipei 101 / observatory time (or Elephant Mountain viewpoint)."],
+        ["Evening","Raohe Street Night Market (pepper buns!)."]
+      ]
+    },
+    {
+      title: "Day 3 • Sunday — Mountains bound",
+      meta: "Scenic drive • Cingjing • golden-hour views",
+      items: [
+        ["Morning","Depart Taipei. Travel into the central mountains."],
+        ["Afternoon","Arrive Cingjing area. Check in at The Old England Manor."],
+        ["Evening","Afternoon tea / dinner on property + stargazing vibes."]
+      ]
+    },
+    {
+      title: "Day 4 • Monday — Cingjing + easy hikes",
+      meta: "Green hills • light hiking • cozy evening",
+      items: [
+        ["Morning","Cingjing Farm / 青青草原 walk + viewpoints."],
+        ["Afternoon","Light trail nearby (choose based on weather/energy)."],
+        ["Evening","Relax at the manor — fireplaces + tea time energy."]
+      ]
+    },
+    {
+      title: "Day 5 • Tuesday — Hehuanshan day",
+      meta: "High mountain ridges • sunrise option",
+      items: [
+        ["Early","Optional sunrise drive + short ridge hike (weather dependent)."],
+        ["Late morning","More trails / scenic stops around Hehuanshan."],
+        ["Evening","Back to manor. Slow dinner + rest."]
+      ]
+    },
+    {
+      title: "Day 6 • Wednesday — East coast to Hualien",
+      meta: "Ocean meets mountains • dramatic coastline",
+      items: [
+        ["Morning","Head toward the east coast."],
+        ["Afternoon","Stops along the coast (Qingshui Cliff viewpoint)."],
+        ["Evening","Arrive Hualien • dinner stroll + early night."]
+      ]
+    },
+    {
+      title: "Day 7 • Thursday — Taroko Gorge",
+      meta: "Iconic park day • best hikes",
+      items: [
+        ["Morning","Taroko Gorge highlights (Eternal Spring Shrine, scenic drives)."],
+        ["Midday","Pick a hike that fits the day (permits may apply for some trails)."],
+        ["Evening","Return to Hualien • relaxed dinner."]
+      ]
+    },
+    {
+      title: "Day 8 • Friday — Return & fly home",
+      meta: "Travel day • fly out 5:00 PM",
+      items: [
+        ["Morning","Train/transfer back toward Taipei."],
+        ["Afternoon","Last snacks/souvenirs + head to the airport."],
+        ["5:00 PM","Depart Taiwan. Arrive home ~2:30 PM (same day)."]
+      ]
+    }
+  ];
+
+  const chips = document.getElementById('dayChips');
+  const dayList = document.getElementById('dayList');
+
+  function setActiveChip(idx) {
+    Array.from(chips.children).forEach((c,i)=>c.classList.toggle('active', i===idx));
+  }
+
+  function focusDay(idx) {
+    setActiveChip(idx);
+    Array.from(dayList.querySelectorAll('details')).forEach((d,i)=>d.open = (i===idx));
+    const el = document.getElementById('day-' + idx);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function buildDays() {
+    chips.innerHTML = '';
+    dayList.innerHTML = '';
+
+    itinerary.forEach((d, idx) => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.textContent = 'Day ' + (idx+1);
+      chip.addEventListener('click', () => focusDay(idx));
+      chips.appendChild(chip);
+
+      const details = document.createElement('details');
+      details.id = 'day-' + idx;
+
+      const summary = document.createElement('summary');
+      const left = document.createElement('div');
+      left.className = 'sumLeft';
+
+      const t = document.createElement('div');
+      t.className = 'sumTitle';
+      t.textContent = d.title;
+
+      const m = document.createElement('div');
+      m.className = 'sumMeta';
+      m.textContent = d.meta;
+
+      left.appendChild(t);
+      left.appendChild(m);
+
+      const chev = document.createElement('div');
+      chev.textContent = '›';
+
+      summary.appendChild(left);
+      summary.appendChild(chev);
+
+      const body = document.createElement('div');
+      body.className = 'dayBody';
+
+      const ul = document.createElement('ul');
+      ul.className = 'timeline';
+
+      d.items.forEach(([time, text]) => {
+        const li = document.createElement('li');
+        li.className = 'tItem';
+        li.innerHTML =
+          '<div class="tTime">' + time + '</div>' +
+          '<div class="tBox"><b>' + text + '</b><div class="muted small">' + text + '</div></div>';
+        ul.appendChild(li);
+      });
+
+      body.appendChild(ul);
+      details.appendChild(summary);
+      details.appendChild(body);
+
+      if (idx===0) details.open = true;
+      dayList.appendChild(details);
+    });
+
+    setActiveChip(0);
+  }
+
+  weekSelect.addEventListener('change', buildDays);
+  weekSelect.selectedIndex = 0;
+  buildDays();
+
+  const hash = (location.hash || '').replace('#','');
+  if (hash === 'plan' || hash === 'stays' || hash === 'views') show(hash);
+})();
+</script>
+</body>
+</html>
