@@ -286,5 +286,23 @@ function scrollToId(id){
   $("#openStays").addEventListener("click", () => { scrollToId("#stays"); });
   $("#openExtras").addEventListener("click", () => { scrollToId("#extras"); });
 
+
+  // Next/Previous day navigation
+  const prevBtn = document.getElementById("prevDay");
+  const nextBtn = document.getElementById("nextDay");
+  function clampDay(i){
+    const max = (data.itinerary || []).length - 1;
+    return Math.max(0, Math.min(max, i));
+  }
+  function goDay(delta){
+    const cur = Number(document.getElementById("daySelect").value);
+    const next = clampDay(cur + delta);
+    document.getElementById("daySelect").value = String(next);
+    refresh();
+    scrollToId("#itinerary");
+  }
+  if(prevBtn) prevBtn.addEventListener("click", () => goDay(-1));
+  if(nextBtn) nextBtn.addEventListener("click", () => goDay(1));
+
   refresh();
 })();

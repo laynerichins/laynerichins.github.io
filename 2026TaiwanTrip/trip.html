@@ -12,20 +12,18 @@
   <header class="hero" id="top">
     <div class="heroInner">
       <div class="pills">
-        <span class="pill">🎁 <b>Christmas Surprise for Melissa</b></span>
-        <span class="pill">👫 <b>2 travelers</b></span>
-        <span class="pill">🏙️ <b>Taipei weekend</b></span>
-        <span class="pill">⛰️ <b>Mountains + manor</b></span>
-        <span class="pill">🌊 <b>East coast nature</b></span>
+        <span class="pill"><b>2026 Taiwan Trip</b></span>
+        <span class="pill">Taipei • Cingjing • East Coast</span>
+        <span class="pill">Wed → Fri travel</span>
       </div>
 
       <h1 id="title">Melissa’s Taiwan Adventure ✨</h1>
       <p class="sub" id="subtitle"></p>
 
       <div class="cta">
-        <button class="btn primary" id="openPlan" type="button">Open the itinerary</button>
-        <button class="btn" id="openStays" type="button">Stays + photos</button>
-        <button class="btn" id="openExtras" type="button">Extras (packing + reservations)</button>
+        <button class="btn primary" id="openPlan" type="button">View itinerary</button>
+        <button class="btn" id="openStays" type="button">Stays & photos</button>
+        <button class="btn" id="openExtras" type="button">Extras</button>
       </div>
 
       <div class="gallery" id="gallery">
@@ -106,6 +104,13 @@
         <hr class="sep"/>
         <h3 style="margin:0 0 10px; font-size:14px;">Quick links</h3>
         <div id="quickLinks"></div>
+        <hr class="sep"/>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
+          <button class="btn" id="prevDay" type="button" style="flex:1; min-width: 140px;">Previous day</button>
+          <button class="btn primary" id="nextDay" type="button" style="flex:1; min-width: 140px;">Next day</button>
+        </div>
+        <p class="note" style="margin-top:10px;">Tip: use Next/Previous to move through the itinerary without scrolling back up.</p>
+    
       </div>
     </section>
 
@@ -148,10 +153,10 @@
 
   <nav class="dock">
     <div class="dockInner">
-      <a href="#top">✨ Cover</a>
-      <a href="#stays">🏨 Stays</a>
-      <a href="#itinerary">🗓️ Itinerary</a>
-      <a href="#extras">🧳 Extras</a>
+      <a href="#top">Cover</a>
+      <a href="#stays">Stays</a>
+      <a href="#itinerary">Itinerary</a>
+      <a href="#extras">Extras</a>
     </div>
   </nav>
 
