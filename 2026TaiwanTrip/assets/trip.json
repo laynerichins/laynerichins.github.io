@@ -1,0 +1,575 @@
+{
+  "title": "Melissa\u2019s Taiwan Adventure \u2728",
+  "subtitle": "A crafted 10\u2011day plan for 2026: Taipei weekend \u2192 Old England Manor \u2192 east coast nature \u2192 final night in Taipei.",
+  "heroImages": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Cluster_of_skyscrapers_in_Eastern_District%2C_Taipei_Taiwan.jpg",
+      "alt": "Taipei skyline",
+      "caption": "Taipei nights \u2022 skyline energy \u2022 perfect weekend base"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/2/25/W_Taipei_and_Uni-President_Hankyu_Taipei_20140826.jpg",
+      "alt": "W Taipei exterior",
+      "caption": "W Taipei (Marriott) \u2022 Xinyi District \u2022 steps from Taipei 101"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg/1365px-The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg",
+      "alt": "The Old England Manor keep",
+      "caption": "Old England Manor \u2022 storybook mountain stay"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Taroko_Gorge_%28Taiwan%29.jpg",
+      "alt": "Taroko Gorge",
+      "caption": "Taroko-area scenery \u2022 iconic marble gorge views"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/7/70/Shilin_Night_Market_Entrance.jpg",
+      "alt": "Night market entrance",
+      "caption": "Night markets \u2022 street food \u2022 the fun part of the plan"
+    }
+  ],
+  "stays": [
+    {
+      "name": "W Taipei",
+      "brand": "Marriott",
+      "why": "Best \u201cweekend in Taipei\u201d energy: Xinyi District, easy walk to Taipei 101, great base for late nights + skyline views.",
+      "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+      "photos": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/photos/",
+      "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/2/25/W_Taipei_and_Uni-President_Hankyu_Taipei_20140826.jpg"
+    },
+    {
+      "name": "The Old England Manor",
+      "brand": "Hilton (SLH)",
+      "why": "Cingjing\u2019s signature stay\u2014European manor feel, gardens, quiet mountain air, photo-perfect moments.",
+      "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+      "secondary": "https://www.theoldengland.com/en/main.php",
+      "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg/1365px-The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg"
+    }
+  ],
+  "weeks": {
+    "year": 2026,
+    "startWed": "2026-03-18",
+    "endWed": "2026-05-20"
+  },
+  "quickLinks": [
+    {
+      "label": "Taipei 101 Observatory",
+      "site": "https://www.taipei-101.com.tw/en/observatory",
+      "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20101%20Observatory"
+    },
+    {
+      "label": "Chiang Kai-shek Memorial Hall",
+      "site": "https://www.cksmh.gov.tw/en/",
+      "map": "https://www.google.com/maps/search/?api=1&query=Chiang%20Kai-shek%20Memorial%20Hall"
+    },
+    {
+      "label": "Lungshan Temple",
+      "site": "https://www.lungshan.org.tw/",
+      "map": "https://www.google.com/maps/search/?api=1&query=Lungshan%20Temple%20Taipei"
+    },
+    {
+      "label": "Taroko National Park",
+      "site": "https://www.taroko.gov.tw/en/",
+      "map": "https://www.google.com/maps/search/?api=1&query=Taroko%20National%20Park"
+    }
+  ],
+  "itinerary": [
+    {
+      "day": 0,
+      "title": "Depart Phoenix (Wednesday evening)",
+      "location": "Travel",
+      "pace": "Easy",
+      "tags": [
+        "Flight",
+        "Overnight travel"
+      ],
+      "sections": [
+        {
+          "when": "Evening",
+          "items": [
+            {
+              "name": "Depart Phoenix (PHX)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Phoenix%20Sky%20Harbor%20International%20Airport"
+            },
+            {
+              "name": "Comfort kit: hoodie, eye mask, chargers, snacks",
+              "site": "",
+              "map": ""
+            },
+            {
+              "name": "Hydrate + set sleep plan for landing day",
+              "site": "",
+              "map": ""
+            }
+          ]
+        },
+        {
+          "when": "Before bed",
+          "items": [
+            {
+              "name": "Save hotels + key places to your phone bookmarks",
+              "site": "#stays",
+              "map": ""
+            },
+            {
+              "name": "Offline maps (Taipei + Nantou + Hualien)",
+              "site": "https://www.google.com/maps",
+              "map": ""
+            }
+          ]
+        }
+      ],
+      "proTip": "Aim for good sleep on the long-haul\u2014this makes the whole trip feel smoother."
+    },
+    {
+      "day": 1,
+      "title": "Transit day (Thursday)",
+      "location": "Travel",
+      "pace": "Easy",
+      "tags": [
+        "In the air",
+        "Time shift"
+      ],
+      "sections": [
+        {
+          "when": "In transit",
+          "items": [
+            {
+              "name": "Stretch + walk every few hours",
+              "site": "",
+              "map": ""
+            },
+            {
+              "name": "Light meals + water",
+              "site": "",
+              "map": ""
+            }
+          ]
+        },
+        {
+          "when": "Arrival setup",
+          "items": [
+            {
+              "name": "Taoyuan Airport info",
+              "site": "https://www.taoyuan-airport.com/?lang=en",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taiwan%20Taoyuan%20International%20Airport"
+            },
+            {
+              "name": "Airport MRT (how to get into Taipei)",
+              "site": "https://www.tymetro.com.tw/tymetro-new/en/index.php",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taoyuan%20Airport%20MRT"
+            }
+          ]
+        }
+      ],
+      "proTip": "Don\u2019t force sightseeing today\u2014tomorrow is the fun \u2018we\u2019re here\u2019 day."
+    },
+    {
+      "day": 2,
+      "title": "Arrive Taipei (Friday afternoon) + night market",
+      "location": "Taipei",
+      "pace": "Easy",
+      "tags": [
+        "Check-in",
+        "Night market",
+        "First views"
+      ],
+      "sections": [
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Check in: W Taipei (Marriott)",
+              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
+            },
+            {
+              "name": "Taipei 101 plaza + skyline walk",
+              "site": "https://www.taipei-101.com.tw/en/observatory",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20101"
+            },
+            {
+              "name": "Xinyi District stroll (shopping + coffee)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Xinyi%20District%20Taipei"
+            }
+          ]
+        },
+        {
+          "when": "Evening",
+          "items": [
+            {
+              "name": "Raohe Night Market (food crawl)",
+              "site": "https://www.travel.taipei/en/attraction/details/1691",
+              "map": "https://www.google.com/maps/search/?api=1&query=Raohe%20Night%20Market"
+            },
+            {
+              "name": "Optional: Ximending neon streets",
+              "site": "https://www.travel.taipei/en/attraction/details/1694",
+              "map": "https://www.google.com/maps/search/?api=1&query=Ximending"
+            }
+          ]
+        }
+      ],
+      "thoughtfulness": [
+        "Keeps day light so you\u2019re not wiped out from travel.",
+        "Night market is the perfect \u2018first Taiwan\u2019 moment."
+      ]
+    },
+    {
+      "day": 3,
+      "title": "Taipei Saturday: icons + sunset hike",
+      "location": "Taipei",
+      "pace": "Full (but doable)",
+      "tags": [
+        "Temples",
+        "Views",
+        "Hike"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "Chiang Kai-shek Memorial Hall",
+              "site": "https://www.cksmh.gov.tw/en/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Chiang%20Kai-shek%20Memorial%20Hall"
+            },
+            {
+              "name": "Lungshan Temple",
+              "site": "https://www.lungshan.org.tw/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Lungshan%20Temple%20Taipei"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Taipei 101 Observatory (optional)",
+              "site": "https://www.taipei-101.com.tw/en/observatory",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20101%20Observatory"
+            },
+            {
+              "name": "Songshan Cultural & Creative Park",
+              "site": "https://www.songshanculturalpark.org/english",
+              "map": "https://www.google.com/maps/search/?api=1&query=Songshan%20Cultural%20and%20Creative%20Park"
+            }
+          ]
+        },
+        {
+          "when": "Sunset + night",
+          "items": [
+            {
+              "name": "Elephant Mountain Trail (sunset skyline)",
+              "site": "https://www.travel.taipei/en/attraction/details/564",
+              "map": "https://www.google.com/maps/search/?api=1&query=Elephant%20Mountain%20Trailhead"
+            },
+            {
+              "name": "Ningxia Night Market",
+              "site": "https://www.travel.taipei/en/attraction/details/1689",
+              "map": "https://www.google.com/maps/search/?api=1&query=Ningxia%20Night%20Market"
+            }
+          ]
+        }
+      ],
+      "thoughtfulness": [
+        "Culture + modern Taipei in one day.",
+        "Sunset hike timed for the best skyline photos."
+      ],
+      "backupPlan": "If it rains: swap Elephant Mountain for the National Palace Museum or a hot springs evening."
+    },
+    {
+      "day": 4,
+      "title": "Sunday: Taipei \u2192 Cingjing + The Old England Manor",
+      "location": "Nantou (Cingjing)",
+      "pace": "Travel + relax",
+      "tags": [
+        "Mountains",
+        "Manor",
+        "Scenic"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "HSR: Taipei \u2192 Taichung (official)",
+              "site": "https://en.thsrc.com.tw/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20Main%20Station"
+            },
+            {
+              "name": "Continue by private transfer/shuttle toward Cingjing",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Cingjing%20Nantou"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Check in: The Old England Manor (Hilton)",
+              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
+            },
+            {
+              "name": "Garden photos + tea time",
+              "site": "https://www.theoldengland.com/en/main.php",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
+            }
+          ]
+        }
+      ],
+      "thoughtfulness": [
+        "You arrive when the light is best for manor photos.",
+        "Keeps the first mountain day low-stress."
+      ]
+    },
+    {
+      "day": 5,
+      "title": "Monday: mountain air + easy hikes + big views",
+      "location": "Nantou (Cingjing)",
+      "pace": "Choose-your-own",
+      "tags": [
+        "Hiking",
+        "Views",
+        "Relax"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "Cingjing Farm / Evergreen Grassland",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Cingjing%20Farm"
+            },
+            {
+              "name": "Cingjing Skyline Trail (easy scenic walk)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Cingjing%20Skyline%20Trail"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Relax at the manor (tea / gardens / photos)",
+              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
+            },
+            {
+              "name": "Optional: Hehuanshan viewpoints (weather dependent)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hehuanshan"
+            }
+          ]
+        }
+      ],
+      "backupPlan": "If altitude hits: keep it to Skyline Trail + manor afternoon."
+    },
+    {
+      "day": 6,
+      "title": "Tuesday: mountains \u2192 Hualien (east coast base) + night market",
+      "location": "Hualien",
+      "pace": "Travel + easy evening",
+      "tags": [
+        "East coast",
+        "Food",
+        "Reset"
+      ],
+      "sections": [
+        {
+          "when": "Daytime",
+          "items": [
+            {
+              "name": "Travel to Hualien (rail info)",
+              "site": "https://tip.railway.gov.tw/tra-tip-web/tip?lang=EN_US",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20Station"
+            },
+            {
+              "name": "Check in Hualien (choose later)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City"
+            }
+          ]
+        },
+        {
+          "when": "Evening",
+          "items": [
+            {
+              "name": "Dongdamen Night Market",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Dongdamen%20Night%20Market"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "Wednesday: Taroko-area scenery + short walks",
+      "location": "Taroko / Hualien",
+      "pace": "Nature day",
+      "tags": [
+        "National Park",
+        "Views",
+        "Short walks"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "Taroko National Park (official site)",
+              "site": "https://www.taroko.gov.tw/en/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taroko%20National%20Park"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Gorge viewpoints + photo stops (as open/safe)",
+              "site": "https://www.taroko.gov.tw/en/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taroko%20Gorge"
+            },
+            {
+              "name": "Return to Hualien for dinner",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City"
+            }
+          ]
+        }
+      ],
+      "thoughtfulness": [
+        "Built around flexibility since conditions can change.",
+        "Keeps walks shorter so it\u2019s enjoyable, not exhausting."
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Thursday: back to Taipei + final night",
+      "location": "Taipei",
+      "pace": "Fun + romantic",
+      "tags": [
+        "Shopping",
+        "Tea",
+        "Special dinner"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "Return to Taipei (rail info)",
+              "site": "https://tip.railway.gov.tw/tra-tip-web/tip?lang=EN_US",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20Main%20Station"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Dihua Street (historic shopping street)",
+              "site": "https://eng.taiwan.net.tw/m1.aspx?id=418&sNo=0002090",
+              "map": "https://www.google.com/maps/search/?api=1&query=Dihua%20Street"
+            },
+            {
+              "name": "Maokong Gondola (tea + views) (official)",
+              "site": "https://english.gondola.taipei/",
+              "map": "https://www.google.com/maps/search/?api=1&query=Maokong%20Gondola"
+            }
+          ]
+        },
+        {
+          "when": "Evening",
+          "items": [
+            {
+              "name": "Special dinner (Din Tai Fung Xinyi area)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Din%20Tai%20Fung%20Xinyi"
+            },
+            {
+              "name": "Final night market snack run (optional)",
+              "site": "https://www.travel.taipei/en/attraction/details/1689",
+              "map": "https://www.google.com/maps/search/?api=1&query=Ningxia%20Night%20Market"
+            }
+          ]
+        }
+      ],
+      "thoughtfulness": [
+        "Final afternoon is for gifts + tea\u2014exactly the kind of thing you\u2019ll love looking back on.",
+        "Special dinner night is set when you\u2019re settled, not mid-travel."
+      ]
+    },
+    {
+      "day": 9,
+      "title": "Fly home (Friday 5:00 PM) \u2192 Phoenix 2:30 PM",
+      "location": "Travel",
+      "pace": "Easy",
+      "tags": [
+        "Airport",
+        "Home"
+      ],
+      "sections": [
+        {
+          "when": "Morning",
+          "items": [
+            {
+              "name": "Songshan Cultural & Creative Park (easy stroll)",
+              "site": "https://www.songshanculturalpark.org/english",
+              "map": "https://www.google.com/maps/search/?api=1&query=Songshan%20Cultural%20and%20Creative%20Park"
+            },
+            {
+              "name": "Last souvenirs (tea / pineapple cakes)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taipei%20souvenir%20shop"
+            }
+          ]
+        },
+        {
+          "when": "Afternoon",
+          "items": [
+            {
+              "name": "Taoyuan Airport (official)",
+              "site": "https://www.taoyuan-airport.com/?lang=en",
+              "map": "https://www.google.com/maps/search/?api=1&query=Taiwan%20Taoyuan%20International%20Airport"
+            }
+          ]
+        }
+      ],
+      "proTip": "Leave extra buffer time\u2014Friday travel days feel better when you\u2019re not rushed."
+    }
+  ],
+  "extras": {
+    "packing": [
+      "Comfortable walking shoes (plus hiking shoes if you have them)",
+      "Light rain jacket / wind layer (mountains can be cool)",
+      "Small daypack + reusable water bottle",
+      "Portable charger + universal power adapter",
+      "Sunscreen + sunglasses",
+      "Motion sickness meds (mountain roads can be twisty)",
+      "Nice outfit for the \u2018special dinner\u2019 night"
+    ],
+    "reservations": [
+      "Taipei 101 Observatory time slot (optional, but easy)",
+      "One special dinner reservation in Taipei",
+      "Maokong Gondola timing (sunset if weather is good)",
+      "Old England Manor dinner/tea timing (if required by the property)"
+    ],
+    "romanticMoments": [
+      "Sunset at Elephant Mountain",
+      "Tea time at the manor garden",
+      "Maokong gondola tea views",
+      "Final Taipei dinner night"
+    ]
+  }
+}

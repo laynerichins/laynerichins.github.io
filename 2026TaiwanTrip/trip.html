@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#ffffff"/>
+  <title>Melissa’s Taiwan Adventure</title>
+  <link rel="stylesheet" href="./assets/styles.css"/>
+</head>
+<body data-page="trip">
+  <canvas id="confetti"></canvas>
+  <header class="hero" id="top">
+    <div class="heroInner">
+      <div class="pills">
+        <span class="pill">🎁 <b>Christmas Surprise for Melissa</b></span>
+        <span class="pill">👫 <b>2 travelers</b></span>
+        <span class="pill">🏙️ <b>Taipei weekend</b></span>
+        <span class="pill">⛰️ <b>Mountains + manor</b></span>
+        <span class="pill">🌊 <b>East coast nature</b></span>
+      </div>
+
+      <h1 id="title">Melissa’s Taiwan Adventure ✨</h1>
+      <p class="sub" id="subtitle"></p>
+
+      <div class="cta">
+        <button class="btn primary" id="openPlan" type="button">Open the itinerary</button>
+        <button class="btn" id="openStays" type="button">Stays + photos</button>
+        <button class="btn" id="openExtras" type="button">Extras (packing + reservations)</button>
+      </div>
+
+      <div class="gallery" id="gallery">
+        <div class="galleryTop">
+          <div class="heroImgWrap">
+            <img id="heroImg" class="heroImg" alt="Trip photo"/>
+            <div class="heroCaption" id="heroCaption"></div>
+          </div>
+          <div class="heroRail">
+            <p class="railTitle">Photo moments (tap)</p>
+            <div class="thumbs" id="thumbs"></div>
+            <p class="note" style="margin:10px 0 0;">
+              Tip: in Safari → Share → <b>Add to Home Screen</b> for an app-like icon.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="sticky" id="controls">
+    <div class="controls">
+      <div>
+        <label for="weekSelect">Choose a week (depart Phoenix Wed evening • Mar 18 → May 20)</label>
+        <select id="weekSelect" aria-label="Choose week"></select>
+        <div class="metaRow">
+          <span class="pill">🛫 Phoenix: <b>Wed evening</b></span>
+          <span class="pill">🏙️ Arrive Taiwan: <b>Fri afternoon</b></span>
+          <span class="pill">🛬 Return: <b>Fri 5:00 PM</b> → PHX <b>2:30 PM</b></span>
+        </div>
+      </div>
+
+      <div>
+        <label for="daySelect">Pick a day (auto-jumps to the plan)</label>
+        <select id="daySelect" aria-label="Pick a day"></select>
+      </div>
+
+      <div>
+        <label for="search">Search the plan (e.g., “night market”, “temple”, “manor”)</label>
+        <input id="search" type="search" placeholder="Search…" />
+        <div id="searchResults" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="section card" id="stays">
+      <div class="cardHeader">
+        <h2>Where we’re staying</h2>
+        <div class="note">Hotels + official links + photos</div>
+      </div>
+      <div class="cardBody">
+        <div class="grid2" id="staysGrid"></div>
+        <hr class="sep"/>
+        <div class="callout">
+          <b>Planning note:</b> Weekend is optimized for Taipei’s top sights + night markets, then we shift to quieter mountain scenery for a true “wow” reset.
+        </div>
+      </div>
+    </section>
+
+    <section class="section card" id="itinerary">
+      <div class="cardHeader">
+        <h2>Daily itinerary</h2>
+        <div class="note">Websites first • Maps as backup</div>
+      </div>
+      <div class="cardBody">
+        <div class="dayHeader">
+          <h3 id="dayTitle"></h3>
+          <div class="date" id="dayDate"></div>
+          <div class="tags" id="tags"></div>
+        </div>
+
+        <div class="accordion" id="accordion"></div>
+
+        <div id="callouts"></div>
+        <p class="note" id="transportNote"></p>
+
+        <hr class="sep"/>
+        <h3 style="margin:0 0 10px; font-size:14px;">Quick links</h3>
+        <div id="quickLinks"></div>
+      </div>
+    </section>
+
+    <section class="section card" id="extras">
+      <div class="cardHeader">
+        <h2>Extras that make it feel “fully planned”</h2>
+        <div class="note">No prices • Just the plan</div>
+      </div>
+      <div class="cardBody">
+        <div class="checkGrid">
+          <div class="check">
+            <h4>🎒 Packing</h4>
+            <ul id="packingList"></ul>
+          </div>
+          <div class="check">
+            <h4>📅 Reservations to consider</h4>
+            <ul id="reservationsList"></ul>
+          </div>
+          <div class="check">
+            <h4>💛 “Romantic moments” built into the itinerary</h4>
+            <ul id="romanceList"></ul>
+          </div>
+          <div class="check">
+            <h4>✅ Trip vibe</h4>
+            <ul>
+              <li>Front-load Taipei highlights on the weekend</li>
+              <li>Midweek is nature + quieter scenery</li>
+              <li>Final night is for gifts + a special dinner</li>
+              <li>Multiple backup options so nothing feels “ruined” by weather</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="note" style="margin:14px 6px 0;">
+      Want me to add a separate “Hotel options” page (Hilton vs Marriott alternatives) and keep this as the final chosen plan?
+    </p>
+  </main>
+
+  <nav class="dock">
+    <div class="dockInner">
+      <a href="#top">✨ Cover</a>
+      <a href="#stays">🏨 Stays</a>
+      <a href="#itinerary">🗓️ Itinerary</a>
+      <a href="#extras">🧳 Extras</a>
+    </div>
+  </nav>
+
+  <script src="./assets/gate.js"></script>
+  <script src="./assets/app.js"></script>
+</body>
+</html>
