@@ -1,31 +1,31 @@
 {
-  "title": "Melissa\u2019s Taiwan Adventure",
+  "title": "Richins 2026 Taiwan Adventure",
   "subtitle": "A clear 10\u2011day plan: Taipei weekend \u2192 Cingjing mountains \u2192 East Coast (Taroko) \u2192 final night in Taipei.",
   "heroImages": [
     {
-      "src": "./assets/img/hero_taipei.svg",
-      "alt": "Taipei Weekend",
-      "caption": "Taipei weekend \u2022 skyline energy \u2022 perfect base"
+      "src": "assets/img/stay_w_taipei.svg",
+      "alt": "Taipei base",
+      "caption": "Taipei weekend base"
     },
     {
-      "src": "./assets/img/hero_wtaipei.svg",
-      "alt": "W Taipei (Marriott)",
-      "caption": "W Taipei \u2022 Xinyi District \u2022 near Taipei 101"
+      "src": "assets/img/stay_old_england.svg",
+      "alt": "Old England Manor",
+      "caption": "Cingjing mountains"
     },
     {
-      "src": "./assets/img/hero_manor.svg",
-      "alt": "The Old England Manor",
-      "caption": "Old England Manor \u2022 mountain stay"
+      "src": "assets/img/stay_le_meridien.svg",
+      "alt": "Hualien base",
+      "caption": "East coast night"
     },
     {
-      "src": "./assets/img/taroko.jpg",
-      "alt": "Taroko Gorge \u2022 Liwu River",
-      "caption": "Taroko Gorge \u2022 marble canyon views"
+      "src": "assets/img/taroko.jpg",
+      "alt": "Taroko Gorge",
+      "caption": "Taroko day highlight"
     },
     {
-      "src": "./assets/img/shilin.jpg",
-      "alt": "Shilin Night Market (Taipei)",
-      "caption": "Shilin Night Market \u2022 classic Taipei evening"
+      "src": "assets/img/shilin.jpg",
+      "alt": "Night market",
+      "caption": "Taipei night market"
     }
   ],
   "stays": [
@@ -35,7 +35,8 @@
       "location": "Taipei (Xinyi District)",
       "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
       "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei",
-      "why": "Weekend base in Xinyi\u2014walkable to Taipei 101, shopping, and late-night eats."
+      "why": "Weekend base in Xinyi\u2014walkable to Taipei 101, shopping, and late-night eats.",
+      "image": "assets/img/stay_w_taipei.svg"
     },
     {
       "name": "The Old England Manor",
@@ -43,7 +44,8 @@
       "location": "Cingjing, Nantou (mountains)",
       "site": "https://www.theoldengland.com.tw/en/",
       "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing",
-      "why": "Signature mountain stay\u2014storybook manor vibe + crisp air + views."
+      "why": "Signature mountain stay\u2014storybook manor vibe + crisp air + views.",
+      "image": "assets/img/stay_old_england.svg"
     },
     {
       "name": "Le M\u00e9ridien Hualien Resort",

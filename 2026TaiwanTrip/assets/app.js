@@ -13,6 +13,20 @@ function addDays(date, n){
   return d;
 }
 
+
+function imgFallback(imgEl){
+  if(!imgEl) return;
+  imgEl.addEventListener("error", () => {
+    imgEl.style.display = "none";
+    const parent = imgEl.parentElement;
+    if(parent && !parent.querySelector(".imgFallback")){
+      const fb = document.createElement("div");
+      fb.className = "imgFallback";
+      fb.textContent = "Image unavailable";
+      parent.appendChild(fb);
+    }
+  });
+}
 async function loadData(){
   const res = await fetch("./assets/trip.json");
   return await res.json();
@@ -44,6 +58,7 @@ function buildHero(data){
     idx = i;
     const it = imgs[idx];
     hero.src = it.src;
+    imgFallback(hero);
     hero.alt = it.alt || "Photo";
     caption.innerHTML = `${it.caption || ""}<span>${it.alt || ""}</span>`;
     $$(".thumbBtn").forEach((b, bi) => b.classList.toggle("active", bi === idx));
@@ -98,7 +113,7 @@ function renderStays(stays){
     el.className = "stay";
     const secondary = s.secondary ? `<a class="linkBtn" href="${s.secondary}" target="_blank" rel="noopener noreferrer">🏰 Manor site</a>` : "";
     el.innerHTML = `
-      <img src="${s.image}" alt="${s.name}" loading="lazy" />
+      ${s.image ? `<img src="${s.image}" alt="${s.name}" loading="lazy" />` : ``}
       <div class="stayBody">
         <h3>${s.name} <span class="muted">• ${s.brand}</span></h3>
         <p>${s.why}</p>
@@ -110,6 +125,7 @@ function renderStays(stays){
         </div>
       </div>
     `;
+    imgFallback(el.querySelector('img'));
     grid.appendChild(el);
   });
 }

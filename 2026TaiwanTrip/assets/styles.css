@@ -408,3 +408,16 @@ summary{list-style:none;}
 summary::-webkit-details-marker{display:none;}
 details summary::after{content:"Tap to hide/show";float:right;font-weight:700;opacity:.6;}
 details[open] summary::after{content:"Tap to hide/show";}
+
+/* image fallback */
+.imgFallback{
+  width: 100%;
+  min-height: 160px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--muted);
+  font-weight: 800;
+  background: var(--soft);
+  border-top: 1px solid var(--line);
+}
