@@ -93,6 +93,8 @@
         <div class="dayHeader">
           <h3 id="dayTitle"></h3>
           <div class="date" id="dayDate"></div>
+          <div class="date" id="stayLine" style="margin-top:4px;"></div>
+          <div class="date" id="agendaLine" style="margin-top:4px;"></div>
           <div class="tags" id="tags"></div>
         </div>
 
@@ -102,8 +104,10 @@
         <p class="note" id="transportNote"></p>
 
         <hr class="sep"/>
-        <h3 style="margin:0 0 10px; font-size:14px;">Quick links</h3>
-        <div id="quickLinks"></div>
+        <details style="margin-top:10px;">
+          <summary style="cursor:pointer; font-weight:900; color: var(--ink);">Quick links</summary>
+          <div style="margin-top:10px;" id="quickLinks"></div>
+        </details>
         <hr class="sep"/>
         <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
           <button class="btn" id="prevDay" type="button" style="flex:1; min-width: 140px;">Previous day</button>

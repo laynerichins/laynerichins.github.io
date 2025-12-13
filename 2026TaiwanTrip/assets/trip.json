@@ -3,36 +3,36 @@
   "subtitle": "A crafted 10\u2011day plan for 2026: Taipei weekend \u2192 Old England Manor \u2192 east coast nature \u2192 final night in Taipei.",
   "heroImages": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Cluster_of_skyscrapers_in_Eastern_District%2C_Taipei_Taiwan.jpg",
-      "alt": "Taipei skyline",
-      "caption": "Taipei nights \u2022 skyline energy \u2022 perfect weekend base"
+      "src": "./assets/img/hero_taipei.svg",
+      "alt": "Taipei Weekend",
+      "caption": "Taipei weekend \u2022 skyline energy \u2022 perfect base"
     },
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/2/25/W_Taipei_and_Uni-President_Hankyu_Taipei_20140826.jpg",
-      "alt": "W Taipei exterior",
-      "caption": "W Taipei (Marriott) \u2022 Xinyi District \u2022 steps from Taipei 101"
+      "src": "./assets/img/hero_wtaipei.svg",
+      "alt": "W Taipei (Marriott)",
+      "caption": "W Taipei \u2022 Xinyi District \u2022 near Taipei 101"
     },
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg/1365px-The_Keep_of_The_Old_England_Manor_in_Nantou%2C_Taiwan.jpg",
-      "alt": "The Old England Manor keep",
-      "caption": "Old England Manor \u2022 storybook mountain stay"
+      "src": "./assets/img/hero_manor.svg",
+      "alt": "The Old England Manor",
+      "caption": "Old England Manor \u2022 mountain stay"
     },
     {
-      "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Taroko_Gorge_Liwu_River_Taiwan.jpg?width=1600",
-      "alt": "Taroko Gorge and Liwu River",
-      "caption": "Taroko area \u2022 marble gorge views \u2022 nature day highlight"
+      "src": "./assets/img/hero_taroko.svg",
+      "alt": "Taroko / Hualien",
+      "caption": "Hualien + Taroko area \u2022 nature day"
     },
     {
-      "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Shilin_Night_Market%2C_Taipei.jpg?width=1600",
-      "alt": "Shilin Night Market in Taipei",
-      "caption": "Night markets \u2022 street food \u2022 the fun part of the plan"
+      "src": "./assets/img/hero_nightmarket.svg",
+      "alt": "Night Markets",
+      "caption": "Night markets \u2022 street food \u2022 the fun part"
     }
   ],
   "stays": [
     {
       "name": "W Taipei",
       "brand": "Marriott",
-      "why": "Best \u201cweekend in Taipei\u201d energy: Xinyi District, easy walk to Taipei 101, great base for late nights + skyline views.",
+      "why": "Taipei weekend base: Xinyi District, easy to Taipei 101, great for late nights and walkable sightseeing.",
       "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
       "photos": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/photos/",
       "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei",
@@ -41,7 +41,7 @@
     {
       "name": "The Old England Manor",
       "brand": "Hilton (SLH)",
-      "why": "Cingjing\u2019s signature stay\u2014European manor feel, gardens, quiet mountain air, photo-perfect moments.",
+      "why": "Cingjing signature stay: storybook manor feel, gardens, and mountain air \u2014 the \u2018wow\u2019 part of the trip.",
       "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
       "secondary": "https://www.theoldengland.com/en/main.php",
       "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing",
@@ -87,6 +87,16 @@
       ],
       "sections": [
         {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Lodging: overnight travel",
+              "site": "",
+              "map": ""
+            }
+          ]
+        },
+        {
           "when": "Evening",
           "items": [
             {
@@ -122,7 +132,10 @@
           ]
         }
       ],
-      "proTip": "Aim for good sleep on the long-haul\u2014this makes the whole trip feel smoother."
+      "proTip": "Aim for good sleep on the long-haul\u2014this makes the whole trip feel smoother.",
+      "transport": "",
+      "agenda": "Depart PHX \u2022 settle in \u2022 sleep plan",
+      "staySummary": "In transit (overnight travel)"
     },
     {
       "day": 1,
@@ -134,6 +147,16 @@
         "Time shift"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Lodging: overnight travel",
+              "site": "",
+              "map": ""
+            }
+          ]
+        },
         {
           "when": "In transit",
           "items": [
@@ -165,7 +188,10 @@
           ]
         }
       ],
-      "proTip": "Don\u2019t force sightseeing today\u2014tomorrow is the fun \u2018we\u2019re here\u2019 day."
+      "proTip": "Don\u2019t force sightseeing today\u2014tomorrow is the fun \u2018we\u2019re here\u2019 day.",
+      "transport": "",
+      "agenda": "Transit \u2022 arrival setup \u2022 easy day",
+      "staySummary": "In transit (overnight travel)"
     },
     {
       "day": 2,
@@ -178,6 +204,16 @@
         "First views"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
+              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
+            }
+          ]
+        },
         {
           "when": "Afternoon",
           "items": [
@@ -217,7 +253,10 @@
       "thoughtfulness": [
         "Keeps day light so you\u2019re not wiped out from travel.",
         "Night market is the perfect \u2018first Taiwan\u2019 moment."
-      ]
+      ],
+      "transport": "",
+      "agenda": "Arrive Taipei \u2022 check in \u2022 Taipei 101 area \u2022 night market",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei"
     },
     {
       "day": 3,
@@ -230,6 +269,16 @@
         "Hike"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
+              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -280,7 +329,10 @@
         "Culture + modern Taipei in one day.",
         "Sunset hike timed for the best skyline photos."
       ],
-      "backupPlan": "If it rains: swap Elephant Mountain for the National Palace Museum or a hot springs evening."
+      "backupPlan": "If it rains: swap Elephant Mountain for the National Palace Museum or a hot springs evening.",
+      "transport": "",
+      "agenda": "CKS Memorial \u2022 Lungshan \u2022 Songshan Park \u2022 sunset hike \u2022 night market",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei"
     },
     {
       "day": 4,
@@ -293,6 +345,16 @@
         "Scenic"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: The Old England Manor \u2014 check-in / stay",
+              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -327,7 +389,10 @@
       "thoughtfulness": [
         "You arrive when the light is best for manor photos.",
         "Keeps the first mountain day low-stress."
-      ]
+      ],
+      "transport": "",
+      "agenda": "Travel to Cingjing \u2022 check in \u2022 manor photos \u2022 relax",
+      "staySummary": "The Old England Manor \u2014 Cingjing"
     },
     {
       "day": 5,
@@ -340,6 +405,16 @@
         "Relax"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: The Old England Manor \u2014 check-in / stay",
+              "site": "https://www.hilton.com/en/hotels/txgemlx-the-old-england-manor/",
+              "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing"
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -371,7 +446,10 @@
           ]
         }
       ],
-      "backupPlan": "If altitude hits: keep it to Skyline Trail + manor afternoon."
+      "backupPlan": "If altitude hits: keep it to Skyline Trail + manor afternoon.",
+      "transport": "",
+      "agenda": "Cingjing easy hikes \u2022 views \u2022 manor time",
+      "staySummary": "The Old England Manor \u2014 Cingjing"
     },
     {
       "day": 6,
@@ -384,6 +462,16 @@
         "Reset"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: Hualien \u2014 choose later (options will be finalized after dates)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City%20hotel"
+            }
+          ]
+        },
         {
           "when": "Daytime",
           "items": [
@@ -409,7 +497,10 @@
             }
           ]
         }
-      ]
+      ],
+      "transport": "",
+      "agenda": "Travel to Hualien \u2022 check in \u2022 night market",
+      "staySummary": "Hualien (hotel TBD) \u2014 Hualien"
     },
     {
       "day": 7,
@@ -422,6 +513,16 @@
         "Short walks"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: Hualien \u2014 choose later (options will be finalized after dates)",
+              "site": "",
+              "map": "https://www.google.com/maps/search/?api=1&query=Hualien%20City%20hotel"
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -451,7 +552,10 @@
       "thoughtfulness": [
         "Built around flexibility since conditions can change.",
         "Keeps walks shorter so it\u2019s enjoyable, not exhausting."
-      ]
+      ],
+      "transport": "",
+      "agenda": "Taroko / scenic viewpoints \u2022 return Hualien",
+      "staySummary": "Hualien (hotel TBD) \u2014 Hualien"
     },
     {
       "day": 8,
@@ -464,6 +568,16 @@
         "Special dinner"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "Hotel: W Taipei (Marriott) \u2014 check-in / stay",
+              "site": "https://www.marriott.com/en-us/hotels/tpewh-w-taipei/overview/",
+              "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei"
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -508,7 +622,10 @@
       "thoughtfulness": [
         "Final afternoon is for gifts + tea\u2014exactly the kind of thing you\u2019ll love looking back on.",
         "Special dinner night is set when you\u2019re settled, not mid-travel."
-      ]
+      ],
+      "transport": "",
+      "agenda": "Back to Taipei \u2022 Dihua Street \u2022 Maokong \u2022 special dinner",
+      "staySummary": "W Taipei (Marriott) \u2014 Taipei (final night)"
     },
     {
       "day": 9,
@@ -520,6 +637,16 @@
         "Home"
       ],
       "sections": [
+        {
+          "when": "Stay",
+          "items": [
+            {
+              "name": "No hotel \u2014 travel day",
+              "site": "",
+              "map": ""
+            }
+          ]
+        },
         {
           "when": "Morning",
           "items": [
@@ -546,7 +673,10 @@
           ]
         }
       ],
-      "proTip": "Leave extra buffer time\u2014Friday travel days feel better when you\u2019re not rushed."
+      "proTip": "Leave extra buffer time\u2014Friday travel days feel better when you\u2019re not rushed.",
+      "transport": "",
+      "agenda": "Final Taipei moments \u2022 airport \u2022 fly home",
+      "staySummary": "Fly home"
     }
   ],
   "extras": {

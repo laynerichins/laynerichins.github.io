@@ -141,6 +141,10 @@ function renderExtras(extras){
 function renderDay(day, date){
   $("#dayTitle").textContent = day.title;
   $("#dayDate").textContent = fmtLong(date);
+  const stayLine = document.getElementById("stayLine");
+  if(stayLine){ stayLine.textContent = day.staySummary ? `Stay: ${day.staySummary}` : ""; }
+  const agendaLine = document.getElementById("agendaLine");
+  if(agendaLine){ agendaLine.textContent = day.agenda ? `Agenda: ${day.agenda}` : ""; }
 
   // Tags
   const tags = $("#tags");
