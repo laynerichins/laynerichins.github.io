@@ -3,27 +3,27 @@
   "subtitle": "A clear 10\u2011day plan: Taipei weekend \u2192 Cingjing mountains \u2192 East Coast (Taroko) \u2192 final night in Taipei.",
   "heroImages": [
     {
-      "src": "assets/img/stay_w_taipei.svg",
+      "src": "./assets/img/stay_w_taipei.svg",
       "alt": "Taipei base",
       "caption": "Taipei weekend base"
     },
     {
-      "src": "assets/img/stay_old_england.svg",
+      "src": "./assets/img/stay_old_england.svg",
       "alt": "Old England Manor",
       "caption": "Cingjing mountains"
     },
     {
-      "src": "assets/img/stay_le_meridien.svg",
+      "src": "./assets/img/stay_le_meridien.svg",
       "alt": "Hualien base",
       "caption": "East coast night"
     },
     {
-      "src": "assets/img/taroko.jpg",
+      "src": "./assets/img/taroko.jpg",
       "alt": "Taroko Gorge",
       "caption": "Taroko day highlight"
     },
     {
-      "src": "assets/img/shilin.jpg",
+      "src": "./assets/img/shilin.jpg",
       "alt": "Night market",
       "caption": "Taipei night market"
     }
@@ -36,7 +36,7 @@
       "site": "https://www.marriott.com/hotels/travel/tpewh-w-taipei/",
       "map": "https://www.google.com/maps/search/?api=1&query=W%20Taipei",
       "why": "Weekend base in Xinyi\u2014walkable to Taipei 101, shopping, and late-night eats.",
-      "image": "assets/img/stay_w_taipei.svg"
+      "image": "./assets/img/stay_w_taipei.svg"
     },
     {
       "name": "The Old England Manor",
@@ -45,7 +45,7 @@
       "site": "https://www.theoldengland.com.tw/en/",
       "map": "https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing",
       "why": "Signature mountain stay\u2014storybook manor vibe + crisp air + views.",
-      "image": "assets/img/stay_old_england.svg"
+      "image": "./assets/img/stay_old_england.svg"
     },
     {
       "name": "Le M\u00e9ridien Hualien Resort",

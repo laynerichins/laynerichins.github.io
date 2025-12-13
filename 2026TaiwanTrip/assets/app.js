@@ -14,6 +14,15 @@ function addDays(date, n){
 }
 
 
+
+function resolveUrl(path){
+  try {
+    return new URL(path, window.location.href).toString();
+  } catch(e){
+    return path;
+  }
+}
+
 function imgFallback(imgEl){
   if(!imgEl) return;
   imgEl.addEventListener("error", () => {
@@ -28,7 +37,7 @@ function imgFallback(imgEl){
   });
 }
 async function loadData(){
-  const res = await fetch("./assets/trip.json");
+  const res = await fetch(resolveUrl("./assets/trip.json"));
   return await res.json();
 }
 
@@ -57,7 +66,7 @@ function buildHero(data){
   function set(i){
     idx = i;
     const it = imgs[idx];
-    hero.src = it.src;
+    hero.src = resolveUrl(it.src);
     imgFallback(hero);
     hero.alt = it.alt || "Photo";
     caption.innerHTML = `${it.caption || ""}<span>${it.alt || ""}</span>`;
@@ -68,7 +77,7 @@ function buildHero(data){
     const btn = document.createElement("button");
     btn.className = "thumbBtn";
     btn.type = "button";
-    btn.innerHTML = `<img src="${it.src}" alt="${it.alt || "Photo"}" loading="lazy" />`;
+    btn.innerHTML = `<img src="${resolveUrl(it.src)}" alt="${it.alt || "Photo"}" loading="lazy" />`;
     btn.addEventListener("click", () => set(i));
     thumbs.appendChild(btn);
   });
@@ -113,7 +122,7 @@ function renderStays(stays){
     el.className = "stay";
     const secondary = s.secondary ? `<a class="linkBtn" href="${s.secondary}" target="_blank" rel="noopener noreferrer">🏰 Manor site</a>` : "";
     el.innerHTML = `
-      ${s.image ? `<img src="${s.image}" alt="${s.name}" loading="lazy" />` : ``}
+      ${s.image ? `<img src="${resolveUrl(s.image)}" alt="${s.name}" loading="lazy" />` : ``}
       <div class="stayBody">
         <h3>${s.name} <span class="muted">• ${s.brand}</span></h3>
         <p>${s.why}</p>
