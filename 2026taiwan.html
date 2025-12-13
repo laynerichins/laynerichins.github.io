@@ -2,32 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
-  <title>✨ Taiwan Adventure for Two ✨</title>
+  <title>Melissa’s Taiwan Adventure ✨</title>
   <style>
     :root{
-      --bg0:#070a12;
-      --bg1:#0b0f1a;
-      --panel:rgba(255,255,255,.06);
-      --panel2:rgba(255,255,255,.04);
-      --border:rgba(255,255,255,.12);
-      --border2:rgba(255,255,255,.09);
+      --bg0:#070a12; --bg1:#0b0f1a;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.04);
+      --stroke: rgba(255,255,255,.12);
+      --stroke2: rgba(255,255,255,.09);
       --text:#eaf2ff;
-      --muted:rgba(234,242,255,.78);
-      --muted2:rgba(234,242,255,.62);
-      --a:#7dd3fc;
-      --b:#a78bfa;
-      --g:#34d399;
-      --r:18px;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --muted: rgba(234,242,255,.78);
+      --muted2: rgba(234,242,255,.62);
+      --a:#7dd3fc; --b:#a78bfa; --g:#34d399;
+      --r:20px;
+      --shadow: 0 16px 55px rgba(0,0,0,.55);
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
+      color: var(--text);
       background:
         radial-gradient(1200px 700px at 15% -10%, rgba(167,139,250,.34), transparent 60%),
         radial-gradient(900px 680px at 95% 5%, rgba(125,211,252,.28), transparent 55%),
@@ -39,20 +36,18 @@
     a{ color:var(--a); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
-    /* ---- Cover ---- */
+    /* ===== Cover (mobile-first) ===== */
     .cover{
-      position:relative;
       min-height: 100svh;
       display:grid;
       place-items:center;
       padding: 22px 16px 26px;
+      position:relative;
+      overflow:hidden;
     }
-    .stars, .glow{
-      position:absolute; inset:0; pointer-events:none;
-    }
+    .stars, .glow{ position:absolute; inset:0; pointer-events:none; }
     .stars:before{
-      content:"";
-      position:absolute; inset:-40px;
+      content:""; position:absolute; inset:-40px;
       background-image:
         radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.60), transparent 55%),
         radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,.45), transparent 55%),
@@ -63,61 +58,38 @@
         radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,.28), transparent 55%),
         radial-gradient(1px 1px at 92% 38%, rgba(255,255,255,.28), transparent 55%),
         radial-gradient(2px 2px at 62% 86%, rgba(255,255,255,.34), transparent 55%);
-      opacity:.55;
-      filter: blur(.2px);
+      opacity:.55; filter: blur(.2px);
       animation: drift 18s linear infinite;
-      transform: translate3d(0,0,0);
     }
     .glow:before{
-      content:"";
-      position:absolute; inset:-20px;
+      content:""; position:absolute; inset:-20px;
       background:
         radial-gradient(900px 600px at 35% 25%, rgba(167,139,250,.25), transparent 60%),
         radial-gradient(900px 600px at 75% 35%, rgba(125,211,252,.20), transparent 60%),
         radial-gradient(700px 600px at 55% 80%, rgba(52,211,153,.10), transparent 65%);
       filter: blur(10px);
-      opacity:.8;
+      opacity:.85;
       animation: pulse 7s ease-in-out infinite;
     }
-    @keyframes drift{
-      0%{ transform: translateY(0px); }
-      50%{ transform: translateY(18px); }
-      100%{ transform: translateY(0px); }
-    }
-    @keyframes pulse{
-      0%,100%{ opacity:.75; }
-      50%{ opacity: 1; }
-    }
+    @keyframes drift{ 0%{transform:translateY(0)} 50%{transform:translateY(18px)} 100%{transform:translateY(0)} }
+    @keyframes pulse{ 0%,100%{opacity:.75} 50%{opacity:1} }
 
     .card{
-      width: min(980px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.14);
+      width:min(980px,100%);
       border-radius: 26px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
       box-shadow: var(--shadow);
-      overflow:hidden;
       position:relative;
+      overflow:hidden;
     }
     .card:before{
-      content:"";
-      position:absolute; inset:-1px;
+      content:""; position:absolute; inset:-1px;
       background: linear-gradient(135deg, rgba(125,211,252,.35), rgba(167,139,250,.30), rgba(52,211,153,.18));
-      opacity:.35;
-      filter: blur(22px);
-      z-index:0;
+      opacity:.35; filter: blur(22px);
     }
-    .cover-inner{
-      position:relative;
-      z-index:1;
-      padding: 26px 18px 18px;
-      display:grid;
-      gap: 14px;
-    }
-    .kicker{
-      display:flex; flex-wrap:wrap; gap:8px;
-      align-items:center;
-      justify-content:space-between;
-    }
+    .cover-inner{ position:relative; z-index:1; padding: 26px 18px 18px; display:grid; gap: 14px; }
+    .kicker{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; }
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 11px;
@@ -128,21 +100,11 @@
       color: var(--muted);
       backdrop-filter: blur(8px);
     }
-    .pill b{ color: var(--text); font-weight: 750; }
-    .headline{
-      margin: 0;
-      font-size: clamp(26px, 4.2vw, 44px);
-      letter-spacing: .2px;
-      line-height: 1.05;
-    }
-    .subhead{
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(13px, 2vw, 16px);
-      max-width: 60ch;
-    }
+    .pill b{ color: var(--text); font-weight: 800; }
+    .headline{ margin:0; font-size: clamp(26px, 4.2vw, 44px); line-height:1.05; letter-spacing:.2px; }
+    .subhead{ margin:0; color:var(--muted); font-size: clamp(13px, 2vw, 16px); max-width: 62ch; }
     .spark{ color: var(--b); }
-    .cta-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 6px; }
+    .cta{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 6px; }
     .btn{
       cursor:pointer;
       border:1px solid rgba(255,255,255,.14);
@@ -150,7 +112,7 @@
       color: var(--text);
       padding: 12px 14px;
       border-radius: 14px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing:.2px;
       transition: transform .06s ease, background .15s ease, border-color .15s ease;
     }
@@ -160,68 +122,48 @@
       background: linear-gradient(135deg, rgba(125,211,252,.22), rgba(167,139,250,.18));
       border-color: rgba(125,211,252,.42);
     }
-    .grid3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 860px){
-      .grid3{ grid-template-columns: 1fr; }
-    }
-    .mini{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      padding: 12px;
-    }
+    .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top: 10px; }
+    @media (max-width: 860px){ .grid3{ grid-template-columns: 1fr; } }
+    .mini{ background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); border-radius: 18px; padding: 12px; }
     .mini h3{ margin:0 0 6px; font-size: 13px; }
     .mini p{ margin:0; color: var(--muted); font-size: 12px; }
-    .hint{
-      margin: 8px 0 0;
-      color: rgba(234,242,255,.70);
-      font-size: 12px;
-    }
+    .hint{ margin: 8px 0 0; color: rgba(234,242,255,.70); font-size: 12px; }
 
-    /* ---- Planner header ---- */
+    /* ===== Planner ===== */
     header{
-      position:sticky; top:0; z-index:30;
+      position: sticky; top: 0; z-index: 30;
       backdrop-filter: blur(10px);
       background: linear-gradient(180deg, rgba(7,10,18,.86), rgba(7,10,18,.70));
       border-bottom:1px solid rgba(255,255,255,.09);
     }
-    .wrap{ max-width: 1100px; margin:0 auto; padding: 16px; }
-    .bar{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      flex-wrap:wrap;
-    }
+    .wrap{ max-width: 1100px; margin:0 auto; padding: 14px 16px; }
+    .bar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     .bar h2{ margin:0; font-size: 14px; letter-spacing:.2px; color: rgba(234,242,255,.92); }
-    .bar .right{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .right{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .chip{
       display:inline-flex; gap:8px; align-items:center;
       padding: 7px 10px;
       border:1px solid rgba(255,255,255,.10);
-      border-radius:999px;
+      border-radius: 999px;
       background: rgba(255,255,255,.05);
-      font-size: 12px; color: var(--muted);
+      font-size: 12px;
+      color: var(--muted);
     }
-    .chip b{ color: var(--text); font-weight: 800; }
+    .chip b{ color: var(--text); font-weight: 850; }
 
-    /* ---- Planner layout ---- */
-    main .grid{
+    main{ padding-bottom: 70px; }
+    .planner{
       display:grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 380px 1fr;
       gap: 14px;
-      padding-bottom: 60px;
     }
-    @media (max-width: 920px){
-      main .grid{ grid-template-columns: 1fr; }
-      header{ position:relative; }
+    @media (max-width: 980px){
+      .planner{ grid-template-columns: 1fr; }
     }
 
     .panel{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
+      background: var(--panel);
+      border:1px solid var(--stroke2);
       border-radius: var(--r);
       box-shadow: 0 12px 45px rgba(0,0,0,.40);
       overflow:hidden;
@@ -236,27 +178,48 @@
     .panel .content{ padding: 14px; }
 
     .datecard{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: var(--panel2);
+      border:1px solid var(--stroke2);
       border-radius: 16px;
       padding: 12px;
       margin-bottom: 12px;
     }
     .datecard label{ display:block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
     select{
-      width:100%;
+      width: 100%;
       padding: 10px 10px;
       border-radius: 12px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.22);
       color: var(--text);
-      font-weight: 800;
+      font-weight: 850;
     }
-    .small{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 12px;
+    .small{ margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+
+    /* Day list: desktop vertical, mobile horizontal chips */
+    .days-vert{ display:block; }
+    .days-horz{ display:none; }
+    @media (max-width: 980px){
+      .days-vert{ display:none; }
+      .days-horz{ display:flex; gap:10px; overflow:auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+      .days-horz::-webkit-scrollbar{ display:none; }
     }
+    .daychip{
+      flex: 0 0 auto;
+      min-width: 220px;
+      scroll-snap-align: start;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 12px;
+      color: var(--text);
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease, transform .06s ease;
+    }
+    .daychip:hover{ background: rgba(255,255,255,.07); border-color: rgba(125,211,252,.40); }
+    .daychip:active{ transform: scale(.99); }
+    .daychip.active{ background: rgba(125,211,252,.16); border-color: rgba(125,211,252,.45); }
+    .daychip small{ display:block; margin-top: 6px; color: var(--muted2); font-weight: 750; }
 
     .daybtn{
       width:100%;
@@ -272,8 +235,9 @@
     }
     .daybtn:hover{ background: rgba(255,255,255,.06); border-color: rgba(125,211,252,.35); }
     .daybtn.active{ background: rgba(125,211,252,.16); border-color: rgba(125,211,252,.40); }
-    .daybtn small{ display:block; margin-top: 5px; color: var(--muted2); font-weight: 700; }
+    .daybtn small{ display:block; margin-top: 5px; color: var(--muted2); font-weight: 750; }
 
+    /* Detail area (desktop) */
     .daytitle{ margin:0 0 6px; font-size: 16px; }
     .daydate{ margin:0 0 10px; font-size: 13px; color: var(--muted); }
     .badges{ margin-bottom: 6px; }
@@ -285,8 +249,7 @@
       background: rgba(255,255,255,.04);
       font-size: 11px;
       color: var(--muted);
-      margin-right: 6px;
-      margin-bottom: 6px;
+      margin-right: 6px; margin-bottom: 6px;
     }
     .sections{ display:grid; gap: 10px; }
     .sec{
@@ -299,6 +262,7 @@
     ul{ margin: 8px 0 0 18px; padding:0; }
     li{ margin: 6px 0; }
 
+    /* Checklist */
     .checklist{ list-style:none; margin:0; padding:0; }
     .checklist li{ display:flex; gap:10px; align-items:flex-start; padding: 8px 0; cursor:pointer; }
     .box{
@@ -308,27 +272,50 @@
       flex: 0 0 auto; margin-top: 2px;
     }
     .done .box{ background: rgba(52,211,153,.35); border-color: rgba(52,211,153,.60); }
-    .foot{
-      opacity:.75; font-size: 12px;
-      padding: 10px 14px 14px;
-      border-top: 1px solid rgba(255,255,255,.09);
-    }
 
-    /* Modal */
-    .modal{ position:fixed; inset:0; display:none; place-items:center; background: rgba(0,0,0,.65); z-index:60; padding:16px; }
-    .modal.open{ display:grid; }
-    .modalbox{
-      width:min(920px,100%);
-      border-radius: 22px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow: 0 20px 70px rgba(0,0,0,.65);
-      background: linear-gradient(180deg, rgba(17,24,39,.96), rgba(7,10,18,.96));
+    .foot{ opacity:.75; font-size: 12px; padding: 10px 14px 14px; border-top: 1px solid rgba(255,255,255,.09); }
+
+    /* ===== Mobile Day Sheet (bottom sheet modal) ===== */
+    .sheet{
+      position: fixed; inset: 0;
+      display:none;
+      background: rgba(0,0,0,.55);
+      z-index: 80;
+      padding: 16px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .modalhead{ padding: 16px 16px 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
-    .modalhead h3{ margin:0; font-size: 16px; }
-    .modalbody{ padding: 14px 16px 18px; }
-    .close{ float:right; font-weight: 900; border-radius: 14px; padding: 8px 10px; }
+    .sheet.open{ display:block; }
+    .sheet .panel{
+      position:absolute;
+      left: 12px; right: 12px;
+      bottom: 12px;
+      max-height: 86vh;
+      overflow:auto;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+    }
+    .sheet .head{
+      position: sticky; top: 0;
+      padding: 14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.09);
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(7,10,18,.95), rgba(7,10,18,.80));
+      border-top-left-radius: 22px; border-top-right-radius: 22px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .sheet .head h3{ margin:0; font-size: 14px; }
+    .xbtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      border-radius: 14px;
+      padding: 8px 10px;
+      font-weight: 900;
+      color: var(--text);
+      cursor:pointer;
+    }
+    @media (min-width: 981px){
+      .sheet{ display:none !important; }
+    }
   </style>
 </head>
 
@@ -338,55 +325,54 @@
     <div class="stars"></div>
     <div class="glow"></div>
 
-    <div class="card" aria-label="Taiwan trip cover">
+    <div class="card">
       <div class="cover-inner">
         <div class="kicker">
           <span class="pill">🎁 <b>Christmas Surprise for Melissa</b></span>
           <span class="pill">👫 <b>2 travelers</b> • 🥾 <b>hiking</b> • 🌙 <b>night markets</b></span>
         </div>
 
-        <h1 class="headline">Taiwan Adventure for Two <span class="spark">✨</span><br><span style="font-size:clamp(14px,2.2vw,18px); color: rgba(234,242,255,.86); font-weight:800;">For Melissa 💛</span></h1>
+        <h1 class="headline">Melissa’s Taiwan Adventure <span class="spark">✨</span></h1>
         <p class="subhead">
           Weekend in <b>Taipei</b>, then a scenic loop through the <b>mountains</b> and the <b>east coast</b>.
           Flights are built in: depart Phoenix <b>Wednesday evening</b>, arrive Taiwan <b>Friday afternoon</b>,
           and return home with a <b>Friday 5:00 PM</b> departure.
         </p>
 
-        <div class="cta-row">
-          <button class="btn primary" id="startBtn">Start the itinerary ➜</button>
-          <button class="btn" id="openGift">Open the reveal 💝</button>
+        <div class="cta">
+          <button class="btn primary" id="startBtn">See the plan ➜</button>
           <button class="btn" id="toggleChecklistTop">Checklist ✅</button>
         </div>
 
-        <div class="grid3" role="list" aria-label="Highlights">
-          <div class="mini" role="listitem">
+        <div class="grid3">
+          <div class="mini">
             <h3>🏙️ Taipei Weekend</h3>
             <p>Taipei 101, temples, creative neighborhoods, and the best night markets.</p>
           </div>
-          <div class="mini" role="listitem">
+          <div class="mini">
             <h3>⛰️ Mountain Stay</h3>
             <p>Cingjing alpine air + Old England Manor vibes + scenic day hikes.</p>
           </div>
-          <div class="mini" role="listitem">
+          <div class="mini">
             <h3>🌊 East Coast Nature</h3>
             <p>Hualien base with Taroko-area scenery and ocean viewpoints.</p>
           </div>
         </div>
 
-        <p class="hint">Tip: this page works offline once saved to your phone. You can also “Add to Home Screen” in Safari.</p>
+        <p class="hint">Phone tip: In Safari, tap Share → <b>Add to Home Screen</b> for an “app-like” icon.</p>
       </div>
     </div>
   </section>
 
-  <!-- Sticky planner header -->
+  <!-- Planner header -->
   <header>
     <div class="wrap">
       <div class="bar">
         <h2>Trip Planner</h2>
         <div class="right">
           <span class="chip">📅 <b id="dateRangeText">Select dates</b></span>
-          <span class="chip">🛫 Phoenix: <b>Wed evening</b> → Taiwan: <b>Fri afternoon</b></span>
-          <span class="chip">🛬 Return: <b>Fri</b> (depart 5:00 PM)</span>
+          <span class="chip">🛫 <b>Wed evening</b> → 🏙️ <b>Fri afternoon</b></span>
+          <span class="chip">🛬 Return <b>Fri 5:00 PM</b></span>
         </div>
       </div>
     </div>
@@ -394,24 +380,25 @@
 
   <!-- Planner -->
   <main class="wrap" id="planner">
-    <div class="grid">
+    <div class="planner">
       <aside class="panel">
-        <h3>Choose a week (March 18 → May 20)</h3>
+        <h3>Choose a week (Mar 18 → May 20)</h3>
         <div class="content">
           <div class="datecard">
             <label for="dateSelect">Departure from Phoenix (Wednesday evening)</label>
             <select id="dateSelect" aria-label="Select trip week"></select>
             <p class="small">
-              This itinerary automatically places: <b>Fri–Sat</b> in Taipei, touring <b>Sun–Thu</b>, and a <b>Friday 5:00 PM</b> departure home.
+              The plan automatically sets: <b>Fri–Sat</b> in Taipei, touring <b>Sun–Thu</b>, then home on <b>Friday</b>.
             </p>
           </div>
 
-          <div id="dayList"></div>
+          <div class="days-horz" id="dayChips"></div>
+          <div class="days-vert" id="dayButtons"></div>
         </div>
-        <div class="foot">Tap a day to see details. The plan is activity-focused (no pricing).</div>
+        <div class="foot">Mobile: tap a day card to open details instantly (no scrolling).</div>
       </aside>
 
-      <section class="panel">
+      <section class="panel" id="desktopDetail">
         <h3>Day details</h3>
         <div class="content">
           <h4 class="daytitle" id="dayTitle">Select a day</h4>
@@ -422,40 +409,27 @@
           <div class="sec" id="checklist" style="display:none; margin-top: 14px;">
             <h4>Trip checklist (tap to mark done)</h4>
             <ul class="checklist" id="checklistItems"></ul>
-            <p class="small">This is just for fun planning. Bookings can happen after the date is chosen.</p>
+            <p class="small">No pricing or booking info—just the plan.</p>
           </div>
         </div>
-        <div class="foot">Links open quick map searches. No bookings are made from this page.</div>
+        <div class="foot">Desktop view shows details here. Mobile uses a bottom sheet.</div>
       </section>
     </div>
   </main>
 
-  <!-- Reveal Modal -->
-  <div class="modal" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="giftTitle">
-    <div class="modalbox">
-      <div class="modalhead">
-        <button class="btn close" id="closeGift" aria-label="Close">✕</button>
-        <h3 id="giftTitle">💝 Melissa’s Taiwan Adventure</h3>
+  <!-- Mobile bottom sheet -->
+  <div class="sheet" id="sheet">
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="head">
+        <div>
+          <h3 id="sheetTitle">Day details</h3>
+          <div style="margin-top:6px; font-size:12px; color: rgba(234,242,255,.72);" id="sheetSub"></div>
+        </div>
+        <button class="xbtn" id="closeSheet" aria-label="Close">✕</button>
       </div>
-      <div class="modalbody">
-        <p style="margin:0 0 10px; color: rgba(234,242,255,.78);">Melissa — I planned this for us. Pick the week you want, and we’ll make it happen. ✨</p>
-        <div class="sec">
-          <h4>What’s included</h4>
-          <ul>
-            <li><b>Top sights:</b> Taipei 101, famous night markets, cultural neighborhoods, iconic viewpoints</li>
-            <li><b>Hiking:</b> Elephant Mountain, Yangmingshan options, Cingjing alpine walks, Taroko-area scenic walks</li>
-            <li><b>Vibes:</b> city lights → mountain clouds → ocean horizon</li>
-          </ul>
-        </div>
-        <div class="sec">
-          <h4>Flight rhythm</h4>
-          <ul>
-            <li>Depart Phoenix: <b>Wednesday evening</b></li>
-            <li>Arrive Taiwan: <b>Friday afternoon</b></li>
-            <li>Depart Taiwan: <b>Friday 5:00 PM</b> → arrive Phoenix: <b>Friday 2:30 PM</b></li>
-          </ul>
-        </div>
-        <p class="small">Pick your favorite week in the selector and everything updates automatically. ✨</p>
+      <div class="content">
+        <div class="badges" id="sheetBadges"></div>
+        <div class="sections" id="sheetSections"></div>
       </div>
     </div>
   </div>
@@ -473,89 +447,89 @@
     const fmtLong = new Intl.DateTimeFormat(undefined, { weekday:"short", month:"short", day:"numeric", year:"numeric" });
     const fmtShort = new Intl.DateTimeFormat(undefined, { weekday:"short", month:"short", day:"numeric" });
 
-    const options = [];
-    for (let d = new Date(START_WED); d <= END_WED; d = addDays(d, 7)){
-      options.push(new Date(d.getTime()));
-    }
+    // weekly Wednesday departures
+    const starts = [];
+    for (let d = new Date(START_WED); d <= END_WED; d = addDays(d, 7)) starts.push(new Date(d.getTime()));
 
+    // itinerary days (0..9)
     const DAYS = [
       { title:"Day 0 — Depart Phoenix (Wednesday evening)", badges:["🛫 Flight","🌙 Overnight travel"],
         sections:[
-          { h:"Plan", items:["Depart Phoenix in the evening","Settle in for the long-haul travel (sleep + hydrate!)"]},
-          { h:"Little wins", items:["Download offline maps + a few shows/podcasts","Pack a light hoodie + eye mask for the flight"] }
+          { h:"Plan", items:["Depart Phoenix in the evening","Settle in for long-haul travel (sleep + hydrate!)"]},
+          { h:"Quick prep", items:["Download offline maps","Pack a light hoodie + eye mask"] }
         ]
       },
       { title:"Day 1 — Transit day (Thursday)", badges:["✈️ In the air","🧘 Pace yourself"],
         sections:[
           { h:"Plan", items:["Travel day (international date line magic)","Keep it easy—arrive feeling good"]},
-          { h:"Arrival prep", items:["Confirm airport-to-hotel directions","Keep essentials in carry-on (charger, toothbrush, meds)"] }
+          { h:"Arrival prep", items:["Keep essentials in carry-on (charger, meds)","Plan airport → hotel route"] }
         ]
       },
       { title:"Day 2 — Arrive Taipei (Friday afternoon) + night market", badges:["🏙️ Taipei","🍜 Night market","📸 First views"],
         sections:[
           { h:"Plan", items:["Arrive in Taipei Friday afternoon + check in","Easy city walk to get oriented","Night market dinner (street food tour!)"]},
-          { h:"Top sights (if you’re energized)", items:["Ximending neon streets","Riverside stroll for skyline photos"] },
+          { h:"If you have energy", items:["Ximending neon streets","Riverside skyline photos"]},
           { h:"Maps", items:[
-            { text:"Search: Ximending", url:"https://www.google.com/maps/search/?api=1&query=Ximending%2C%20Taipei" },
-            { text:"Search: Raohe Night Market", url:"https://www.google.com/maps/search/?api=1&query=Raohe%20Night%20Market%2C%20Taipei" }
+            { text:"Ximending", url:"https://www.google.com/maps/search/?api=1&query=Ximending%2C%20Taipei" },
+            { text:"Raohe Night Market", url:"https://www.google.com/maps/search/?api=1&query=Raohe%20Night%20Market%2C%20Taipei" }
           ]}
         ]
       },
-      { title:"Day 3 — Taipei classics (Saturday): Taipei 101 + sunset hike", badges:["🏙️ Taipei","🥾 Elephant Mountain","🌇 Sunset view"],
+      { title:"Day 3 — Taipei (Saturday): Taipei 101 + sunset hike", badges:["🏙️ Taipei","🥾 Elephant Mountain","🌇 Sunset view"],
         sections:[
-          { h:"Must-do", items:["Taipei 101 area + city views","Elephant Mountain hike for the iconic viewpoint (sunset is perfect)","Second night market (try a different one!)"]},
-          { h:"Optional swaps", items:["National Palace Museum","Beitou hot springs evening"] },
+          { h:"Must-do", items:["Taipei 101 area + city views","Elephant Mountain hike for the iconic viewpoint (sunset is perfect)","Second night market"]},
+          { h:"Optional swaps", items:["National Palace Museum","Beitou hot springs"]},
           { h:"Maps", items:[
-            { text:"Search: Taipei 101", url:"https://www.google.com/maps/search/?api=1&query=Taipei%20101" },
-            { text:"Search: Elephant Mountain Trailhead", url:"https://www.google.com/maps/search/?api=1&query=Elephant%20Mountain%20Trail%20Taipei" }
+            { text:"Taipei 101", url:"https://www.google.com/maps/search/?api=1&query=Taipei%20101" },
+            { text:"Elephant Mountain Trail", url:"https://www.google.com/maps/search/?api=1&query=Elephant%20Mountain%20Trail%20Taipei" }
           ]}
         ]
       },
       { title:"Day 4 — Sunday: Travel → Mountains (Cingjing) + Old England Manor", badges:["⛰️ Mountains","🏰 Old England Manor","📷 Scenic views"],
         sections:[
-          { h:"Plan", items:["Leave Taipei Sunday","Arrive in Cingjing + check in","Afternoon tea / gardens / photos","Cozy dinner + early night (mountain air!)"]},
-          { h:"Easy hike option", items:["Short scenic walk near Cingjing (alpine viewpoints)"] },
+          { h:"Plan", items:["Leave Taipei Sunday","Arrive in Cingjing + check in","Afternoon tea / gardens / photos","Cozy dinner + early night"]},
+          { h:"Easy hike", items:["Short scenic walk near Cingjing (alpine viewpoints)"]},
           { h:"Maps", items:[
-            { text:"Search: Old England Manor (Cingjing)", url:"https://www.google.com/maps/search/?api=1&query=Old%20England%20Manor%20Cingjing" },
-            { text:"Search: Cingjing Farm", url:"https://www.google.com/maps/search/?api=1&query=Cingjing%20Farm" }
+            { text:"Old England Manor (Cingjing)", url:"https://www.google.com/maps/search/?api=1&query=Old%20England%20Manor%20Cingjing" },
+            { text:"Cingjing Farm", url:"https://www.google.com/maps/search/?api=1&query=Cingjing%20Farm" }
           ]}
         ]
       },
-      { title:"Day 5 — Mountain day (Monday): alpine walks + big views", badges:["⛰️ Mountains","🥾 Hiking","☁️ Cloud views"],
+      { title:"Day 5 — Mountains (Monday): alpine walks + big views", badges:["⛰️ Mountains","🥾 Hiking","☁️ Cloud views"],
         sections:[
-          { h:"Hiking + scenery", items:["Morning alpine walk (cool air + wide-open views)","Cingjing Farm area (fun + photogenic)","Relaxed afternoon back at the manor"]},
-          { h:"Optional adventure", items:["Hehuanshan scenic drive + short trails (weather-dependent)"] },
-          { h:"Maps", items:[ { text:"Search: Hehuanshan", url:"https://www.google.com/maps/search/?api=1&query=Hehuanshan" } ] }
+          { h:"Hiking + scenery", items:["Morning alpine walk","Cingjing Farm area (photogenic)","Relaxed afternoon back at the manor"]},
+          { h:"Optional adventure", items:["Hehuanshan scenic drive + short trails (weather-dependent)"]},
+          { h:"Maps", items:[ { text:"Hehuanshan", url:"https://www.google.com/maps/search/?api=1&query=Hehuanshan" } ] }
         ]
       },
       { title:"Day 6 — Tuesday: Mountains → East Coast (Hualien) + night market", badges:["🌊 East coast","🚗 Scenic route","🍜 Local eats"],
         sections:[
-          { h:"Plan", items:["Travel to Hualien (east coast gateway)","Check in + seaside stroll","Hualien night market dinner"]},
-          { h:"Optional stop ideas", items:["Coastal viewpoints for photos","Coffee stop in town"] },
+          { h:"Plan", items:["Travel to Hualien (east coast gateway)","Check in + seaside stroll","Dongdamen night market dinner"]},
+          { h:"Optional stops", items:["Coastal viewpoints for photos","Coffee stop in town"]},
           { h:"Maps", items:[
-            { text:"Search: Hualien", url:"https://www.google.com/maps/search/?api=1&query=Hualien%2C%20Taiwan" },
-            { text:"Search: Dongdamen Night Market", url:"https://www.google.com/maps/search/?api=1&query=Dongdamen%20Night%20Market%20Hualien" }
+            { text:"Hualien", url:"https://www.google.com/maps/search/?api=1&query=Hualien%2C%20Taiwan" },
+            { text:"Dongdamen Night Market", url:"https://www.google.com/maps/search/?api=1&query=Dongdamen%20Night%20Market%20Hualien" }
           ]}
         ]
       },
-      { title:"Day 7 — East Coast nature day (Wednesday): Taroko-area scenery + short walks", badges:["🏞️ Nature","📸 Iconic views","🥾 Scenic walks"],
+      { title:"Day 7 — East Coast (Wednesday): Taroko-area scenery + short walks", badges:["🏞️ Nature","📸 Iconic views","🥾 Scenic walks"],
         sections:[
-          { h:"Scenic plan (flexible)", items:["Spend the day on Taroko-area viewpoints + short walks","Focus on safe open areas (conditions can vary)","Back to Hualien for a relaxed dinner"]},
-          { h:"Walking goals", items:["Riverside viewpoints","Short waterfall walk (when open)","Gorge photo stops"] },
-          { h:"Maps", items:[ { text:"Search: Taroko National Park", url:"https://www.google.com/maps/search/?api=1&query=Taroko%20National%20Park" } ] }
+          { h:"Scenic plan", items:["Taroko-area viewpoints + short walks","Focus on safe open areas (conditions can vary)","Back to Hualien for dinner"]},
+          { h:"Walking goals", items:["Riverside viewpoints","Waterfall walk (when open)","Gorge photo stops"]},
+          { h:"Maps", items:[ { text:"Taroko National Park", url:"https://www.google.com/maps/search/?api=1&query=Taroko%20National%20Park" } ] }
         ]
       },
       { title:"Day 8 — Thursday: Return to Taipei + final night", badges:["🏙️ Taipei","🛍️ Shopping","🍽️ Final dinner"],
         sections:[
-          { h:"Plan", items:["Return to Taipei on Thursday","Final shopping stroll + one special dinner","Optional: light night market snack run"]},
-          { h:"Great final-night ideas", items:["Dihua Street (tea, shops, vibe)","Riverside walk or rooftop views"] },
-          { h:"Maps", items:[ { text:"Search: Dihua Street", url:"https://www.google.com/maps/search/?api=1&query=Dihua%20Street%2C%20Taipei" } ] }
+          { h:"Plan", items:["Return to Taipei Thursday","Final shopping stroll + one special dinner","Optional: night market snack run"]},
+          { h:"Great last-night ideas", items:["Dihua Street (tea + shops)","Riverside walk or rooftop views"]},
+          { h:"Maps", items:[ { text:"Dihua Street", url:"https://www.google.com/maps/search/?api=1&query=Dihua%20Street%2C%20Taipei" } ] }
         ]
       },
-      { title:"Day 9 — Depart Taiwan (Friday 5:00 PM) → Arrive Phoenix (Friday 2:30 PM)", badges:["🛫 Flight home","🕔 5:00 PM depart","🛬 Same-day arrival"],
+      { title:"Day 9 — Fly home (Friday 5:00 PM) → Phoenix (Friday 2:30 PM)", badges:["🛫 Flight home","🕔 5:00 PM depart","🛬 Same-day arrival"],
         sections:[
-          { h:"Plan", items:["Easy morning: brunch + one last stroll","Head to the airport with time to spare","Depart Friday at 5:00 PM → arrive Phoenix Friday at 2:30 PM"]},
-          { h:"If time allows", items:["Souvenirs: tea + pineapple cakes","One last bubble tea for the road"] }
+          { h:"Plan", items:["Easy morning: brunch + one last stroll","Head to the airport with time to spare","Depart Friday 5:00 PM → arrive Phoenix 2:30 PM"]},
+          { h:"Last bites", items:["Tea + pineapple cakes souvenirs","One last bubble tea"] }
         ]
       }
     ];
@@ -566,42 +540,50 @@
       "Hiking shoes + light daypack ready",
       "Make a ‘must-eat’ night market list",
       "Create a shared photo album",
-      "Pick one “special dinner” night in Taipei",
-      "Confirm comfort items for long flights (eye mask, hoodie, chargers)"
+      "Pick one “special dinner” in Taipei",
+      "Flight comfort kit (eye mask, hoodie, chargers)"
     ];
 
     // DOM
-    const dateSelect = document.getElementById("dateSelect");
+    const startBtn = document.getElementById("startBtn");
+    const toggleChecklistTop = document.getElementById("toggleChecklistTop");
     const dateRangeText = document.getElementById("dateRangeText");
-    const dayList = document.getElementById("dayList");
+    const dateSelect = document.getElementById("dateSelect");
+
+    const dayButtons = document.getElementById("dayButtons");
+    const dayChips = document.getElementById("dayChips");
+
     const dayTitle = document.getElementById("dayTitle");
     const dayDate = document.getElementById("dayDate");
     const badgesEl = document.getElementById("badges");
     const daySections = document.getElementById("daySections");
+
     const checklistBox = document.getElementById("checklist");
     const checklistItems = document.getElementById("checklistItems");
 
-    const startBtn = document.getElementById("startBtn");
-    const toggleChecklistTop = document.getElementById("toggleChecklistTop");
+    // mobile sheet
+    const sheet = document.getElementById("sheet");
+    const closeSheet = document.getElementById("closeSheet");
+    const sheetTitle = document.getElementById("sheetTitle");
+    const sheetSub = document.getElementById("sheetSub");
+    const sheetBadges = document.getElementById("sheetBadges");
+    const sheetSections = document.getElementById("sheetSections");
 
-    const giftModal = document.getElementById("giftModal");
-    const openGift = document.getElementById("openGift");
-    const closeGift = document.getElementById("closeGift");
-
-    let currentStart = options[3] || options[0]; // default early April-ish
+    let currentStart = starts[3] || starts[0]; // default early April-ish
+    let currentDayIndex = 2; // default Fri arrival
     let checklistState = new Array(CHECKLIST.length).fill(false);
 
-    function setDateRangeLabel(){
+    function setDateRange(){
       const dep = currentStart;
       const ret = addDays(dep, 9);
       dateRangeText.textContent = `${fmtShort.format(dep)} → ${fmtShort.format(ret)} (${YEAR})`;
     }
+    function dayDateFor(i){ return addDays(currentStart, i); }
 
-    function renderBadges(list){
-      badgesEl.innerHTML = list.map(b => `<span class="badge">${b}</span>`).join("");
+    function renderBadges(el, list){
+      el.innerHTML = list.map(b => `<span class="badge">${b}</span>`).join("");
     }
-
-    function renderSections(secs){
+    function renderSections(el, secs){
       let html = "";
       secs.forEach(s => {
         html += `<div class="sec"><h4>${s.h}</h4><ul>`;
@@ -611,45 +593,86 @@
         });
         html += `</ul></div>`;
       });
-      daySections.innerHTML = html;
+      el.innerHTML = html;
     }
 
-    function dayDateForIndex(i){ return addDays(currentStart, i); }
-
-    function buildDayButtons(){
-      dayList.innerHTML = "";
-      DAYS.forEach((day, i) => {
-        const d = dayDateForIndex(i);
-        const btn = document.createElement("button");
-        btn.className = "daybtn";
-        btn.innerHTML = `<strong>${day.title}</strong><small>${fmtLong.format(d)}</small>`;
-        btn.onclick = () => renderDay(i);
-        dayList.appendChild(btn);
-      });
+    function isMobile(){
+      return window.matchMedia("(max-width: 980px)").matches;
     }
 
-    function renderDay(i){
+    function openDay(i){
+      currentDayIndex = i;
+
+      // active state
       document.querySelectorAll(".daybtn").forEach((b, idx) => b.classList.toggle("active", idx === i));
+      document.querySelectorAll(".daychip").forEach((b, idx) => b.classList.toggle("active", idx === i));
+
       const day = DAYS[i];
-      const d = dayDateForIndex(i);
+      const d = dayDateFor(i);
+
+      // desktop detail
       dayTitle.textContent = day.title;
       dayDate.textContent = fmtLong.format(d);
-      renderBadges(day.badges);
-      renderSections(day.sections);
+      renderBadges(badgesEl, day.badges);
+      renderSections(daySections, day.sections);
+
+      // mobile sheet detail
+      sheetTitle.textContent = day.title;
+      sheetSub.textContent = fmtLong.format(d);
+      renderBadges(sheetBadges, day.badges);
+      renderSections(sheetSections, day.sections);
+
+      if (isMobile()){
+        sheet.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function closeSheetFn(){
+      sheet.classList.remove("open");
+      document.body.style.overflow = "";
     }
 
     function buildDateOptions(){
       dateSelect.innerHTML = "";
-      options.forEach((d) => {
-        const dep = d;                 // Wed
-        const arrive = addDays(dep, 2);// Fri
-        const ret = addDays(dep, 9);   // Fri
+      starts.forEach((d) => {
+        const dep = d;                    // Wed
+        const arrive = addDays(dep, 2);   // Fri
+        const ret = addDays(dep, 9);      // Fri
         const opt = document.createElement("option");
         opt.value = dep.toISOString().slice(0,10);
         opt.textContent = `Depart Wed ${fmtShort.format(dep)} → Return Fri ${fmtShort.format(ret)} (Arrive Taiwan Fri ${fmtShort.format(arrive)})`;
         dateSelect.appendChild(opt);
       });
       dateSelect.value = currentStart.toISOString().slice(0,10);
+    }
+
+    function buildDayLists(){
+      dayButtons.innerHTML = "";
+      dayChips.innerHTML = "";
+
+      DAYS.forEach((day, i) => {
+        const d = dayDateFor(i);
+
+        // Desktop vertical
+        const btn = document.createElement("button");
+        btn.className = "daybtn";
+        btn.innerHTML = `<strong>${day.title}</strong><small>${fmtLong.format(d)}</small>`;
+        btn.onclick = () => openDay(i);
+        dayButtons.appendChild(btn);
+
+        // Mobile horizontal chips
+        const chip = document.createElement("button");
+        chip.className = "daychip";
+        chip.innerHTML = `<strong>${day.title}</strong><small>${fmtShort.format(d)}</small>`;
+        chip.onclick = () => openDay(i);
+        dayChips.appendChild(chip);
+      });
+
+      // set initial active
+      openDay(currentDayIndex);
+      // but on desktop we don't want to open the sheet on init:
+      if (!isMobile()) closeSheetFn();
     }
 
     function renderChecklist(){
@@ -670,28 +693,31 @@
       checklistBox.scrollIntoView({ behavior:"smooth", block:"start" });
     }
 
-    dateSelect.addEventListener("change", (e) => {
-      const val = e.target.value; // YYYY-MM-DD
-      currentStart = new Date(`${val}T12:00:00`);
-      setDateRangeLabel();
-      buildDayButtons();
-      renderDay(2); // default to Fri arrival day
-    });
-
+    // Events
     startBtn.addEventListener("click", () => {
       document.getElementById("planner").scrollIntoView({ behavior:"smooth", block:"start" });
     });
     toggleChecklistTop.addEventListener("click", toggleChecklist);
 
-    openGift.addEventListener("click", () => giftModal.classList.add("open"));
-    closeGift.addEventListener("click", () => giftModal.classList.remove("open"));
-    giftModal.addEventListener("click", (e) => { if (e.target === giftModal) giftModal.classList.remove("open"); });
+    dateSelect.addEventListener("change", (e) => {
+      currentStart = new Date(`${e.target.value}T12:00:00`);
+      setDateRange();
+      buildDayLists();
+    });
+
+    closeSheet.addEventListener("click", closeSheetFn);
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) closeSheetFn(); });
+
+    // If screen rotates / resizes, keep behavior sane
+    window.addEventListener("resize", () => {
+      // If we leave mobile, ensure sheet closed
+      if (!isMobile()) closeSheetFn();
+    });
 
     // Init
     buildDateOptions();
-    setDateRangeLabel();
-    buildDayButtons();
-    renderDay(2);
+    setDateRange();
+    buildDayLists();
     renderChecklist();
   </script>
 </body>
