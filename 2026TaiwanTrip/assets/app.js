@@ -251,6 +251,7 @@ function scrollToId(id){
   document.title = data.title || document.title;
   $("#title").textContent = data.title;
   $("#subtitle").textContent = data.subtitle;
+  initPremiumCover();
 
   buildHero(data);
 
@@ -332,6 +333,40 @@ function scrollToId(id){
   }
   if(prevBtn) prevBtn.addEventListener("click", () => goDay(-1));
   if(nextBtn) nextBtn.addEventListener("click", () => goDay(1));
+
+
+  function initPremiumCover(){
+    const imgEl = document.getElementById("coverHeroImg");
+    const capEl = document.getElementById("coverHeroCap");
+    const thumbs = document.getElementById("coverThumbs");
+    if(!imgEl || !thumbs) return;
+    thumbs.innerHTML = "";
+
+    const items = (data.heroImages || []).slice(0, 10);
+    if(!items.length) return;
+
+    function setActive(i){
+      const it = items[i];
+      imgEl.src = resolveUrl(it.src);
+      imgFallback(imgEl);
+      capEl.textContent = it.caption || it.alt || "Trip highlight";
+      thumbs.querySelectorAll(".thumbBtn").forEach((b, idx) => {
+        b.classList.toggle("active", idx === i);
+      });
+    }
+
+    items.forEach((it, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "thumbBtn";
+      b.innerHTML = `<img loading="lazy" src="${resolveUrl(it.src)}" alt="${it.alt || "Trip photo"}">`;
+      imgFallback(b.querySelector("img"));
+      b.addEventListener("click", () => setActive(i));
+      thumbs.appendChild(b);
+    });
+
+    setActive(0);
+  }
 
   refresh();
 })();
