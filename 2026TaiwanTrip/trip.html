@@ -1,159 +1,503 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#ffffff"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <title>Richins 2026 Taiwan Adventure</title>
-  <link rel="stylesheet" href="./assets/styles.css"/>
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-woox-travel.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+  <style>
+    /* Premium tweaks */
+    .header-area .logo img{ max-height: 44px; }
+    .section-heading h2{ letter-spacing:-.02em; }
+    .badge{ border-radius: 999px; }
+    .cover-note{ max-width: 72ch; }
+    .hotel-card img{ height: 220px; object-fit: cover; border-radius: 18px; }
+    .hotel-card{ border:1px solid rgba(0,0,0,.08); border-radius: 18px; padding: 14px; background:#fff; box-shadow: 0 18px 50px rgba(0,0,0,.06); }
+    .hotel-actions a{ margin-right: 10px; }
+    .subnav a{ font-weight: 700; }
+  </style>
 </head>
-<body data-page="trip">
-  <canvas id="confetti"></canvas>
-  <header class="hero" id="top">
-    <div class="heroInner">
-      
+<body>
 
-      <h1 id="title">Richins 2026 Taiwan Adventure</h1>
-      <p class="sub" id="subtitle"></p>
-
-      <div class="cta">
-        <button class="btn primary" id="openPlan" type="button">View itinerary</button>
-        <button class="btn" id="openStays" type="button">Stays & photos</button>
-        <button class="btn" id="openExtras" type="button">Extras</button>
-      </div>
-
-      <div class="gallery" id="gallery">
-        <div class="galleryTop">
-          <div class="heroImgWrap">
-            <img id="heroImg" class="heroImg" alt="Trip photo"/>
-            <div class="heroCaption" id="heroCaption"></div>
-          </div>
-          <div class="heroRail">
-            <p class="railTitle"></p>
-            <div class="thumbs" id="thumbs"></div>
-            <p class="note" style="margin:10px 0 0;">
-              Tip: in Safari → Share → <b>Add to Home Screen</b> for an app-like icon.
-            </p>
-          </div>
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="trip.html" class="logo">
+              <img src="assets/images/logo.png" alt=""/>
+            </a>
+            <ul class="nav subnav">
+              <li><a href="#top" class="active">Overview</a></li>
+              <li><a href="#stays">Hotels</a></li>
+              <li><a href="#itinerary">Itinerary</a></li>
+              <li><a href="#notes">Notes</a></li>
+              <li><a href="index.html">Gift</a></li>
+            </ul>
+            <a class='menu-trigger'><span>Menu</span></a>
+          </nav>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="sticky" id="controls">
-    <div class="controls">
-      <div>
-        <label for="weekSelect">Choose a week (depart Phoenix Wed evening • Mar 18 → May 20)</label>
-        <select id="weekSelect" aria-label="Choose week"></select>
-        <div class="metaRow">
-          <span class="pill">🛫 Phoenix: <b>Wed evening</b></span>
-          <span class="pill">🏙️ Arrive Taiwan: <b>Fri afternoon</b></span>
-          <span class="pill">🛬 Return: <b>Fri 5:00 PM</b> → PHX <b>2:30 PM</b></span>
+  <section id="section-1">
+    <div class="content-slider">
+      <input type="radio" id="banner1" class="sec-1-input" name="banner" checked>
+      <input type="radio" id="banner2" class="sec-1-input" name="banner">
+      <input type="radio" id="banner3" class="sec-1-input" name="banner">
+      <input type="radio" id="banner4" class="sec-1-input" name="banner">
+      <div class="slider">
+        <div id="top-banner-1" class="banner">
+          <div class="banner-inner-wrapper header-text">
+            <div class="main-caption">
+              <h2>Richins 2026</h2>
+              <h1>Taiwan Adventure</h1>
+              <p class="cover-note text-white-50 mt-3">Weekend in Taipei → 3 nights in the mountains at The Old England Manor → one East Coast night → final night back in Taipei.</p>
+              <div class="border-button"><a href="#itinerary">View Itinerary</a></div>
+            </div>
+          </div>
+        </div>
+        <div id="top-banner-2" class="banner">
+          <div class="banner-inner-wrapper header-text">
+            <div class="main-caption">
+              <h2>Food + Night Energy</h2>
+              <h1>Night Markets</h1>
+              <div class="border-button"><a href="#notes">Must-see list</a></div>
+            </div>
+          </div>
+        </div>
+        <div id="top-banner-3" class="banner">
+          <div class="banner-inner-wrapper header-text">
+            <div class="main-caption">
+              <h2>Storybook Mountain Stay</h2>
+              <h1>Old England Manor</h1>
+              <div class="border-button"><a href="#stays">See Hotels</a></div>
+            </div>
+          </div>
+        </div>
+        <div id="top-banner-4" class="banner">
+          <div class="banner-inner-wrapper header-text">
+            <div class="main-caption">
+              <h2>Nature Day Highlight</h2>
+              <h1>Taroko</h1>
+              <div class="border-button"><a href="#itinerary">Day-by-day</a></div>
+            </div>
+          </div>
         </div>
       </div>
+      <nav>
+        <div class="controls">
+          <label for="banner1"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">Overview</span></label>
+          <label for="banner2"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">Markets</span></label>
+          <label for="banner3"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">Mountains</span></label>
+          <label for="banner4"><span class="progressbar"><span class="progressbar-fill"></span></span><span class="text">Taroko</span></label>
+        </div>
+      </nav>
+    </div>
+  </section>
 
-      <div>
-        <label for="daySelect">Pick a day (auto-jumps to the plan)</label>
-        <select id="daySelect" aria-label="Pick a day"></select>
+  <div class="container my-5" id="stays">
+    <div class="section-heading text-center">
+      <h2>Where you’re staying</h2>
+      <p>Hilton/Marriott preference respected. Links included (no pricing).</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-4">
+        <div class="hotel-card">
+          <img src="assets/images/offers-01.jpg" alt="W Taipei" class="w-100">
+          <h4 class="mt-3">W Taipei <span class="text-muted fw-semibold">• Marriott</span></h4>
+          <p class="text-muted mb-2">Taipei base in Xinyi—great access to Taipei 101, shopping, and late-night food.</p>
+          <div class="hotel-actions">
+            <a class="btn btn-outline-primary btn-sm" href="https://www.marriott.com/hotels/travel/tpewh-w-taipei/" target="_blank" rel="noopener">Website</a>
+            <a class="btn btn-outline-secondary btn-sm" href="https://www.google.com/maps/search/?api=1&query=W%20Taipei" target="_blank" rel="noopener">Map</a>
+          </div>
+        </div>
       </div>
-
-      <div>
-        <label for="search">Search the plan (e.g., “night market”, “temple”, “manor”)</label>
-        <input id="search" type="search" placeholder="Search…" />
-        <div id="searchResults" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+      <div class="col-lg-4">
+        <div class="hotel-card">
+          <img src="assets/images/offers-02.jpg" alt="The Old England Manor" class="w-100">
+          <h4 class="mt-3">The Old England Manor <span class="text-muted fw-semibold">• Cingjing</span></h4>
+          <p class="text-muted mb-2">Signature mountain stay—storybook manor vibe, gardens, and crisp air.</p>
+          <div class="hotel-actions">
+            <a class="btn btn-outline-primary btn-sm" href="https://www.theoldengland.com.tw/en/" target="_blank" rel="noopener">Website</a>
+            <a class="btn btn-outline-secondary btn-sm" href="https://www.google.com/maps/search/?api=1&query=The%20Old%20England%20Manor%20Cingjing" target="_blank" rel="noopener">Map</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="hotel-card">
+          <img src="assets/images/offers-03.jpg" alt="Le Méridien Hualien" class="w-100">
+          <h4 class="mt-3">Le Méridien Hualien Resort <span class="text-muted fw-semibold">• Marriott</span></h4>
+          <p class="text-muted mb-2">One-night East Coast base to make the Taroko day smoother and less rushed.</p>
+          <div class="hotel-actions">
+            <a class="btn btn-outline-primary btn-sm" href="https://www.marriott.com/en-us/hotels/hunmd-le-meridien-hualien-resort/overview/" target="_blank" rel="noopener">Website</a>
+            <a class="btn btn-outline-secondary btn-sm" href="https://www.google.com/maps/search/?api=1&query=Le%20Meridien%20Hualien%20Resort" target="_blank" rel="noopener">Map</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <main class="container">
-    <section class="section card" id="stays">
-      <div class="cardHeader">
-        <h2>Where we’re staying</h2>
-        <div class="note">Hotels + official links + photos</div>
-      </div>
-      <div class="cardBody">
-        <div class="grid2" id="staysGrid"></div>
-        <hr class="sep"/>
-        <div class="callout">
-          <b>Planning note:</b> Weekend is optimized for Taipei’s top sights + night markets, then we shift to quieter mountain scenery for a true “wow” reset.
+  <div class="container my-5" id="itinerary">
+    <div class="section-heading text-center">
+      <h2>Day-by-day itinerary</h2>
+      <p>Clear agenda, with hotel shown on check-in days and return to Taipei.</p>
+    </div>
+
+    <div class="accordion mt-4" id="itineraryAccordion">
+      
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading1">
+        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+          Day 1: Fri (Arrival) <span class="ms-2 text-muted fw-semibold">• Stay: W Taipei (Marriott)</span>
+        </button>
+      </h2>
+      <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Arrive Taipei • private transfer • check-in at W Taipei</div>
         </div>
       </div>
-    </section>
-
-    <section class="section card" id="itinerary">
-      <div class="cardHeader">
-        <h2>Daily itinerary</h2>
-        <div class="note">Websites first • Maps as backup</div>
-      </div>
-      <div class="cardBody">
-        <div class="dayHeader">
-          <h3 id="dayTitle"></h3>
-          <div class="date" id="dayDate"></div>
-          <div class="date" id="stayLine" style="margin-top:4px;"></div>
-          <div class="date" id="agendaLine" style="margin-top:4px;"></div>
-          <div class="tags" id="tags"></div>
-        </div>
-
-        <div class="accordion" id="accordion"></div>
-
-        <div id="callouts"></div>
-        <p class="note" id="transportNote"></p>
-
-        <hr class="sep"/>
-        <details style="margin-top:10px;">
-          <summary style="cursor:pointer; font-weight:900; color: var(--ink);">Quick links</summary>
-          <div style="margin-top:10px;" id="quickLinks"></div>
-        </details>
-        <hr class="sep"/>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
-          <button class="btn" id="prevDay" type="button" style="flex:1; min-width: 140px;">Previous day</button>
-          <button class="btn primary" id="nextDay" type="button" style="flex:1; min-width: 140px;">Next day</button>
-        </div>
-        <p class="note" style="margin-top:10px;">Tip: use Next/Previous to move through the itinerary without scrolling back up.</p>
     
-      </div>
-    </section>
-
-    <section class="section card" id="extras">
-      <div class="cardHeader">
-        <h2>Extras that make it feel “fully planned”</h2>
-        <div class="note">No prices • Just the plan</div>
-      </div>
-      <div class="cardBody">
-        <div class="checkGrid">
-          <div class="check">
-            <h4>🎒 Packing</h4>
-            <ul id="packingList"></ul>
-          </div>
-          <div class="check">
-            <h4>📅 Reservations to consider</h4>
-            <ul id="reservationsList"></ul>
-          </div>
-          <div class="check">
-            <h4>💛 “Romantic moments” built into the itinerary</h4>
-            <ul id="romanceList"></ul>
-          </div>
-          <div class="check">
-            <h4>✅ Trip vibe</h4>
-            <ul>
-              <li>Front-load Taipei highlights on the weekend</li>
-              <li>Midweek is nature + quieter scenery</li>
-              <li>Final night is for gifts + a special dinner</li>
-              <li>Multiple backup options so nothing feels “ruined” by weather</li>
-            </ul>
-          </div>
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Xinyi stroll (Taipei 101 area) • dinner • Shilin Night Market</div>
         </div>
       </div>
-    </section>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
 
-    <p class="note" style="margin:14px 6px 0;">
-      Want me to add a separate “Hotel options” page (Hilton vs Marriott alternatives) and keep this as the final chosen plan?
-    </p>
-  </main>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+          Day 2: Sat (Taipei) <span class="ms-2 text-muted fw-semibold">• Stay: W Taipei (Marriott)</span>
+        </button>
+      </h2>
+      <div id="collapse2" class="accordion-collapse collapse " aria-labelledby="heading2" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Chiang Kai-shek Memorial Hall • Longshan Temple</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Dihua Street + Dadaocheng (tea/shops) • coffee break</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Raohe or Ningxia Night Market • optional cocktail lounge</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
 
-  
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+          Day 3: Sun (To mountains) <span class="ms-2 text-muted fw-semibold">• Stay: The Old England Manor</span>
+        </button>
+      </h2>
+      <div id="collapse3" class="accordion-collapse collapse " aria-labelledby="heading3" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Travel Taipei → Cingjing (scenic drive)</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Check-in • manor grounds • photos + relax</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Cozy dinner • early night with mountain air</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
 
-  <script src="./assets/gate.js"></script>
-  <script src="./assets/app.js"></script>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+          Day 4: Mon (Cingjing) <span class="ms-2 text-muted fw-semibold">• Stay: The Old England Manor</span>
+        </button>
+      </h2>
+      <div id="collapse4" class="accordion-collapse collapse " aria-labelledby="heading4" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Light hike/walk: Cingjing area trails</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Qingjing Farm + viewpoints • tea time</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Manor lounge time • stargazing (weather permitting)</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+          Day 5: Tue (Cingjing) <span class="ms-2 text-muted fw-semibold">• Stay: The Old England Manor</span>
+        </button>
+      </h2>
+      <div id="collapse5" class="accordion-collapse collapse " aria-labelledby="heading5" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Best-view day: gentle ridge walk / local viewpoints</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Optional day trip: Sun Moon Lake (if you want a bigger day)</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Final manor night • photos + unwind</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+          Day 6: Wed (East coast) <span class="ms-2 text-muted fw-semibold">• Stay: Le Méridien Hualien Resort (Marriott)</span>
+        </button>
+      </h2>
+      <div id="collapse6" class="accordion-collapse collapse " aria-labelledby="heading6" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Travel to Hualien (east coast)</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Check-in • seaside stroll</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Dongdamen Night Market • easy night</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading7">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+          Day 7: Thu (Taroko + back) <span class="ms-2 text-muted fw-semibold">• Stay: W Taipei (Marriott)</span>
+        </button>
+      </h2>
+      <div id="collapse7" class="accordion-collapse collapse " aria-labelledby="heading7" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Taroko highlights (best trails/roads depend on conditions)</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Return to Taipei • check back in at W Taipei</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Evening</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Celebratory dinner • skyline views</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading8">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+          Day 8: Fri (Fly home) <span class="ms-2 text-muted fw-semibold">• Stay: —</span>
+        </button>
+      </h2>
+      <div id="collapse8" class="accordion-collapse collapse " aria-labelledby="heading8" data-bs-parent="#itineraryAccordion">
+        <div class="accordion-body">
+          
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Morning</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Brunch • last-minute shopping (Xinyi)</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Afternoon</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Airport transfer • depart ~5:00 PM</div>
+        </div>
+      </div>
+    
+      <div class="d-flex align-items-start gap-3 py-2 border-bottom">
+        <div class="badge bg-primary-subtle text-primary fw-bold" style="min-width:110px;text-align:left;">Same day</div>
+        <div class="flex-grow-1">
+          <div class="fw-bold">Arrive PHX ~2:30 PM (same Friday)</div>
+        </div>
+      </div>
+    
+          <div class="mt-3 small text-muted">Links and exact reservations will be finalized once dates are chosen.</div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+
+  <div class="container my-5" id="notes">
+    <div class="section-heading text-center">
+      <h2>Notes & must-sees</h2>
+      <p>Flexible items you can swap based on energy, weather, and the week selected.</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-6">
+        <div class="hotel-card">
+          <h4>Top sights (Taipei)</h4>
+          <ul class="text-muted mb-0">
+            <li>Taipei 101 area (shopping + skyline)</li>
+            <li>Chiang Kai-shek Memorial Hall</li>
+            <li>Longshan Temple</li>
+            <li>Dihua Street / Dadaocheng</li>
+            <li>Elephant Mountain (sunset hike, if you’re up for it)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hotel-card">
+          <h4>Hiking & nature</h4>
+          <ul class="text-muted mb-0">
+            <li>Cingjing scenic trails and viewpoints (gentle but beautiful)</li>
+            <li>Taroko Gorge highlights (trail selection depends on conditions)</li>
+            <li>Optional: Sun Moon Lake day trip from the mountains</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotel-card mt-4">
+      <h4>Travel structure (always the same)</h4>
+      <div class="text-muted">
+        Depart Phoenix <b>Wednesday evening</b> → Arrive Taiwan <b>Friday afternoon</b> → Depart Taiwan <b>Friday 5:00 PM</b> → Arrive PHX <b>Friday 2:30 PM</b>.
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center py-4">
+    <div class="container">
+      <p class="text-muted mb-0">Richins 2026 Taiwan Adventure • Built as a surprise itinerary.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/wow.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/popup.js"></script>
+  <script src="assets/js/custom.js"></script>
+
+  <script>
+    // Gate: if not opened, send back to present.
+    try {
+      if(localStorage.getItem('rt26_opened') !== '1') {
+        window.location.href = 'index.html';
+      }
+    } catch(e) {}
+  </script>
 </body>
 </html>
