@@ -1,0 +1,11 @@
+[
+  { "name": "Denny", "tickets": 8 },
+  { "name": "Kim", "tickets": 8 },
+  { "name": "Grant", "tickets": 10 },
+  { "name": "Layne", "tickets": 13 },
+  { "name": "Omar", "tickets": 10 },
+  { "name": "Ez", "tickets": 5 },
+  { "name": "Jordan", "tickets": 5 },
+  { "name": "Joni", "tickets": 7 },
+  { "name": "Jeff", "tickets": 13 }
+]

@@ -1,11 +1,191 @@
 {
-  "mode": "linear",
-  "order": [
+  "season": "2026",
+  "mode": "snake-quotas",
+  "seed": "2026-dbacks-draft-v1",
+  "participants": [
+    {
+      "name": "Denny",
+      "tickets": 8
+    },
+    {
+      "name": "Kim",
+      "tickets": 8
+    },
+    {
+      "name": "Grant",
+      "tickets": 10
+    },
+    {
+      "name": "Layne",
+      "tickets": 13
+    },
+    {
+      "name": "Omar",
+      "tickets": 10
+    },
+    {
+      "name": "Ez",
+      "tickets": 5
+    },
+    {
+      "name": "Jordan",
+      "tickets": 5
+    },
+    {
+      "name": "Joni",
+      "tickets": 7
+    },
+    {
+      "name": "Jeff",
+      "tickets": 13
+    }
+  ],
+  "baseOrder": [
+    "Joni",
+    "Omar",
     "Layne",
-    "Tanner",
-    "Tyson",
-    "Colton",
-    "Preston",
-    "Ryan"
-  ]
+    "Jordan",
+    "Denny",
+    "Ez",
+    "Kim",
+    "Jeff",
+    "Grant"
+  ],
+  "sequence": [
+    "Joni",
+    "Omar",
+    "Layne",
+    "Jordan",
+    "Denny",
+    "Ez",
+    "Kim",
+    "Jeff",
+    "Grant",
+    "Grant",
+    "Jeff",
+    "Kim",
+    "Ez",
+    "Denny",
+    "Jordan",
+    "Layne",
+    "Omar",
+    "Joni",
+    "Joni",
+    "Omar",
+    "Layne",
+    "Jordan",
+    "Denny",
+    "Ez",
+    "Kim",
+    "Jeff",
+    "Grant",
+    "Grant",
+    "Jeff",
+    "Kim",
+    "Ez",
+    "Denny",
+    "Jordan",
+    "Layne",
+    "Omar",
+    "Joni",
+    "Joni",
+    "Omar",
+    "Layne",
+    "Jordan",
+    "Denny",
+    "Ez",
+    "Kim",
+    "Jeff",
+    "Grant",
+    "Grant",
+    "Jeff",
+    "Kim",
+    "Denny",
+    "Layne",
+    "Omar",
+    "Joni",
+    "Joni",
+    "Omar",
+    "Layne",
+    "Denny",
+    "Kim",
+    "Jeff",
+    "Grant",
+    "Grant",
+    "Jeff",
+    "Kim",
+    "Denny",
+    "Layne",
+    "Omar",
+    "Omar",
+    "Layne",
+    "Jeff",
+    "Grant",
+    "Grant",
+    "Jeff",
+    "Layne",
+    "Omar",
+    "Layne",
+    "Jeff",
+    "Jeff",
+    "Layne",
+    "Layne",
+    "Jeff"
+  ],
+  "stats": {
+    "Joni": {
+      "picks": 7,
+      "firstPick": 1,
+      "lastPick": 53,
+      "averagePick": 30.86
+    },
+    "Omar": {
+      "picks": 10,
+      "firstPick": 2,
+      "lastPick": 73,
+      "averagePick": 42.1
+    },
+    "Layne": {
+      "picks": 13,
+      "firstPick": 3,
+      "lastPick": 78,
+      "averagePick": 50
+    },
+    "Jordan": {
+      "picks": 5,
+      "firstPick": 4,
+      "lastPick": 40,
+      "averagePick": 22.8
+    },
+    "Denny": {
+      "picks": 8,
+      "firstPick": 5,
+      "lastPick": 63,
+      "averagePick": 35.38
+    },
+    "Ez": {
+      "picks": 5,
+      "firstPick": 6,
+      "lastPick": 42,
+      "averagePick": 23.2
+    },
+    "Kim": {
+      "picks": 8,
+      "firstPick": 7,
+      "lastPick": 62,
+      "averagePick": 35.5
+    },
+    "Jeff": {
+      "picks": 13,
+      "firstPick": 8,
+      "lastPick": 79,
+      "averagePick": 50.23
+    },
+    "Grant": {
+      "picks": 10,
+      "firstPick": 9,
+      "lastPick": 70,
+      "averagePick": 42.3
+    }
+  }
 }

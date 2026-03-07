@@ -7,6 +7,7 @@ Parameters:
     Type: String
     NoEcho: true
     Description: Shared secret required in x-admin-key for admin actions.
+
 Globals:
   Function:
     Runtime: nodejs20.x
@@ -76,6 +77,22 @@ Resources:
             Path: /tickets
             Method: GET
 
+  GetDraftConfigFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/getDraftConfig.handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref TicketsTable
+      Events:
+        GetDraftConfig:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /draft-config
+            Method: GET
+
   PickTicketFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -143,6 +160,45 @@ Resources:
           Properties:
             ApiId: !Ref HttpApi
             Path: /admin/import
+            Method: POST
+
+  UpsertDraftConfigFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/upsertDraftConfig.handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TicketsTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref ConnectionsTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - execute-api:ManageConnections
+              Resource: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WebSocketApi}/${WebSocketStage}/POST/@connections/*"
+      Events:
+        UpsertDraftConfig:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /admin/draft-config
+            Method: POST
+
+  RotateAdminKeyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/rotateAdminKey.handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TicketsTable
+      Events:
+        RotateAdminKey:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /admin/rotate-key
             Method: POST
 
   WebSocketApi:

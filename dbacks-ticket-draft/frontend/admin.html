@@ -13,6 +13,10 @@
 <body>
   <header class="topbar">
     <div>
+      <div class="brand-logos">
+        <img class="brand-logo-icon" src="https://images.ctfassets.net/iiozhi00a8lc/4O1qPT7f90sSteCPUr3wwN/e30140f0d3f6a19ce835e916e81c2b3f/A-Logo_Teal_2023.svg" alt="Arizona Diamondbacks logo" />
+        <img class="brand-logo-wordmark" src="https://images.ctfassets.net/iiozhi00a8lc/cpeP2f9FLxp0AezqSXIIg/4b39e0b243229c1aa458a75b4ce62280/Arizona_Diamondbacks.svg" alt="Arizona Diamondbacks" />
+      </div>
       <p class="eyebrow">Arizona Diamondbacks</p>
       <h1>Ticket Draft Admin</h1>
       <p class="subhead">Use this URL only for draft management.</p>
@@ -28,18 +32,64 @@
       </div>
 
       <div class="admin-block">
-        <div class="control-grid">
+        <div class="control-grid admin-grid">
           <label>
             Admin key
-            <input id="adminKeyInput" type="password" autocomplete="off" placeholder="Enter x-admin-key" />
-          </label>
-          <label>
-            Picked by
-            <input id="pickedByInput" type="text" placeholder="Name for this pick" />
+            <input id="adminKeyInput" type="password" autocomplete="off" placeholder="Enter current x-admin-key" />
           </label>
         </div>
         <button id="saveAdminBtn" class="btn" type="button">Save Admin Session</button>
         <p class="hint" id="adminState">Admin locked. Enter key to enable pick actions.</p>
+
+        <div class="admin-rotate">
+          <label>
+            New admin key
+            <input id="newAdminKeyInput" type="password" autocomplete="off" placeholder="At least 8 characters" />
+          </label>
+          <button id="rotateAdminKeyBtn" class="btn subtle" type="button">Rotate Admin Key</button>
+        </div>
+        <p class="hint" id="rotateAdminState">Use current admin key to rotate to a new one.</p>
+      </div>
+
+      <div class="season-setup">
+        <div class="controls-top setup-top">
+          <h3>Create New Season</h3>
+          <button id="previewSeasonBtn" class="btn subtle" type="button">Preview Order</button>
+        </div>
+
+        <div class="control-grid setup-grid">
+          <label>
+            New season
+            <input id="setupSeasonInput" type="text" placeholder="2027" />
+          </label>
+          <label>
+            Seed (optional)
+            <input id="setupSeedInput" type="text" placeholder="example: 2027-dbacks" />
+          </label>
+          <label>
+            Schedule CSV
+            <input id="setupScheduleFile" type="file" accept=".csv,text/csv" />
+          </label>
+          <label>
+            Participants CSV (optional)
+            <input id="setupParticipantsFile" type="file" accept=".csv,text/csv" />
+          </label>
+        </div>
+
+        <label class="setup-text">
+          Participants (one per line, Name,Count)
+          <textarea id="setupParticipantsInput" rows="8" placeholder="Denny,8&#10;Kim,8&#10;Grant,10"></textarea>
+        </label>
+
+        <div class="setup-actions">
+          <button id="createSeasonBtn" class="btn" type="button">Create Season</button>
+        </div>
+
+        <p class="hint" id="setupStatus">Upload schedule and participants, then preview and create.</p>
+        <details class="setup-preview" open>
+          <summary>Draft Preview</summary>
+          <div id="setupPreview" class="order-list"></div>
+        </details>
       </div>
 
       <hr class="divider" />
@@ -55,6 +105,13 @@
             <option value="ALL">All</option>
             <option value="AVAILABLE">Available</option>
             <option value="PICKED">Picked</option>
+          </select>
+        </label>
+        <label>
+          Picked by
+          <select id="pickedByFilter">
+            <option value="ALL">All drafters</option>
+            <option value="UNPICKED">Unpicked only</option>
           </select>
         </label>
         <label>
@@ -95,6 +152,14 @@
         <p><strong>Picks made:</strong> <span id="picksMade">0</span></p>
       </div>
 
+      <h2>Participants</h2>
+      <div id="draftParticipants" class="participants"></div>
+
+      <details class="order-panel" open>
+        <summary>Total Draft Order</summary>
+        <div id="draftOrderList" class="order-list"></div>
+      </details>
+
       <h2>Recent Picks</h2>
       <div id="pickedLog" class="log-list"></div>
     </aside>
@@ -103,3 +168,5 @@
   <script type="module" src="./admin.js"></script>
 </body>
 </html>
+
+

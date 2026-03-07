@@ -1,0 +1,5 @@
+.pydeps/
+backend/*.zip
+backend/*.tgz
+backend/template.deploy.yaml
+backend/template.pack.yaml

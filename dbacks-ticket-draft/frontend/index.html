@@ -13,6 +13,10 @@
 <body>
   <header class="topbar">
     <div>
+      <div class="brand-logos">
+        <img class="brand-logo-icon" src="https://images.ctfassets.net/iiozhi00a8lc/4O1qPT7f90sSteCPUr3wwN/e30140f0d3f6a19ce835e916e81c2b3f/A-Logo_Teal_2023.svg" alt="Arizona Diamondbacks logo" />
+        <img class="brand-logo-wordmark" src="https://images.ctfassets.net/iiozhi00a8lc/cpeP2f9FLxp0AezqSXIIg/4b39e0b243229c1aa458a75b4ce62280/Arizona_Diamondbacks.svg" alt="Arizona Diamondbacks" />
+      </div>
       <p class="eyebrow">Arizona Diamondbacks</p>
       <h1>Live Ticket Draft Board</h1>
       <p class="subhead">View-only board with realtime updates.</p>
@@ -26,6 +30,7 @@
         <h2>Filters</h2>
         <button id="refreshBtn" class="btn subtle">Refresh</button>
       </div>
+
       <div class="control-grid">
         <label>
           Season
@@ -37,6 +42,13 @@
             <option value="ALL">All</option>
             <option value="AVAILABLE">Available</option>
             <option value="PICKED">Picked</option>
+          </select>
+        </label>
+        <label>
+          Picked by
+          <select id="pickedByFilter">
+            <option value="ALL">All drafters</option>
+            <option value="UNPICKED">Unpicked only</option>
           </select>
         </label>
         <label>
@@ -76,6 +88,14 @@
         <p><strong>Up next:</strong> <span id="upNext">Not configured</span></p>
         <p><strong>Picks made:</strong> <span id="picksMade">0</span></p>
       </div>
+
+      <h2>Participants</h2>
+      <div id="draftParticipants" class="participants"></div>
+
+      <details class="order-panel" open>
+        <summary>Total Draft Order</summary>
+        <div id="draftOrderList" class="order-list"></div>
+      </details>
 
       <h2>Recent Picks</h2>
       <div id="pickedLog" class="log-list"></div>

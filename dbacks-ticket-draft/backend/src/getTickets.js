@@ -1,4 +1,4 @@
-﻿const { QueryCommand, ddb, json, tables } = require("./common");
+const { QueryCommand, ddb, json, tables } = require("./common");
 
 exports.handler = async (event) => {
   try {
@@ -15,7 +15,8 @@ exports.handler = async (event) => {
       })
     );
 
-    return json(200, { items: out.Items || [] });
+    const items = (out.Items || []).filter((item) => item.itemType !== "DRAFT_CONFIG");
+    return json(200, { items });
   } catch (err) {
     return json(err.statusCode || 500, { message: err.message || "Internal server error" });
   }

@@ -11,7 +11,7 @@ const {
 
 exports.handler = async (event) => {
   try {
-    assertAdmin(event);
+    await assertAdmin(event);
     const body = parseBody(event);
 
     const items = Array.isArray(body)

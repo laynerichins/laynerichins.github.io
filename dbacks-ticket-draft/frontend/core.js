@@ -1,3 +1,5 @@
+import { makeRng, parseParticipantsCsv, parseParticipantsText, parseScheduleCsv, participantsToText, shuffle } from "./seasonSetup.js";
+
 const FALLBACK_TICKETS = [
   {
     ticketId: "2026-04-03-fallback",
@@ -54,20 +56,123 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function normalizeName(value) {
+  return String(value || "").trim();
+}
+
+function normalizeParticipants(list) {
+  return (Array.isArray(list) ? list : [])
+    .map((p) => {
+      if (typeof p === "string") {
+        return { name: normalizeName(p), tickets: 0 };
+      }
+      return {
+        name: normalizeName(p.name),
+        tickets: Number(p.tickets || p.count || 0)
+      };
+    })
+    .filter((p) => p.name);
+}
+
+function tallyParticipantsFromSequence(sequence) {
+  const map = new Map();
+  sequence.forEach((name) => {
+    const n = normalizeName(name);
+    map.set(n, (map.get(n) || 0) + 1);
+  });
+  return [...map.entries()].map(([name, tickets]) => ({ name, tickets }));
+}
+
+function generateSnakeSequence(participants, baseOrderInput) {
+  const participantsClean = normalizeParticipants(participants).filter((p) => p.tickets > 0);
+  const nameSet = new Set(participantsClean.map((p) => p.name));
+
+  let baseOrder = Array.isArray(baseOrderInput)
+    ? baseOrderInput.map(normalizeName).filter((name) => nameSet.has(name))
+    : [];
+
+  const missing = participantsClean.map((p) => p.name).filter((name) => !baseOrder.includes(name));
+  baseOrder = [...baseOrder, ...missing];
+
+  const remaining = Object.fromEntries(participantsClean.map((p) => [p.name, p.tickets]));
+  const total = participantsClean.reduce((sum, p) => sum + p.tickets, 0);
+  const sequence = [];
+
+  let round = 0;
+  while (sequence.length < total) {
+    const order = round % 2 === 0 ? baseOrder : [...baseOrder].reverse();
+    for (const name of order) {
+      if (remaining[name] > 0) {
+        sequence.push(name);
+        remaining[name] -= 1;
+      }
+    }
+    round += 1;
+  }
+
+  return sequence;
+}
+
+function parseDraftConfigPayload(payload, ticketCountHint) {
+  let participants = [];
+  let sequence = [];
+  let baseOrder = [];
+  let mode = "";
+  let seed = "";
+
+  if (Array.isArray(payload)) {
+    sequence = payload.map(normalizeName).filter(Boolean);
+  } else if (payload && typeof payload === "object") {
+    mode = normalizeName(payload.mode);
+    seed = normalizeName(payload.seed);
+    participants = normalizeParticipants(payload.participants);
+    baseOrder = Array.isArray(payload.baseOrder) ? payload.baseOrder.map(normalizeName).filter(Boolean) : [];
+
+    if (Array.isArray(payload.sequence) && payload.sequence.length) {
+      sequence = payload.sequence.map(normalizeName).filter(Boolean);
+    } else if (mode.startsWith("snake") && participants.length) {
+      sequence = generateSnakeSequence(participants, baseOrder);
+    } else if (Array.isArray(payload.order) && payload.order.length) {
+      const repeating = payload.order.map(normalizeName).filter(Boolean);
+      const total = ticketCountHint || repeating.length;
+      sequence = Array.from({ length: total }, (_, i) => repeating[i % repeating.length]);
+    }
+  }
+
+  if (!participants.length && sequence.length) {
+    participants = tallyParticipantsFromSequence(sequence);
+  }
+
+  return {
+    mode,
+    seed,
+    baseOrder,
+    participants,
+    sequence
+  };
+}
+
 export function createDraftBoard({ adminMode }) {
   const config = { ...DEFAULT_CONFIG, ...(window.DRAFT_CONFIG || {}) };
 
   const state = {
     tickets: [],
-    order: [],
+    draft: {
+      mode: "",
+      seed: "",
+      baseOrder: [],
+      participants: [],
+      sequence: []
+    },
+    setupPlan: null,
     socket: null,
     connected: false,
     adminKey: localStorage.getItem("dbacksAdminKey") || "",
-    pickedBy: localStorage.getItem("dbacksPickedBy") || "",
     filters: {
       season: config.season || "2026",
       status: "ALL",
       month: "ALL",
+      pickedBy: "ALL",
       weekendOnly: false,
       teams: new Set(),
       viewMode: "calendar"
@@ -79,6 +184,7 @@ export function createDraftBoard({ adminMode }) {
     seasonInput: document.getElementById("seasonInput"),
     statusFilter: document.getElementById("statusFilter"),
     monthFilter: document.getElementById("monthFilter"),
+    pickedByFilter: document.getElementById("pickedByFilter"),
     weekendOnly: document.getElementById("weekendOnly"),
     teamFilterWrap: document.getElementById("teamFilterWrap"),
     viewCalendarBtn: document.getElementById("viewCalendarBtn"),
@@ -90,11 +196,38 @@ export function createDraftBoard({ adminMode }) {
     onClock: document.getElementById("onClock"),
     upNext: document.getElementById("upNext"),
     picksMade: document.getElementById("picksMade"),
+    draftParticipants: document.getElementById("draftParticipants"),
+    draftOrderList: document.getElementById("draftOrderList"),
     adminKeyInput: document.getElementById("adminKeyInput"),
-    pickedByInput: document.getElementById("pickedByInput"),
     saveAdminBtn: document.getElementById("saveAdminBtn"),
-    adminState: document.getElementById("adminState")
+    adminState: document.getElementById("adminState"),
+    newAdminKeyInput: document.getElementById("newAdminKeyInput"),
+    rotateAdminKeyBtn: document.getElementById("rotateAdminKeyBtn"),
+    rotateAdminState: document.getElementById("rotateAdminState"),
+    setupSeasonInput: document.getElementById("setupSeasonInput"),
+    setupSeedInput: document.getElementById("setupSeedInput"),
+    setupScheduleFile: document.getElementById("setupScheduleFile"),
+    setupParticipantsFile: document.getElementById("setupParticipantsFile"),
+    setupParticipantsInput: document.getElementById("setupParticipantsInput"),
+    previewSeasonBtn: document.getElementById("previewSeasonBtn"),
+    createSeasonBtn: document.getElementById("createSeasonBtn"),
+    setupStatus: document.getElementById("setupStatus"),
+    setupPreview: document.getElementById("setupPreview")
   };
+
+  function getPickedCount(items = state.tickets) {
+    return items.filter((t) => t.status === "PICKED").length;
+  }
+
+  function currentOnClockName() {
+    const idx = getPickedCount();
+    return state.draft.sequence[idx] || "";
+  }
+
+  function upNextName() {
+    const idx = getPickedCount() + 1;
+    return state.draft.sequence[idx] || "";
+  }
 
   function setStatus(mode, text) {
     if (!el.statusPill) return;
@@ -103,26 +236,22 @@ export function createDraftBoard({ adminMode }) {
     el.statusPill.classList.add(mode);
   }
 
-  function getPickedCount(items) {
-    return items.filter((t) => t.status === "PICKED").length;
+  function setSetupStatus(mode, text) {
+    if (!el.setupStatus) return;
+    el.setupStatus.textContent = text;
+    el.setupStatus.classList.remove("status-ok", "status-warn", "status-error");
+    if (mode) {
+      el.setupStatus.classList.add(`status-${mode}`);
+    }
   }
 
-  function setClockCard() {
-    if (!el.onClock || !el.upNext || !el.picksMade) return;
-
-    const picked = getPickedCount(state.tickets);
-    el.picksMade.textContent = String(picked);
-
-    if (!state.order.length) {
-      el.onClock.textContent = "Not configured";
-      el.upNext.textContent = "Not configured";
-      return;
+  function setRotateStatus(mode, text) {
+    if (!el.rotateAdminState) return;
+    el.rotateAdminState.textContent = text;
+    el.rotateAdminState.classList.remove("status-ok", "status-warn", "status-error");
+    if (mode) {
+      el.rotateAdminState.classList.add(`status-${mode}`);
     }
-
-    const idx = picked % state.order.length;
-    const next = (picked + 1) % state.order.length;
-    el.onClock.textContent = state.order[idx];
-    el.upNext.textContent = state.order[next];
   }
 
   function setSummary() {
@@ -132,11 +261,7 @@ export function createDraftBoard({ adminMode }) {
     const picked = all - available;
 
     el.summary.innerHTML = "";
-    [
-      `Total: ${all}`,
-      `Available: ${available}`,
-      `Picked: ${picked}`
-    ].forEach((text) => {
+    [`Total: ${all}`, `Available: ${available}`, `Picked: ${picked}`].forEach((text) => {
       const chip = document.createElement("span");
       chip.className = "metric";
       chip.textContent = text;
@@ -144,11 +269,71 @@ export function createDraftBoard({ adminMode }) {
     });
   }
 
+  function setClockCard() {
+    if (!el.onClock || !el.upNext || !el.picksMade) return;
+
+    const picked = getPickedCount();
+    el.picksMade.textContent = String(picked);
+
+    if (!state.draft.sequence.length) {
+      el.onClock.textContent = "Not configured";
+      el.upNext.textContent = "Not configured";
+      return;
+    }
+
+    el.onClock.textContent = currentOnClockName() || "Draft complete";
+    el.upNext.textContent = upNextName() || "-";
+  }
+
+  function renderParticipants() {
+    if (!el.draftParticipants) return;
+    if (!state.draft.participants.length) {
+      el.draftParticipants.innerHTML = '<div class="empty">No participant list loaded.</div>';
+      return;
+    }
+
+    const rows = state.draft.participants
+      .map((p) => `<span class="participant-chip">${escapeHtml(p.name)} (${p.tickets})</span>`)
+      .join("");
+
+    el.draftParticipants.innerHTML = rows;
+  }
+
+  function renderDraftOrder() {
+    if (!el.draftOrderList) return;
+
+    const picksDone = getPickedCount();
+    const sequence = state.draft.sequence;
+
+    if (!sequence.length) {
+      el.draftOrderList.innerHTML = '<div class="empty">No draft order loaded.</div>';
+      return;
+    }
+
+    const maxRows = 200;
+    const rows = sequence.slice(0, maxRows).map((name, idx) => {
+      const n = idx + 1;
+      const cls = idx < picksDone ? "done" : idx === picksDone ? "current" : "pending";
+      return `<div class="order-row ${cls}"><span class="num">#${n}</span><span class="name">${escapeHtml(name)}</span></div>`;
+    }).join("");
+
+    el.draftOrderList.innerHTML = rows;
+  }
+
   function updateAdminState() {
     if (!adminMode || !el.adminState) return;
-    el.adminState.textContent = state.adminKey
-      ? "Admin unlocked. Pick actions are enabled."
-      : "Admin locked. Enter key to enable pick actions.";
+
+    if (!state.adminKey) {
+      el.adminState.textContent = "Admin locked. Enter key to enable pick actions.";
+      return;
+    }
+
+    const onClock = currentOnClockName();
+    if (onClock) {
+      el.adminState.textContent = `Admin unlocked. Picks will be assigned to ${onClock}.`;
+    } else {
+      el.adminState.textContent = "Admin unlocked. Draft appears complete.";
+    }
   }
 
   function hydrateFilters() {
@@ -156,19 +341,22 @@ export function createDraftBoard({ adminMode }) {
     const months = [...new Set(state.tickets.map((t) => monthKey(t.gameDate)).filter(Boolean))].sort();
 
     if (el.teamFilterWrap) {
+      const activeTeams = new Set(state.filters.teams);
       el.teamFilterWrap.innerHTML = "";
+
       teams.forEach((team) => {
         const id = `team-${team.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
         const row = document.createElement("label");
         row.className = "team-option";
         row.innerHTML = `<input type="checkbox" id="${id}" data-team="${escapeHtml(team)}" /> <span>${escapeHtml(team)}</span>`;
         const input = row.querySelector("input");
+        input.checked = activeTeams.has(team);
         input.addEventListener("change", (event) => {
-          const t = event.target.dataset.team;
+          const name = event.target.dataset.team;
           if (event.target.checked) {
-            state.filters.teams.add(t);
+            state.filters.teams.add(name);
           } else {
-            state.filters.teams.delete(t);
+            state.filters.teams.delete(name);
           }
           renderBoard();
         });
@@ -177,32 +365,45 @@ export function createDraftBoard({ adminMode }) {
     }
 
     if (el.monthFilter) {
-      const current = el.monthFilter.value || "ALL";
+      const current = state.filters.month;
       el.monthFilter.innerHTML = "";
-      const allOpt = document.createElement("option");
-      allOpt.value = "ALL";
-      allOpt.textContent = "All months";
-      el.monthFilter.appendChild(allOpt);
+      el.monthFilter.appendChild(new Option("All months", "ALL"));
+      months.forEach((m) => el.monthFilter.appendChild(new Option(prettyMonth(m), m)));
+      state.filters.month = months.includes(current) ? current : "ALL";
+      el.monthFilter.value = state.filters.month;
+    }
 
-      months.forEach((m) => {
-        const opt = document.createElement("option");
-        opt.value = m;
-        opt.textContent = prettyMonth(m);
-        el.monthFilter.appendChild(opt);
+    if (el.pickedByFilter) {
+      const current = state.filters.pickedBy;
+      const names = new Set();
+      state.draft.participants.forEach((p) => names.add(p.name));
+      state.tickets.forEach((t) => {
+        if (t.pickedBy) names.add(t.pickedBy);
       });
 
-      el.monthFilter.value = months.includes(current) ? current : "ALL";
-      state.filters.month = el.monthFilter.value;
+      el.pickedByFilter.innerHTML = "";
+      el.pickedByFilter.appendChild(new Option("All drafters", "ALL"));
+      el.pickedByFilter.appendChild(new Option("Unpicked only", "UNPICKED"));
+      [...names].sort().forEach((name) => el.pickedByFilter.appendChild(new Option(name, name)));
+
+      const options = new Set(["ALL", "UNPICKED", ...names]);
+      state.filters.pickedBy = options.has(current) ? current : "ALL";
+      el.pickedByFilter.value = state.filters.pickedBy;
     }
   }
 
   function getFilteredTickets() {
-    const { season, status, month, weekendOnly, teams } = state.filters;
+    const { season, status, month, pickedBy, weekendOnly, teams } = state.filters;
 
     return state.tickets
       .filter((t) => !season || String(t.season) === String(season))
       .filter((t) => status === "ALL" || t.status === status)
       .filter((t) => month === "ALL" || monthKey(t.gameDate) === month)
+      .filter((t) => {
+        if (pickedBy === "ALL") return true;
+        if (pickedBy === "UNPICKED") return t.status !== "PICKED";
+        return t.pickedBy === pickedBy;
+      })
       .filter((t) => {
         if (!weekendOnly) return true;
         const day = toDate(t.gameDate).getDay();
@@ -214,10 +415,11 @@ export function createDraftBoard({ adminMode }) {
 
   function renderPickedLog() {
     if (!el.pickedLog) return;
+
     const picked = state.tickets
       .filter((t) => t.status === "PICKED")
       .sort((a, b) => new Date(b.pickedAt || 0) - new Date(a.pickedAt || 0))
-      .slice(0, 50);
+      .slice(0, 60);
 
     el.pickedLog.innerHTML = "";
     if (!picked.length) {
@@ -280,9 +482,7 @@ export function createDraftBoard({ adminMode }) {
 
       const lane = document.createElement("div");
       lane.className = "list-day-games";
-      byDate.get(date).forEach((t) => {
-        lane.insertAdjacentHTML("beforeend", ticketMarkup(t, false));
-      });
+      byDate.get(date).forEach((t) => lane.insertAdjacentHTML("beforeend", ticketMarkup(t, false)));
 
       row.appendChild(lane);
       wrapper.appendChild(row);
@@ -339,9 +539,7 @@ export function createDraftBoard({ adminMode }) {
       } else {
         const holder = document.createElement("div");
         holder.className = "day-games";
-        games.forEach((t) => {
-          holder.insertAdjacentHTML("beforeend", ticketMarkup(t, true));
-        });
+        games.forEach((t) => holder.insertAdjacentHTML("beforeend", ticketMarkup(t, true)));
         cell.appendChild(holder);
       }
 
@@ -362,6 +560,7 @@ export function createDraftBoard({ adminMode }) {
 
     const wrap = document.createElement("div");
     wrap.className = "calendar-view";
+
     [...byMonth.keys()].sort().forEach((m) => {
       wrap.appendChild(monthCalendarGrid(m, byMonth.get(m)));
     });
@@ -371,6 +570,7 @@ export function createDraftBoard({ adminMode }) {
 
   function renderBoard() {
     if (!el.board) return;
+
     const tickets = getFilteredTickets();
     el.board.innerHTML = "";
 
@@ -379,47 +579,85 @@ export function createDraftBoard({ adminMode }) {
       return;
     }
 
-    const view = state.filters.viewMode === "list"
-      ? renderListView(tickets)
-      : renderCalendarView(tickets);
-
+    const view = state.filters.viewMode === "list" ? renderListView(tickets) : renderCalendarView(tickets);
     el.board.appendChild(view);
+  }
 
-    if (adminMode) {
-      el.board.querySelectorAll("button[data-action]").forEach((btn) => {
-        btn.addEventListener("click", () => adminAction(btn.dataset.action, btn.dataset.ticketId));
-      });
+  function renderSetupPreview(plan) {
+    if (!el.setupPreview) return;
+
+    if (!plan) {
+      el.setupPreview.innerHTML = '<div class="empty">No preview generated yet.</div>';
+      return;
+    }
+
+    const sequence = plan.draft.sequence;
+    const shown = sequence.slice(0, 140);
+    const rows = shown
+      .map((name, idx) => `
+        <div class="preview-row">
+          <span class="num">#${idx + 1}</span>
+          <span class="name">${escapeHtml(name)}</span>
+        </div>
+      `)
+      .join("");
+
+    const extra = sequence.length > shown.length
+      ? `<div class="preview-meta">Showing first ${shown.length} of ${sequence.length} picks.</div>`
+      : "";
+
+    el.setupPreview.innerHTML = `
+      <div class="preview-meta">Games: ${plan.tickets.length} | Picks: ${sequence.length} | Seed: ${escapeHtml(plan.draft.seed)}</div>
+      <div class="preview-meta">Base order: ${escapeHtml(plan.draft.baseOrder.join(" -> "))}</div>
+      ${extra}
+      ${rows}
+    `;
+  }
+
+  function applyDraftDefaultsToSetup() {
+    if (!adminMode) return;
+
+    if (el.setupSeasonInput && !el.setupSeasonInput.value.trim()) {
+      el.setupSeasonInput.value = String(state.filters.season || "");
+    }
+
+    if (el.setupParticipantsInput && !el.setupParticipantsInput.value.trim() && state.draft.participants.length) {
+      el.setupParticipantsInput.value = participantsToText(state.draft.participants);
     }
   }
 
   function refreshAll() {
     setSummary();
     setClockCard();
+    updateAdminState();
+    renderParticipants();
+    renderDraftOrder();
     renderPickedLog();
     renderBoard();
+    applyDraftDefaultsToSetup();
   }
 
   async function adminAction(action, ticketId) {
     if (!state.adminKey) {
-      alert("Enter and save the admin key first.");
-      return;
+      throw new Error("Enter and save the admin key first.");
     }
 
-    const pickedBy = (el.pickedByInput?.value || state.pickedBy || "Admin").trim();
-    state.pickedBy = pickedBy;
-    localStorage.setItem("dbacksPickedBy", pickedBy);
-
     const season = String(state.filters.season || config.season || "").trim();
+    const picksDone = getPickedCount();
+    const autoPickedBy = state.draft.sequence[picksDone] || "";
+
+    if (action === "pick" && !autoPickedBy) {
+      throw new Error("Draft order is complete or not configured.");
+    }
 
     if (!config.apiBaseUrl) {
       const idx = state.tickets.findIndex((t) => t.ticketId === ticketId);
       if (idx < 0) return;
-      const now = new Date().toISOString();
       state.tickets[idx] = {
         ...state.tickets[idx],
         status: action === "pick" ? "PICKED" : "AVAILABLE",
-        pickedBy: action === "pick" ? pickedBy : "",
-        pickedAt: action === "pick" ? now : ""
+        pickedBy: action === "pick" ? autoPickedBy : "",
+        pickedAt: action === "pick" ? new Date().toISOString() : ""
       };
       refreshAll();
       return;
@@ -427,7 +665,7 @@ export function createDraftBoard({ adminMode }) {
 
     const endpoint = `${config.apiBaseUrl}/admin/${action}`;
     const body = action === "pick"
-      ? { season, ticketId, pickedBy }
+      ? { season, ticketId, pickedBy: autoPickedBy }
       : { season, ticketId };
 
     const res = await fetch(endpoint, {
@@ -457,6 +695,8 @@ export function createDraftBoard({ adminMode }) {
     } else {
       state.tickets.push(ticket);
     }
+
+    hydrateFilters();
     refreshAll();
   }
 
@@ -481,7 +721,19 @@ export function createDraftBoard({ adminMode }) {
       }
       if (payload.type === "TICKETS_SYNC" && Array.isArray(payload.tickets)) {
         state.tickets = payload.tickets;
+        hydrateFilters();
         refreshAll();
+      }
+      if (payload.type === "DRAFT_CONFIG_UPDATED" && payload.config) {
+        const season = String(payload.config.season || "").trim();
+        if (!season || season === String(state.filters.season)) {
+          state.draft = parseDraftConfigPayload(payload.config, state.tickets.length);
+          hydrateFilters();
+          refreshAll();
+        }
+      }
+      if (payload.type === "TICKETS_SYNC_REQUESTED") {
+        loadTickets().catch(() => {});
       }
     });
 
@@ -496,33 +748,50 @@ export function createDraftBoard({ adminMode }) {
     });
   }
 
-  async function loadPickOrder() {
+  async function loadDraftConfigFromApi(season) {
+    if (!config.apiBaseUrl) return null;
+
+    try {
+      const res = await fetch(`${config.apiBaseUrl}/draft-config?season=${encodeURIComponent(season)}`);
+      if (!res.ok) return null;
+      const payload = await res.json();
+      if (!payload || !payload.config) return null;
+      return parseDraftConfigPayload(payload.config, state.tickets.length);
+    } catch {
+      return null;
+    }
+  }
+
+  async function loadPickOrderFromFile(season) {
+    const source = config.pickOrderUrl || `../data/pick-order-${season}.json`;
+
+    try {
+      const res = await fetch(source, { cache: "no-store" });
+      if (!res.ok) return null;
+      const payload = await res.json();
+      return parseDraftConfigPayload(payload, state.tickets.length);
+    } catch {
+      return null;
+    }
+  }
+
+  async function loadDraftConfig() {
     const season = String(state.filters.season || config.season || "").trim();
     if (!season) return;
 
-    const defaultUrl = `../data/pick-order-${season}.json`;
-    const src = config.pickOrderUrl || defaultUrl;
-
-    try {
-      const res = await fetch(src, { cache: "no-store" });
-      if (!res.ok) {
-        state.order = [];
-        setClockCard();
-        return;
-      }
-      const payload = await res.json();
-      if (Array.isArray(payload)) {
-        state.order = payload.map((x) => String(x).trim()).filter(Boolean);
-      } else if (Array.isArray(payload.order)) {
-        state.order = payload.order.map((x) => String(x).trim()).filter(Boolean);
-      } else {
-        state.order = [];
-      }
-      setClockCard();
-    } catch {
-      state.order = [];
-      setClockCard();
+    const apiDraft = await loadDraftConfigFromApi(season);
+    if (apiDraft && (apiDraft.sequence.length || apiDraft.participants.length)) {
+      state.draft = apiDraft;
+      return;
     }
+
+    const fileDraft = await loadPickOrderFromFile(season);
+    if (fileDraft && (fileDraft.sequence.length || fileDraft.participants.length)) {
+      state.draft = fileDraft;
+      return;
+    }
+
+    state.draft = { mode: "", seed: "", baseOrder: [], participants: [], sequence: [] };
   }
 
   async function loadLocalTickets(season) {
@@ -544,8 +813,8 @@ export function createDraftBoard({ adminMode }) {
         state.tickets = [...FALLBACK_TICKETS];
         setStatus("warn", "Demo data mode");
       }
+      await loadDraftConfig();
       hydrateFilters();
-      await loadPickOrder();
       refreshAll();
       return;
     }
@@ -558,8 +827,8 @@ export function createDraftBoard({ adminMode }) {
 
     const payload = await res.json();
     state.tickets = Array.isArray(payload.items) ? payload.items : [];
+    await loadDraftConfig();
     hydrateFilters();
-    await loadPickOrder();
     refreshAll();
   }
 
@@ -586,6 +855,13 @@ export function createDraftBoard({ adminMode }) {
       });
     }
 
+    if (el.pickedByFilter) {
+      el.pickedByFilter.addEventListener("change", () => {
+        state.filters.pickedBy = el.pickedByFilter.value;
+        renderBoard();
+      });
+    }
+
     if (el.weekendOnly) {
       el.weekendOnly.addEventListener("change", () => {
         state.filters.weekendOnly = el.weekendOnly.checked;
@@ -598,34 +874,197 @@ export function createDraftBoard({ adminMode }) {
         el.viewCalendarBtn.classList.toggle("active", state.filters.viewMode === "calendar");
         el.viewListBtn.classList.toggle("active", state.filters.viewMode === "list");
       };
+
       el.viewCalendarBtn.addEventListener("click", () => {
         state.filters.viewMode = "calendar";
         setActive();
         renderBoard();
       });
+
       el.viewListBtn.addEventListener("click", () => {
         state.filters.viewMode = "list";
         setActive();
         renderBoard();
       });
+
       setActive();
     }
 
     if (el.refreshBtn) {
-      el.refreshBtn.addEventListener("click", loadTickets);
+      el.refreshBtn.addEventListener("click", () => {
+        loadTickets().catch((err) => console.error(err));
+      });
     }
+  }
+
+  function readInputFileText(inputEl) {
+    const file = inputEl?.files?.[0];
+    if (!file) return Promise.resolve("");
+    return file.text();
+  }
+
+  function buildSeasonPlan(targetSeason, scheduleCsvText, participantsText, seedInput) {
+    const season = String(targetSeason || "").trim();
+    if (!season) {
+      throw new Error("Season is required.");
+    }
+
+    const tickets = parseScheduleCsv(scheduleCsvText, season);
+    if (!tickets.length) {
+      throw new Error("No valid games found in schedule CSV.");
+    }
+
+    const participants = normalizeParticipants(parseParticipantsText(participantsText)).filter((p) => p.tickets > 0);
+    if (!participants.length) {
+      throw new Error("No valid participants found.");
+    }
+
+    const totalGames = tickets.length;
+    const totalPicks = participants.reduce((sum, p) => sum + p.tickets, 0);
+    if (totalGames !== totalPicks) {
+      throw new Error(`Participant ticket total (${totalPicks}) must equal schedule games (${totalGames}).`);
+    }
+
+    const seed = String(seedInput || `${season}-dbacks-${Date.now()}`).trim();
+    const baseOrder = shuffle(participants.map((p) => p.name), makeRng(seed));
+    const sequence = generateSnakeSequence(participants, baseOrder);
+
+    return {
+      season,
+      tickets,
+      draft: {
+        mode: "snake-quotas",
+        seed,
+        participants,
+        baseOrder,
+        sequence
+      }
+    };
+  }
+
+  async function previewSeasonSetup() {
+    const seasonValue = String(el.setupSeasonInput?.value || state.filters.season || "").trim();
+    const scheduleCsvText = await readInputFileText(el.setupScheduleFile);
+    if (!scheduleCsvText) {
+      throw new Error("Select a schedule CSV file.");
+    }
+
+    let participantsText = String(el.setupParticipantsInput?.value || "").trim();
+
+    if (!participantsText) {
+      const participantsCsvText = await readInputFileText(el.setupParticipantsFile);
+      if (participantsCsvText) {
+        const participantsFromCsv = parseParticipantsCsv(participantsCsvText);
+        participantsText = participantsToText(participantsFromCsv);
+        if (el.setupParticipantsInput) {
+          el.setupParticipantsInput.value = participantsText;
+        }
+      }
+    }
+
+    if (!participantsText) {
+      throw new Error("Enter participants and ticket counts.");
+    }
+
+    const seed = String(el.setupSeedInput?.value || "").trim();
+    const plan = buildSeasonPlan(seasonValue, scheduleCsvText, participantsText, seed);
+    state.setupPlan = plan;
+    renderSetupPreview(plan);
+    setSetupStatus("ok", `Preview ready for ${plan.season}: ${plan.tickets.length} games and ${plan.draft.sequence.length} picks.`);
+    return plan;
+  }
+
+  async function postAdminJson(path, body) {
+    if (!config.apiBaseUrl) {
+      throw new Error("API is not configured.");
+    }
+    if (!state.adminKey) {
+      throw new Error("Save your admin key first.");
+    }
+
+    const res = await fetch(`${config.apiBaseUrl}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        [config.adminHeaderName || "x-admin-key"]: state.adminKey
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      const payload = safeParseJson(await res.text(), {});
+      if (res.status === 401) {
+        throw new Error("Unauthorized. Your admin key is incorrect or outdated.");
+      }
+      throw new Error(payload.message || `Request failed (${res.status}).`);
+    }
+
+    return safeParseJson(await res.text(), {});
+  }
+
+  async function createSeasonFromSetup() {
+    setSetupStatus("warn", "Creating season...");
+
+    let plan = state.setupPlan;
+    const requestedSeason = String(el.setupSeasonInput?.value || "").trim();
+    if (!plan || (requestedSeason && requestedSeason !== plan.season)) {
+      plan = await previewSeasonSetup();
+    }
+
+    await postAdminJson("/admin/import", {
+      season: plan.season,
+      items: plan.tickets
+    });
+
+    await postAdminJson("/admin/draft-config", {
+      season: plan.season,
+      mode: plan.draft.mode,
+      seed: plan.draft.seed,
+      participants: plan.draft.participants,
+      baseOrder: plan.draft.baseOrder,
+      sequence: plan.draft.sequence
+    });
+
+    state.filters.season = plan.season;
+    if (el.seasonInput) {
+      el.seasonInput.value = plan.season;
+    }
+
+    await loadTickets();
+    setSetupStatus("ok", `Season ${plan.season} created. Imported ${plan.tickets.length} games and draft order.`);
+  }
+
+  async function rotateAdminKeyFromUi() {
+    const newKey = String(el.newAdminKeyInput?.value || "").trim();
+    if (!newKey || newKey.length < 8) {
+      throw new Error("New admin key must be at least 8 characters.");
+    }
+
+    await postAdminJson("/admin/rotate-key", { newAdminKey: newKey });
+
+    state.adminKey = newKey;
+    localStorage.setItem("dbacksAdminKey", newKey);
+    if (el.adminKeyInput) {
+      el.adminKeyInput.value = newKey;
+    }
+    if (el.newAdminKeyInput) {
+      el.newAdminKeyInput.value = "";
+    }
+
+    updateAdminState();
+    setRotateStatus("ok", "Admin key rotated and saved in this browser session.");
   }
 
   function wireAdmin() {
     if (!adminMode) return;
 
-    if (el.adminKeyInput) el.adminKeyInput.value = state.adminKey;
-    if (el.pickedByInput) el.pickedByInput.value = state.pickedBy;
+    if (el.adminKeyInput) {
+      el.adminKeyInput.value = state.adminKey;
+    }
 
     if (el.saveAdminBtn) {
       el.saveAdminBtn.addEventListener("click", () => {
         state.adminKey = (el.adminKeyInput?.value || "").trim();
-        state.pickedBy = (el.pickedByInput?.value || "").trim();
 
         if (state.adminKey) {
           localStorage.setItem("dbacksAdminKey", state.adminKey);
@@ -633,13 +1072,70 @@ export function createDraftBoard({ adminMode }) {
           localStorage.removeItem("dbacksAdminKey");
         }
 
-        localStorage.setItem("dbacksPickedBy", state.pickedBy || "Admin");
         updateAdminState();
+        setRotateStatus("warn", "Use current admin key to rotate to a new one.");
         renderBoard();
       });
     }
 
+    if (el.rotateAdminKeyBtn) {
+      el.rotateAdminKeyBtn.addEventListener("click", async () => {
+        try {
+          await rotateAdminKeyFromUi();
+        } catch (err) {
+          setRotateStatus("error", err.message || "Failed to rotate admin key.");
+        }
+      });
+    }
+
+    if (el.setupSeasonInput) {
+      el.setupSeasonInput.value = state.filters.season;
+    }
+
+    if (el.setupParticipantsFile) {
+      el.setupParticipantsFile.addEventListener("change", async () => {
+        try {
+          const text = await readInputFileText(el.setupParticipantsFile);
+          if (!text) return;
+          const participants = parseParticipantsCsv(text);
+          if (!participants.length) {
+            throw new Error("Participants CSV has no valid rows.");
+          }
+          if (el.setupParticipantsInput) {
+            el.setupParticipantsInput.value = participantsToText(participants);
+          }
+          setSetupStatus("ok", `Loaded ${participants.length} participants from CSV.`);
+        } catch (err) {
+          setSetupStatus("error", err.message || "Failed to parse participants CSV.");
+        }
+      });
+    }
+
+    if (el.previewSeasonBtn) {
+      el.previewSeasonBtn.addEventListener("click", async () => {
+        try {
+          await previewSeasonSetup();
+        } catch (err) {
+          state.setupPlan = null;
+          renderSetupPreview(null);
+          setSetupStatus("error", err.message || "Preview failed.");
+        }
+      });
+    }
+
+    if (el.createSeasonBtn) {
+      el.createSeasonBtn.addEventListener("click", async () => {
+        try {
+          await createSeasonFromSetup();
+        } catch (err) {
+          setSetupStatus("error", err.message || "Failed to create season.");
+        }
+      });
+    }
+
     updateAdminState();
+    setRotateStatus("warn", "Use current admin key to rotate to a new one.");
+    renderSetupPreview(null);
   }
 
   async function init() {
@@ -653,6 +1149,7 @@ export function createDraftBoard({ adminMode }) {
     }
 
     connectSocket();
+
     setInterval(() => {
       loadTickets().catch(() => {});
     }, 30000);
@@ -661,6 +1158,7 @@ export function createDraftBoard({ adminMode }) {
       document.body.addEventListener("click", async (event) => {
         const btn = event.target.closest("button[data-action][data-ticket-id]");
         if (!btn) return;
+
         try {
           await adminAction(btn.dataset.action, btn.dataset.ticketId);
         } catch (err) {
@@ -672,3 +1170,24 @@ export function createDraftBoard({ adminMode }) {
 
   return { init };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

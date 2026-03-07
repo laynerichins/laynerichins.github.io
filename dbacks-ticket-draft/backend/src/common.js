@@ -1,7 +1,9 @@
-﻿const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { createHash } = require("node:crypto");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DynamoDBDocumentClient,
   QueryCommand,
+  GetCommand,
   PutCommand,
   UpdateCommand,
   DeleteCommand,
@@ -20,6 +22,11 @@ const TICKETS_TABLE = process.env.TICKETS_TABLE;
 const CONNECTIONS_TABLE = process.env.CONNECTIONS_TABLE;
 const ADMIN_KEY = process.env.ADMIN_KEY;
 const WEBSOCKET_ENDPOINT = process.env.WEBSOCKET_ENDPOINT;
+
+const ADMIN_KEY_ITEM = {
+  season: "_SYSTEM",
+  ticketId: "_ADMIN_KEY"
+};
 
 function json(statusCode, body) {
   return {
@@ -44,17 +51,56 @@ function parseBody(event) {
   }
 }
 
-function assertAdmin(event) {
-  const key =
+function unauthorizedError() {
+  const err = new Error("Unauthorized");
+  err.statusCode = 401;
+  return err;
+}
+
+function readAdminHeader(event) {
+  return String(
     event?.headers?.["x-admin-key"] ||
     event?.headers?.["X-Admin-Key"] ||
-    event?.headers?.["x-admin-Key"];
+    event?.headers?.["x-admin-Key"] ||
+    ""
+  ).trim();
+}
 
-  if (!ADMIN_KEY || key !== ADMIN_KEY) {
-    const err = new Error("Unauthorized");
-    err.statusCode = 401;
-    throw err;
+function hashAdminKey(key) {
+  return createHash("sha256").update(String(key || "")).digest("hex");
+}
+
+async function getStoredAdminKeyHash() {
+  try {
+    const out = await ddb.send(
+      new GetCommand({
+        TableName: TICKETS_TABLE,
+        Key: ADMIN_KEY_ITEM
+      })
+    );
+
+    return String(out?.Item?.adminKeyHash || "").trim();
+  } catch {
+    return "";
   }
+}
+
+async function assertAdmin(event) {
+  const key = readAdminHeader(event);
+  if (!key) {
+    throw unauthorizedError();
+  }
+
+  if (ADMIN_KEY && key === ADMIN_KEY) {
+    return;
+  }
+
+  const storedHash = await getStoredAdminKeyHash();
+  if (storedHash && hashAdminKey(key) === storedHash) {
+    return;
+  }
+
+  throw unauthorizedError();
 }
 
 async function listConnections() {
@@ -111,6 +157,7 @@ function normalizeTicket(row, seasonHint) {
 
 module.exports = {
   QueryCommand,
+  GetCommand,
   PutCommand,
   UpdateCommand,
   DeleteCommand,
@@ -119,11 +166,12 @@ module.exports = {
   json,
   parseBody,
   assertAdmin,
+  hashAdminKey,
   broadcast,
   normalizeTicket,
+  adminKeyItem: ADMIN_KEY_ITEM,
   tables: {
     TICKETS_TABLE,
     CONNECTIONS_TABLE
   }
 };
-

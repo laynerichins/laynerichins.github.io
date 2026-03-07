@@ -1,59 +1,106 @@
 # D-backs Ticket Draft Board
 
-Realtime ticket draft board with separate public viewer and admin console.
+Realtime ticket draft board with a public viewer and a separate admin page.
 
 ## Pages
 
 - Public viewer: `frontend/index.html`
 - Admin console: `frontend/admin.html`
 
-## Features
+The public page is view-only. Admin actions (pick/unpick, create season, import data, rotate admin key) are only on the admin page.
 
-- Realtime updates via WebSocket
-- Filters: status, month, weekend-only, team selection
-- View modes: calendar and list
+## Core Features
+
+- Live updates via WebSocket
+- Calendar view and list view
+- Filters: status, picked by, month, weekend-only, teams
 - Recent picks sidebar
-- Draft clock (on-the-clock / up-next) from pick order file
-- Admin actions (pick/unpick) only on `admin.html`
+- Draft clock (on the clock / up next)
+- Total draft order display
+- Admin auto-assigns picks to the current person on the clock
+- Admin key rotation from admin UI
 
-## Frontend config
+## New Season Workflow (Admin)
 
-Edit `frontend/config.js`:
+On `admin.html`:
 
-- `apiBaseUrl`: HTTP API URL
-- `wsUrl`: WebSocket URL
-- `season`: active season year
-- `adminHeaderName`: usually `x-admin-key`
-- `pickOrderUrl`: optional path to pick order JSON
+1. Enter and save current admin key.
+2. In **Create New Season**:
+   - `New season` (example: `2027`)
+   - Upload `Schedule CSV`
+   - Enter participants in textarea (`Name,Count`) or upload `Participants CSV`
+   - Optional `Seed`
+3. Click **Preview Order** to generate randomized snake order.
+4. Click **Create Season** to:
+   - import schedule to `/admin/import`
+   - save draft config to `/admin/draft-config`
 
-## Data files
+Validation:
 
-- Season tickets: `data/2026-tickets.json`
-- Pick order: `data/pick-order-2026.json`
+- Sum of participant ticket counts must equal number of games in the schedule CSV.
 
-Pick order format:
+## Admin Key Rotation
+
+Use the admin panel to rotate the key:
+
+1. Save current admin key session.
+2. Enter new key (`8+` chars).
+3. Click **Rotate Admin Key**.
+
+The new key is stored server-side as a SHA-256 hash. The CloudFormation `AdminKey` parameter remains a bootstrap recovery key.
+
+## Draft Order Format
+
+Draft config is stored per season in DynamoDB (`ticketId: _DRAFT_CONFIG`) and returned by `GET /draft-config`:
 
 ```json
 {
-  "mode": "linear",
-  "order": ["Person 1", "Person 2", "Person 3"]
+  "mode": "snake-quotas",
+  "seed": "2027-dbacks",
+  "participants": [{ "name": "Layne", "tickets": 13 }],
+  "baseOrder": ["Layne"],
+  "sequence": ["Layne"]
 }
 ```
 
-The app computes on-the-clock from `pickedCount % order.length`.
+If API draft config is missing, frontend falls back to `data/pick-order-<season>.json`.
 
-## Backend deploy (CloudFormation package/deploy)
+## Frontend Config
 
-1. Install dependencies:
+Edit `frontend/config.js`:
+
+- `apiBaseUrl`: HTTP API base URL
+- `wsUrl`: WebSocket URL
+- `season`: default season
+- `adminHeaderName`: usually `x-admin-key`
+- `pickOrderUrl`: optional local fallback path
+
+## CSV Conversion Script
+
+Convert schedule CSV to JSON (optional helper script):
+
+```powershell
+node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 > data\2026-tickets.json
+```
+
+## Backend API
+
+- `GET /tickets?season=2026`
+- `GET /draft-config?season=2026`
+- `POST /admin/pick`
+- `POST /admin/unpick`
+- `POST /admin/import`
+- `POST /admin/draft-config`
+- `POST /admin/rotate-key`
+
+Admin endpoints require header `x-admin-key`.
+
+## Deploy Backend (CloudFormation package/deploy)
 
 ```powershell
 cd dbacks-ticket-draft\backend
 npm install
-```
 
-2. Package/deploy:
-
-```powershell
 $region = "us-west-2"
 $account = (aws sts get-caller-identity | ConvertFrom-Json).Account
 $bucket = "dbacks-ticket-draft-artifacts-$account-$region"
@@ -63,29 +110,6 @@ aws cloudformation package --template-file template.yaml --s3-bucket $bucket --o
 aws cloudformation deploy --template-file packaged.yaml --stack-name dbacks-ticket-draft-prod --capabilities CAPABILITY_IAM --parameter-overrides AdminKey="YOUR_ADMIN_KEY" --region $region
 ```
 
-3. Import tickets:
+## Security Note
 
-```powershell
-$api = "https://YOUR_API_ID.execute-api.us-west-2.amazonaws.com"
-$adminKey = "YOUR_ADMIN_KEY"
-$body = Get-Content -Raw .\data\2026-tickets.json
-Invoke-RestMethod -Method Post -Uri "$api/admin/import" -Headers @{ "x-admin-key" = $adminKey } -ContentType "application/json" -Body $body
-```
-
-## CSV conversion
-
-Convert schedule CSV to app JSON:
-
-```powershell
-node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 > data\2026-tickets.json
-```
-
-Optional default seat fields:
-
-```powershell
-node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 112 18 2 > data\2026-tickets.json
-```
-
-## Security note
-
-Admin actions are protected by shared `x-admin-key`. If you suspect key exposure, rotate by redeploying stack with a new `AdminKey` parameter.
+If admin key is exposed, rotate it in the admin UI immediately. If needed, redeploy with a new CloudFormation `AdminKey` bootstrap value.

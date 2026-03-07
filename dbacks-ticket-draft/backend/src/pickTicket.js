@@ -1,4 +1,4 @@
-﻿const {
+const {
   UpdateCommand,
   ddb,
   json,
@@ -10,7 +10,7 @@
 
 exports.handler = async (event) => {
   try {
-    assertAdmin(event);
+    await assertAdmin(event);
     const body = parseBody(event);
     if (!body.ticketId) return json(400, { message: "ticketId is required." });
 
@@ -42,3 +42,4 @@ exports.handler = async (event) => {
     return json(err.statusCode || 500, { message: err.message || "Internal server error" });
   }
 };
+
