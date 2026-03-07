@@ -1,0 +1,262 @@
+﻿:root {
+  --bg: radial-gradient(circle at top right, #fff1c9 0%, #fff9ea 35%, #f7fbff 100%);
+  --panel: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #a71930;
+  --primary-dark: #7a1022;
+  --available: #0f8a5f;
+  --picked: #c2410c;
+  --border: #e5e7eb;
+  --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Archivo", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding: 20px 24px 12px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.status-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.layout {
+  display: grid;
+  gap: 16px;
+  padding: 0 24px 24px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.controls { grid-column: span 6; }
+.admin { grid-column: span 6; }
+.board { grid-column: span 8; }
+.picked-log { grid-column: span 4; }
+
+.grid.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+input, select, button {
+  font: inherit;
+}
+
+input, select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.btn {
+  margin-top: 12px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+}
+
+.btn.subtle {
+  margin: 0;
+  background: #eef2ff;
+  color: #312e81;
+}
+
+.btn.subtle:hover {
+  background: #e0e7ff;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.summary {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.metric {
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  background: #f9fafb;
+  border: 1px solid var(--border);
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.ticket-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fff;
+}
+
+.ticket-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.ticket-card .date {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge.available {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.badge.picked {
+  color: #9a3412;
+  background: #ffedd5;
+}
+
+.ticket-card h3 {
+  font-size: 16px;
+}
+
+.ticket-card .meta,
+.ticket-card .notes,
+.ticket-card .picked {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ticket-card .actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ticket-card .actions button {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ticket-card .actions button.pick {
+  border-color: #bbf7d0;
+  color: var(--available);
+  background: #f0fdf4;
+}
+
+.ticket-card .actions button.unpick {
+  border-color: #fdba74;
+  color: var(--picked);
+  background: #fff7ed;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 640px;
+  overflow: auto;
+}
+
+.log-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 980px) {
+  .controls, .admin, .board, .picked-log {
+    grid-column: span 12;
+  }
+
+  .grid.two {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,30 @@
+﻿[
+  {
+    "ticketId": "2026-04-03-Cubs-112-18",
+    "season": "2026",
+    "gameDate": "2026-04-03",
+    "gameTime": "6:40 PM",
+    "opponent": "Cubs",
+    "section": "112",
+    "row": "18",
+    "seats": "2",
+    "notes": "Opening weekend",
+    "status": "AVAILABLE",
+    "pickedBy": "",
+    "pickedAt": ""
+  },
+  {
+    "ticketId": "2026-04-10-Dodgers-112-18",
+    "season": "2026",
+    "gameDate": "2026-04-10",
+    "gameTime": "6:40 PM",
+    "opponent": "Dodgers",
+    "section": "112",
+    "row": "18",
+    "seats": "2",
+    "notes": "Rivalry game",
+    "status": "PICKED",
+    "pickedBy": "Tanner",
+    "pickedAt": "2026-03-06T20:15:00Z"
+  }
+]

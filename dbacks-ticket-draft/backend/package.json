@@ -1,0 +1,18 @@
+{
+  "name": "dbacks-ticket-draft-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AWS backend for D-backs ticket draft board",
+  "type": "commonjs",
+  "main": "src/getTickets.js",
+  "scripts": {
+    "lint": "echo \"Add linter if desired\"",
+    "build": "echo \"Build is handled by CloudFormation package/deploy\"",
+    "test": "node --test --test-isolation=none ./test/*.test.cjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.917.0",
+    "@aws-sdk/client-dynamodb": "^3.917.0",
+    "@aws-sdk/lib-dynamodb": "^3.917.0"
+  }
+}

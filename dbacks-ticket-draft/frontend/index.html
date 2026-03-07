@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D-backs Ticket Draft Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./config.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Arizona Diamondbacks</p>
+      <h1>Ticket Draft Board</h1>
+    </div>
+    <div class="status-pill" id="connectionStatus">Connecting...</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <h2>Draft Controls</h2>
+      <div class="grid two">
+        <label>
+          Season
+          <input id="seasonInput" type="text" value="2026" />
+        </label>
+        <label>
+          Filter
+          <select id="statusFilter">
+            <option value="ALL">All</option>
+            <option value="AVAILABLE">Available</option>
+            <option value="PICKED">Picked</option>
+          </select>
+        </label>
+      </div>
+      <div class="summary" id="summary"></div>
+    </section>
+
+    <section class="panel admin">
+      <h2>Admin</h2>
+      <p class="hint">No full login required. Use your admin key to unlock pick actions.</p>
+      <div class="grid two">
+        <label>
+          Admin key
+          <input id="adminKeyInput" type="password" placeholder="Enter admin key" autocomplete="off" />
+        </label>
+        <label>
+          Picked by
+          <input id="pickedByInput" type="text" placeholder="Name for this pick" />
+        </label>
+      </div>
+      <button id="saveAdminBtn" class="btn">Save Admin Session</button>
+      <p class="hint" id="adminState">Admin mode is locked.</p>
+    </section>
+
+    <section class="panel board">
+      <div class="board-header">
+        <h2>Games</h2>
+        <button id="refreshBtn" class="btn subtle">Refresh</button>
+      </div>
+      <div id="board" class="board-grid"></div>
+    </section>
+
+    <section class="panel picked-log">
+      <h2>Recent Picks</h2>
+      <div id="pickedLog" class="log-list"></div>
+    </section>
+  </main>
+
+  <template id="ticketCardTemplate">
+    <article class="ticket-card">
+      <header>
+        <p class="date"></p>
+        <span class="badge"></span>
+      </header>
+      <h3 class="opponent"></h3>
+      <p class="meta"></p>
+      <p class="notes"></p>
+      <div class="picked"></div>
+      <div class="actions"></div>
+    </article>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
