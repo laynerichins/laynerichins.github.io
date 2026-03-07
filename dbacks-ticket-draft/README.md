@@ -1,81 +1,69 @@
 # D-backs Ticket Draft Board
 
-Reusable, real-time ticket draft board for your season package.
+Realtime ticket draft board with separate public viewer and admin console.
 
-## What this includes
+## Pages
 
-- `frontend/`: static app (public view + admin actions).
-- `backend/`: AWS Lambda + API Gateway + DynamoDB + WebSocket template.
-- `scripts/`: CSV-to-JSON import helper for annual refresh.
-- `data/`: sample data and converted season files.
+- Public viewer: `frontend/index.html`
+- Admin console: `frontend/admin.html`
 
-## Architecture
+## Features
 
-1. Public users open the frontend and view ticket status.
-2. Frontend loads season tickets from `GET /tickets`.
-3. Admin uses `x-admin-key` to call pick/unpick/import endpoints.
-4. Backend writes DynamoDB and broadcasts updates over WebSocket.
-5. Clients update without page refresh.
+- Realtime updates via WebSocket
+- Filters: status, month, weekend-only, team selection
+- View modes: calendar and list
+- Recent picks sidebar
+- Draft clock (on-the-clock / up-next) from pick order file
+- Admin actions (pick/unpick) only on `admin.html`
 
 ## Frontend config
 
-Edit [frontend/config.js](C:\Users\LayneRichins\OneDrive - stotzeq.com\Documents\GitHub\laynerichins.github.io\dbacks-ticket-draft\frontend\config.js):
+Edit `frontend/config.js`:
 
-- `apiBaseUrl`: HTTP API base URL
+- `apiBaseUrl`: HTTP API URL
 - `wsUrl`: WebSocket URL
-- `season`: current season (example `2026`)
+- `season`: active season year
+- `adminHeaderName`: usually `x-admin-key`
+- `pickOrderUrl`: optional path to pick order JSON
 
-## AWS backend deploy (CloudFormation package/deploy)
+## Data files
 
-Prereqs: AWS CLI configured, Node.js 20+.
+- Season tickets: `data/2026-tickets.json`
+- Pick order: `data/pick-order-2026.json`
 
-1. Install backend dependencies:
+Pick order format:
+
+```json
+{
+  "mode": "linear",
+  "order": ["Person 1", "Person 2", "Person 3"]
+}
+```
+
+The app computes on-the-clock from `pickedCount % order.length`.
+
+## Backend deploy (CloudFormation package/deploy)
+
+1. Install dependencies:
 
 ```powershell
 cd dbacks-ticket-draft\backend
 npm install
 ```
 
-2. Create or reuse an artifact S3 bucket (replace values):
+2. Package/deploy:
 
 ```powershell
 $region = "us-west-2"
 $account = (aws sts get-caller-identity | ConvertFrom-Json).Account
 $bucket = "dbacks-ticket-draft-artifacts-$account-$region"
+
 aws s3api create-bucket --bucket $bucket --region $region --create-bucket-configuration LocationConstraint=$region
-```
-
-3. Package and deploy:
-
-```powershell
-cd dbacks-ticket-draft\backend
 aws cloudformation package --template-file template.yaml --s3-bucket $bucket --output-template-file packaged.yaml --region $region
 aws cloudformation deploy --template-file packaged.yaml --stack-name dbacks-ticket-draft-prod --capabilities CAPABILITY_IAM --parameter-overrides AdminKey="YOUR_ADMIN_KEY" --region $region
 ```
 
-4. Read outputs and update frontend config:
-
-```powershell
-aws cloudformation describe-stacks --stack-name dbacks-ticket-draft-prod --region $region
-```
-
-Use `HttpApiUrl` and `WebSocketUrl` output values.
-
-## Importing season data
-
-1. Convert CSV to app JSON:
-
-```powershell
-node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 > data\2026-tickets.json
-```
-
-Optional defaults for all games:
-
-```powershell
-node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 112 18 2 > data\2026-tickets.json
-```
-
-2. Import to backend:
+3. Import tickets:
 
 ```powershell
 $api = "https://YOUR_API_ID.execute-api.us-west-2.amazonaws.com"
@@ -84,14 +72,20 @@ $body = Get-Content -Raw .\data\2026-tickets.json
 Invoke-RestMethod -Method Post -Uri "$api/admin/import" -Headers @{ "x-admin-key" = $adminKey } -ContentType "application/json" -Body $body
 ```
 
-## Supported CSV formats
+## CSV conversion
 
-- Legacy sheet format: `date/gameDate`, `time/gameTime`, `opponent`, optional `section`, `row`, `seats`, `notes`
-- Schedule export format: `START DATE`, `START TIME`, `SUBJECT`, `LOCATION`
+Convert schedule CSV to app JSON:
 
-For schedule export, opponent is derived from `SUBJECT` (example: `Tigers at D-backs`).
+```powershell
+node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 > data\2026-tickets.json
+```
+
+Optional default seat fields:
+
+```powershell
+node scripts/csv-to-json.mjs "C:\path\to\schedule.csv" 2026 112 18 2 > data\2026-tickets.json
+```
 
 ## Security note
 
-This starter uses a shared admin header key for speed (no user login).
-For stronger security later, switch to signed admin links or Cognito auth.
+Admin actions are protected by shared `x-admin-key`. If you suspect key exposure, rotate by redeploying stack with a new `AdminKey` parameter.
