@@ -814,7 +814,24 @@ export function createDraftBoard({ adminMode }) {
       throw new Error(payload.message || `Admin action failed (${res.status})`);
     }
 
-    await loadTickets();
+    const payload = safeParseJson(await res.text(), {});
+    if (payload?.item) {
+      applyTicketUpdate(payload.item);
+      return;
+    }
+
+    // Fallback if API response omits item: apply local optimistic update.
+    const idx = state.tickets.findIndex((t) => t.ticketId === ticketId);
+    if (idx >= 0) {
+      state.tickets[idx] = {
+        ...state.tickets[idx],
+        status: action === "pick" ? "PICKED" : "AVAILABLE",
+        pickedBy: action === "pick" ? autoPickedBy : "",
+        pickedAt: action === "pick" ? new Date().toISOString() : ""
+      };
+      hydrateFilters();
+      refreshAll();
+    }
   }
 
   function applyTicketUpdate(ticket) {
@@ -1392,6 +1409,30 @@ export function createDraftBoard({ adminMode }) {
     setRotateStatus("ok", "Admin key rotated and saved in this browser session.");
   }
 
+  async function verifyAdminKey(key) {
+    const candidate = String(key || "").trim();
+    if (!candidate) return false;
+
+    if (!config.apiBaseUrl) {
+      return true;
+    }
+
+    try {
+      const res = await fetch(`${config.apiBaseUrl}/admin/pick`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          [config.adminHeaderName || "x-admin-key"]: candidate
+        },
+        body: JSON.stringify({})
+      });
+
+      return res.status !== 401;
+    } catch {
+      throw new Error("Could not verify admin key (API/network error).");
+    }
+  }
+
   function wireAdmin() {
     if (!adminMode) return;
 
@@ -1400,18 +1441,45 @@ export function createDraftBoard({ adminMode }) {
     }
 
     if (el.saveAdminBtn) {
-      el.saveAdminBtn.addEventListener("click", () => {
-        state.adminKey = (el.adminKeyInput?.value || "").trim();
+      el.saveAdminBtn.addEventListener("click", async () => {
+        const candidate = (el.adminKeyInput?.value || "").trim();
 
-        if (state.adminKey) {
-          localStorage.setItem("dbacksAdminKey", state.adminKey);
-        } else {
+        if (!candidate) {
+          state.adminKey = "";
           localStorage.removeItem("dbacksAdminKey");
+          updateAdminState();
+          setRotateStatus("warn", "Use current admin key to rotate to a new one.");
+          renderBoard();
+          return;
         }
 
-        updateAdminState();
-        setRotateStatus("warn", "Use current admin key to rotate to a new one.");
-        renderBoard();
+        try {
+          const valid = await verifyAdminKey(candidate);
+          if (!valid) {
+            state.adminKey = "";
+            localStorage.removeItem("dbacksAdminKey");
+            if (el.adminState) {
+              el.adminState.textContent = "Admin key invalid. Access remains locked.";
+            }
+            setRotateStatus("error", "Current admin key is invalid.");
+            renderBoard();
+            return;
+          }
+
+          state.adminKey = candidate;
+          localStorage.setItem("dbacksAdminKey", state.adminKey);
+          updateAdminState();
+          setRotateStatus("warn", "Use current admin key to rotate to a new one.");
+          renderBoard();
+        } catch (err) {
+          state.adminKey = "";
+          localStorage.removeItem("dbacksAdminKey");
+          if (el.adminState) {
+            el.adminState.textContent = err.message || "Could not verify admin key.";
+          }
+          setRotateStatus("error", err.message || "Could not verify admin key.");
+          renderBoard();
+        }
       });
     }
 
