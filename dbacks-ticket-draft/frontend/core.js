@@ -89,17 +89,7 @@ function tallyParticipantsFromSequence(sequence) {
   return [...map.entries()].map(([name, tickets]) => ({ name, tickets }));
 }
 
-function generateSnakeSequence(participants, baseOrderInput) {
-  const participantsClean = normalizeParticipants(participants).filter((p) => p.tickets > 0);
-  const nameSet = new Set(participantsClean.map((p) => p.name));
-
-  let baseOrder = Array.isArray(baseOrderInput)
-    ? baseOrderInput.map(normalizeName).filter((name) => nameSet.has(name))
-    : [];
-
-  const missing = participantsClean.map((p) => p.name).filter((name) => !baseOrder.includes(name));
-  baseOrder = [...baseOrder, ...missing];
-
+function generateClassicSnakeSequence(participantsClean, baseOrder) {
   const remaining = Object.fromEntries(participantsClean.map((p) => [p.name, p.tickets]));
   const total = participantsClean.reduce((sum, p) => sum + p.tickets, 0);
   const sequence = [];
@@ -114,6 +104,55 @@ function generateSnakeSequence(participants, baseOrderInput) {
       }
     }
     round += 1;
+  }
+
+  return sequence;
+}
+
+function generateSnakeSequence(participants, baseOrderInput) {
+  const participantsClean = normalizeParticipants(participants).filter((p) => p.tickets > 0);
+  if (!participantsClean.length) return [];
+
+  const nameSet = new Set(participantsClean.map((p) => p.name));
+
+  let baseOrder = Array.isArray(baseOrderInput)
+    ? baseOrderInput.map(normalizeName).filter((name) => nameSet.has(name))
+    : [];
+
+  const missing = participantsClean.map((p) => p.name).filter((name) => !baseOrder.includes(name));
+  baseOrder = [...baseOrder, ...missing];
+
+  const total = participantsClean.reduce((sum, p) => sum + p.tickets, 0);
+  const maxTickets = Math.max(...participantsClean.map((p) => p.tickets));
+  const sequence = [];
+
+  for (let round = 1; round <= maxTickets; round += 1) {
+    const picksThisRound = new Set();
+
+    participantsClean.forEach((p) => {
+      const prev = Math.round(((round - 1) * p.tickets) / maxTickets);
+      const curr = Math.round((round * p.tickets) / maxTickets);
+      if (curr > prev) {
+        picksThisRound.add(p.name);
+      }
+    });
+
+    const order = round % 2 === 1 ? baseOrder : [...baseOrder].reverse();
+    order.forEach((name) => {
+      if (picksThisRound.has(name)) {
+        sequence.push(name);
+      }
+    });
+  }
+
+  if (sequence.length !== total) {
+    return generateClassicSnakeSequence(participantsClean, baseOrder);
+  }
+
+  const counts = new Map(tallyParticipantsFromSequence(sequence).map((p) => [p.name, p.tickets]));
+  const validCounts = participantsClean.every((p) => counts.get(p.name) === p.tickets);
+  if (!validCounts) {
+    return generateClassicSnakeSequence(participantsClean, baseOrder);
   }
 
   return sequence;
@@ -222,6 +261,7 @@ export function createDraftBoard({ adminMode }) {
     setupPreview: document.getElementById("setupPreview"),
     draftOrderEditor: document.getElementById("draftOrderEditor"),
     loadDraftOrderBtn: document.getElementById("loadDraftOrderBtn"),
+    rebalanceDraftOrderBtn: document.getElementById("rebalanceDraftOrderBtn"),
     saveDraftOrderBtn: document.getElementById("saveDraftOrderBtn"),
     pickedAssignmentsInput: document.getElementById("pickedAssignmentsInput"),
     loadPickedAssignmentsBtn: document.getElementById("loadPickedAssignmentsBtn"),
@@ -1017,7 +1057,7 @@ export function createDraftBoard({ adminMode }) {
       season,
       tickets,
       draft: {
-        mode: "snake-quotas",
+        mode: "snake-balanced-quotas",
         seed,
         participants,
         baseOrder,
@@ -1162,8 +1202,43 @@ export function createDraftBoard({ adminMode }) {
     const lines = state.tickets
       .filter((t) => t.status === "PICKED")
       .sort((a, b) => a.gameDate.localeCompare(b.gameDate))
-      .map((t) => `${t.ticketId},${t.pickedBy || ""}`);
+      .map((t) => String(t.ticketId) + "," + String(t.pickedBy || ""));
     el.pickedAssignmentsInput.value = lines.join("\n");
+  }
+
+  function getDraftParticipantsForRegeneration() {
+    const fromDraft = normalizeParticipants(state.draft.participants).filter((p) => p.tickets > 0);
+    if (fromDraft.length) return fromDraft;
+
+    const fromSequence = normalizeParticipants(tallyParticipantsFromSequence(state.draft.sequence)).filter((p) => p.tickets > 0);
+    return fromSequence;
+  }
+
+  function generateBalancedDraftOrderFromCurrentState() {
+    const participants = getDraftParticipantsForRegeneration();
+    if (!participants.length) {
+      throw new Error("No participant quotas are loaded for this season.");
+    }
+
+    const totalTickets = participants.reduce((sum, p) => sum + p.tickets, 0);
+    if (state.tickets.length && totalTickets !== state.tickets.length) {
+      throw new Error("Participant ticket total (" + totalTickets + ") must match game count (" + state.tickets.length + ").");
+    }
+
+    const participantNames = participants.map((p) => p.name);
+    const existingBase = (Array.isArray(state.draft.baseOrder) ? state.draft.baseOrder : [])
+      .map(normalizeName)
+      .filter((name) => participantNames.includes(name));
+
+    const missing = participantNames.filter((name) => !existingBase.includes(name));
+    let baseOrder = [...existingBase, ...missing];
+
+    if (!baseOrder.length) {
+      const seed = String(state.draft.seed || (String(state.filters.season || "draft") + "-balanced")).trim();
+      baseOrder = shuffle(participantNames, makeRng(seed));
+    }
+
+    return generateSnakeSequence(participants, baseOrder);
   }
 
   function buildBaseOrderFromSequence(sequence) {
@@ -1394,6 +1469,20 @@ export function createDraftBoard({ adminMode }) {
       el.loadDraftOrderBtn.addEventListener("click", () => {
         loadDraftOrderEditorFromState();
         setDraftEditStatus("ok", "Loaded current draft sequence into the editor.");
+      });
+    }
+
+    if (el.rebalanceDraftOrderBtn) {
+      el.rebalanceDraftOrderBtn.addEventListener("click", () => {
+        try {
+          const sequence = generateBalancedDraftOrderFromCurrentState();
+          if (el.draftOrderEditor) {
+            el.draftOrderEditor.value = sequence.join("\n");
+          }
+          setDraftEditStatus("ok", "Generated balanced order in editor. Review, then click Save Draft Order.");
+        } catch (err) {
+          setDraftEditStatus("error", err.message || "Failed to generate balanced order.");
+        }
       });
     }
 
