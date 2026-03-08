@@ -111,27 +111,38 @@ function generateClassicSnakeSequence(participantsClean, baseOrder) {
 
 function generateEquitableSnakeSequence(participantsClean, baseOrder) {
   const total = participantsClean.reduce((sum, p) => sum + p.tickets, 0);
-  const maxTickets = Math.max(...participantsClean.map((p) => p.tickets));
-  const sequence = [];
+  if (!participantsClean.length) return [];
 
-  // Spread each participant's quota across rounds while preserving snake order each round.
-  for (let round = 1; round <= maxTickets; round += 1) {
-    const picksThisRound = new Set();
+  // Round 1 guarantee: everyone with tickets gets one pick in base order.
+  const sequence = baseOrder.filter((name) => participantsClean.some((p) => p.name === name));
 
-    participantsClean.forEach((p) => {
-      const prev = Math.round(((round - 1) * p.tickets) / maxTickets);
-      const curr = Math.round((round * p.tickets) / maxTickets);
-      if (curr > prev) {
-        picksThisRound.add(p.name);
-      }
-    });
+  const remainingParticipants = participantsClean.map((p) => ({
+    name: p.name,
+    tickets: Math.max(0, p.tickets - 1)
+  }));
 
-    const order = round % 2 === 1 ? baseOrder : [...baseOrder].reverse();
-    order.forEach((name) => {
-      if (picksThisRound.has(name)) {
-        sequence.push(name);
-      }
-    });
+  const maxRemaining = Math.max(...remainingParticipants.map((p) => p.tickets));
+  if (maxRemaining > 0) {
+    for (let relativeRound = 1; relativeRound <= maxRemaining; relativeRound += 1) {
+      const absoluteRound = relativeRound + 1;
+      const picksThisRound = new Set();
+
+      remainingParticipants.forEach((p) => {
+        if (p.tickets <= 0) return;
+        const prev = Math.round(((relativeRound - 1) * p.tickets) / maxRemaining);
+        const curr = Math.round((relativeRound * p.tickets) / maxRemaining);
+        if (curr > prev) {
+          picksThisRound.add(p.name);
+        }
+      });
+
+      const order = absoluteRound % 2 === 1 ? baseOrder : [...baseOrder].reverse();
+      order.forEach((name) => {
+        if (picksThisRound.has(name)) {
+          sequence.push(name);
+        }
+      });
+    }
   }
 
   if (sequence.length !== total) {
