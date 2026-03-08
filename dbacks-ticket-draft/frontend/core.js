@@ -109,23 +109,12 @@ function generateClassicSnakeSequence(participantsClean, baseOrder) {
   return sequence;
 }
 
-function generateSnakeSequence(participants, baseOrderInput) {
-  const participantsClean = normalizeParticipants(participants).filter((p) => p.tickets > 0);
-  if (!participantsClean.length) return [];
-
-  const nameSet = new Set(participantsClean.map((p) => p.name));
-
-  let baseOrder = Array.isArray(baseOrderInput)
-    ? baseOrderInput.map(normalizeName).filter((name) => nameSet.has(name))
-    : [];
-
-  const missing = participantsClean.map((p) => p.name).filter((name) => !baseOrder.includes(name));
-  baseOrder = [...baseOrder, ...missing];
-
+function generateEquitableSnakeSequence(participantsClean, baseOrder) {
   const total = participantsClean.reduce((sum, p) => sum + p.tickets, 0);
   const maxTickets = Math.max(...participantsClean.map((p) => p.tickets));
   const sequence = [];
 
+  // Spread each participant's quota across rounds while preserving snake order each round.
   for (let round = 1; round <= maxTickets; round += 1) {
     const picksThisRound = new Set();
 
@@ -156,6 +145,22 @@ function generateSnakeSequence(participants, baseOrderInput) {
   }
 
   return sequence;
+}
+
+function generateSnakeSequence(participants, baseOrderInput) {
+  const participantsClean = normalizeParticipants(participants).filter((p) => p.tickets > 0);
+  if (!participantsClean.length) return [];
+
+  const nameSet = new Set(participantsClean.map((p) => p.name));
+
+  let baseOrder = Array.isArray(baseOrderInput)
+    ? baseOrderInput.map(normalizeName).filter((name) => nameSet.has(name))
+    : [];
+
+  const missing = participantsClean.map((p) => p.name).filter((name) => !baseOrder.includes(name));
+  baseOrder = [...baseOrder, ...missing];
+
+  return generateEquitableSnakeSequence(participantsClean, baseOrder);
 }
 
 function parseDraftConfigPayload(payload, ticketCountHint) {
@@ -1057,7 +1062,7 @@ export function createDraftBoard({ adminMode }) {
       season,
       tickets,
       draft: {
-        mode: "snake-balanced-quotas",
+        mode: "snake-equitable-quotas",
         seed,
         participants,
         baseOrder,
@@ -1214,7 +1219,7 @@ export function createDraftBoard({ adminMode }) {
     return fromSequence;
   }
 
-  function generateBalancedDraftOrderFromCurrentState() {
+  function generateSnakeDraftOrderFromCurrentState() {
     const participants = getDraftParticipantsForRegeneration();
     if (!participants.length) {
       throw new Error("No participant quotas are loaded for this season.");
@@ -1234,7 +1239,7 @@ export function createDraftBoard({ adminMode }) {
     let baseOrder = [...existingBase, ...missing];
 
     if (!baseOrder.length) {
-      const seed = String(state.draft.seed || (String(state.filters.season || "draft") + "-balanced")).trim();
+      const seed = String(state.draft.seed || (String(state.filters.season || "draft") + "-equitable-snake")).trim();
       baseOrder = shuffle(participantNames, makeRng(seed));
     }
 
@@ -1475,13 +1480,13 @@ export function createDraftBoard({ adminMode }) {
     if (el.rebalanceDraftOrderBtn) {
       el.rebalanceDraftOrderBtn.addEventListener("click", () => {
         try {
-          const sequence = generateBalancedDraftOrderFromCurrentState();
+          const sequence = generateSnakeDraftOrderFromCurrentState();
           if (el.draftOrderEditor) {
             el.draftOrderEditor.value = sequence.join("\n");
           }
-          setDraftEditStatus("ok", "Generated balanced order in editor. Review, then click Save Draft Order.");
+          setDraftEditStatus("ok", "Generated equitable snake order in editor. Review, then click Save Draft Order.");
         } catch (err) {
-          setDraftEditStatus("error", err.message || "Failed to generate balanced order.");
+          setDraftEditStatus("error", err.message || "Failed to generate equitable snake order.");
         }
       });
     }
