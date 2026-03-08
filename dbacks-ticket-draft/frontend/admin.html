@@ -27,70 +27,104 @@
   <main class="layout">
     <section class="panel controls">
       <div class="controls-top">
-        <h2>Admin Controls</h2>
+        <h2>Draft Manager</h2>
         <button id="refreshBtn" class="btn subtle">Refresh</button>
       </div>
 
-      <div class="admin-block">
-        <div class="control-grid admin-grid">
-          <label>
-            Admin key
-            <input id="adminKeyInput" type="password" autocomplete="off" placeholder="Enter current x-admin-key" />
-          </label>
+      <details class="expando-card">
+        <summary>Admin Access</summary>
+        <div class="expando-body">
+          <div class="admin-block">
+            <div class="control-grid admin-grid">
+              <label>
+                Admin key
+                <input id="adminKeyInput" type="password" autocomplete="off" placeholder="Enter current x-admin-key" />
+              </label>
+            </div>
+            <button id="saveAdminBtn" class="btn" type="button">Save Admin Session</button>
+            <p class="hint" id="adminState">Admin locked. Enter key to enable pick actions.</p>
+
+            <div class="admin-rotate">
+              <label>
+                New admin key
+                <input id="newAdminKeyInput" type="password" autocomplete="off" placeholder="At least 8 characters" />
+              </label>
+              <button id="rotateAdminKeyBtn" class="btn subtle" type="button">Rotate Admin Key</button>
+            </div>
+            <p class="hint" id="rotateAdminState">Use current admin key to rotate to a new one.</p>
+          </div>
         </div>
-        <button id="saveAdminBtn" class="btn" type="button">Save Admin Session</button>
-        <p class="hint" id="adminState">Admin locked. Enter key to enable pick actions.</p>
+      </details>
 
-        <div class="admin-rotate">
-          <label>
-            New admin key
-            <input id="newAdminKeyInput" type="password" autocomplete="off" placeholder="At least 8 characters" />
-          </label>
-          <button id="rotateAdminKeyBtn" class="btn subtle" type="button">Rotate Admin Key</button>
+      <details class="expando-card">
+        <summary>Create New Season</summary>
+        <div class="expando-body">
+          <div class="season-setup">
+            <div class="controls-top setup-top">
+              <h3>Create New Season</h3>
+              <button id="previewSeasonBtn" class="btn subtle" type="button">Preview Order</button>
+            </div>
+
+            <div class="control-grid setup-grid">
+              <label>
+                New season
+                <input id="setupSeasonInput" type="text" placeholder="2027" />
+              </label>
+              <label>
+                Seed (optional)
+                <input id="setupSeedInput" type="text" placeholder="example: 2027-dbacks" />
+              </label>
+              <label>
+                Schedule CSV
+                <input id="setupScheduleFile" type="file" accept=".csv,text/csv" />
+              </label>
+              <label>
+                Participants CSV (optional)
+                <input id="setupParticipantsFile" type="file" accept=".csv,text/csv" />
+              </label>
+            </div>
+
+            <label class="setup-text">
+              Participants (one per line, Name,Count)
+              <textarea id="setupParticipantsInput" rows="8" placeholder="Denny,8&#10;Kim,8&#10;Grant,10"></textarea>
+            </label>
+
+            <div class="setup-actions">
+              <button id="createSeasonBtn" class="btn" type="button">Create Season</button>
+            </div>
+
+            <p class="hint" id="setupStatus">Upload schedule and participants, then preview and create.</p>
+            <details class="setup-preview" open>
+              <summary>Draft Preview</summary>
+              <div id="setupPreview" class="order-list"></div>
+            </details>
+          </div>
         </div>
-        <p class="hint" id="rotateAdminState">Use current admin key to rotate to a new one.</p>
-      </div>
+      </details>
 
-      <div class="season-setup">
-        <div class="controls-top setup-top">
-          <h3>Create New Season</h3>
-          <button id="previewSeasonBtn" class="btn subtle" type="button">Preview Order</button>
+      <details class="expando-card">
+        <summary>Edit Draft Order And Picks</summary>
+        <div class="expando-body draft-edit-wrap">
+          <label>
+            Draft order (one name per line)
+            <textarea id="draftOrderEditor" rows="10" placeholder="Layne&#10;Jeff&#10;Grant"></textarea>
+          </label>
+          <div class="setup-actions">
+            <button id="loadDraftOrderBtn" class="btn subtle" type="button">Load Current Order</button>
+            <button id="saveDraftOrderBtn" class="btn" type="button">Save Draft Order</button>
+          </div>
+
+          <label>
+            Pick assignments (ticketId,pickedBy per line)
+            <textarea id="pickedAssignmentsInput" rows="8" placeholder="2026-03-30-tigers,Layne"></textarea>
+          </label>
+          <div class="setup-actions">
+            <button id="loadPickedAssignmentsBtn" class="btn subtle" type="button">Load Current Picks</button>
+            <button id="applyPickedAssignmentsBtn" class="btn" type="button">Apply Pick Assignments</button>
+          </div>
+          <p class="hint" id="draftEditStatus">Edit order and picked assignments when you need manual overrides.</p>
         </div>
-
-        <div class="control-grid setup-grid">
-          <label>
-            New season
-            <input id="setupSeasonInput" type="text" placeholder="2027" />
-          </label>
-          <label>
-            Seed (optional)
-            <input id="setupSeedInput" type="text" placeholder="example: 2027-dbacks" />
-          </label>
-          <label>
-            Schedule CSV
-            <input id="setupScheduleFile" type="file" accept=".csv,text/csv" />
-          </label>
-          <label>
-            Participants CSV (optional)
-            <input id="setupParticipantsFile" type="file" accept=".csv,text/csv" />
-          </label>
-        </div>
-
-        <label class="setup-text">
-          Participants (one per line, Name,Count)
-          <textarea id="setupParticipantsInput" rows="8" placeholder="Denny,8&#10;Kim,8&#10;Grant,10"></textarea>
-        </label>
-
-        <div class="setup-actions">
-          <button id="createSeasonBtn" class="btn" type="button">Create Season</button>
-        </div>
-
-        <p class="hint" id="setupStatus">Upload schedule and participants, then preview and create.</p>
-        <details class="setup-preview" open>
-          <summary>Draft Preview</summary>
-          <div id="setupPreview" class="order-list"></div>
-        </details>
-      </div>
+      </details>
 
       <hr class="divider" />
 
@@ -155,6 +189,9 @@
       <h2>Participants</h2>
       <div id="draftParticipants" class="participants"></div>
 
+      <h2>Fairness Summary</h2>
+      <div id="fairnessSummary" class="fairness-summary"></div>
+
       <details class="order-panel" open>
         <summary>Total Draft Order</summary>
         <div id="draftOrderList" class="order-list"></div>
@@ -168,5 +205,3 @@
   <script type="module" src="./admin.js"></script>
 </body>
 </html>
-
-

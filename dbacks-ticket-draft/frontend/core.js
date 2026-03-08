@@ -56,6 +56,12 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function isVenueOnlyNote(value) {
+  const note = String(value || "").trim();
+  if (!note) return false;
+  return /^chase\s+field(?:\s*[-,]\s*|\s+)phoenix$/i.test(note);
+}
+
 function normalizeName(value) {
   return String(value || "").trim();
 }
@@ -197,6 +203,7 @@ export function createDraftBoard({ adminMode }) {
     upNext: document.getElementById("upNext"),
     picksMade: document.getElementById("picksMade"),
     draftParticipants: document.getElementById("draftParticipants"),
+    fairnessSummary: document.getElementById("fairnessSummary"),
     draftOrderList: document.getElementById("draftOrderList"),
     adminKeyInput: document.getElementById("adminKeyInput"),
     saveAdminBtn: document.getElementById("saveAdminBtn"),
@@ -212,7 +219,14 @@ export function createDraftBoard({ adminMode }) {
     previewSeasonBtn: document.getElementById("previewSeasonBtn"),
     createSeasonBtn: document.getElementById("createSeasonBtn"),
     setupStatus: document.getElementById("setupStatus"),
-    setupPreview: document.getElementById("setupPreview")
+    setupPreview: document.getElementById("setupPreview"),
+    draftOrderEditor: document.getElementById("draftOrderEditor"),
+    loadDraftOrderBtn: document.getElementById("loadDraftOrderBtn"),
+    saveDraftOrderBtn: document.getElementById("saveDraftOrderBtn"),
+    pickedAssignmentsInput: document.getElementById("pickedAssignmentsInput"),
+    loadPickedAssignmentsBtn: document.getElementById("loadPickedAssignmentsBtn"),
+    applyPickedAssignmentsBtn: document.getElementById("applyPickedAssignmentsBtn"),
+    draftEditStatus: document.getElementById("draftEditStatus")
   };
 
   function getPickedCount(items = state.tickets) {
@@ -251,6 +265,15 @@ export function createDraftBoard({ adminMode }) {
     el.rotateAdminState.classList.remove("status-ok", "status-warn", "status-error");
     if (mode) {
       el.rotateAdminState.classList.add(`status-${mode}`);
+    }
+  }
+
+  function setDraftEditStatus(mode, text) {
+    if (!el.draftEditStatus) return;
+    el.draftEditStatus.textContent = text;
+    el.draftEditStatus.classList.remove("status-ok", "status-warn", "status-error");
+    if (mode) {
+      el.draftEditStatus.classList.add(`status-${mode}`);
     }
   }
 
@@ -318,6 +341,64 @@ export function createDraftBoard({ adminMode }) {
     }).join("");
 
     el.draftOrderList.innerHTML = rows;
+  }
+
+  function renderFairnessSummary() {
+    if (!el.fairnessSummary) return;
+
+    const sequence = state.draft.sequence || [];
+    if (!sequence.length) {
+      el.fairnessSummary.innerHTML = '<div class="empty">No draft order loaded.</div>';
+      return;
+    }
+
+    const positionsByName = new Map();
+    sequence.forEach((name, idx) => {
+      const n = normalizeName(name);
+      if (!n) return;
+      if (!positionsByName.has(n)) positionsByName.set(n, []);
+      positionsByName.get(n).push(idx + 1);
+    });
+
+    const participantNames = state.draft.participants.length
+      ? state.draft.participants.map((p) => p.name).filter((name, idx, arr) => name && arr.indexOf(name) === idx)
+      : [...positionsByName.keys()].sort();
+
+    const total = sequence.length;
+    const segment = Math.max(1, Math.ceil(total / 3));
+
+    const rows = participantNames.map((name) => {
+      const picks = positionsByName.get(name) || [];
+      if (!picks.length) {
+        return `
+          <div class="fairness-row">
+            <div class="fairness-name">${escapeHtml(name)}</div>
+            <div class="fairness-stats">No picks in current order</div>
+          </div>
+        `;
+      }
+
+      const count = picks.length;
+      const first = picks[0];
+      const last = picks[picks.length - 1];
+      const avg = picks.reduce((sum, n) => sum + n, 0) / count;
+      const early = picks.filter((n) => n <= segment).length;
+      const late = picks.filter((n) => n > total - segment).length;
+      const middle = count - early - late;
+
+      return `
+        <div class="fairness-row">
+          <div class="fairness-name">${escapeHtml(name)} <span class="fairness-count">(${count})</span></div>
+          <div class="fairness-stats">First #${first} | Last #${last} | Avg #${avg.toFixed(1)}</div>
+          <div class="fairness-split">Early/Mid/Late: ${early}/${middle}/${late}</div>
+        </div>
+      `;
+    }).join('');
+
+    el.fairnessSummary.innerHTML = `
+      <div class="fairness-meta">Picks: ${total} | Third size: ${segment}</div>
+      <div class="fairness-list">${rows}</div>
+    `;
   }
 
   function updateAdminState() {
@@ -450,16 +531,18 @@ export function createDraftBoard({ adminMode }) {
     const pickedText = ticket.status === "PICKED"
       ? `Picked by ${ticket.pickedBy || "Unknown"}`
       : "Available";
+    const note = isVenueOnlyNote(ticket.notes) ? "" : String(ticket.notes || "");
+    const statusClass = ticket.status === "PICKED" ? "status-picked" : "status-available";
 
     return `
-      <article class="ticket-chip ${compact ? "compact" : ""}">
+      <article class="ticket-chip ${statusClass} ${compact ? "compact" : ""}">
         <div class="ticket-top">
           <h4>vs ${escapeHtml(ticket.opponent || "TBD")}</h4>
           <span class="badge ${badgeClass}">${escapeHtml(ticket.status)}</span>
         </div>
         <p class="ticket-time">${escapeHtml(ticket.gameTime || "")}</p>
         <p class="ticket-pick">${escapeHtml(pickedText)}</p>
-        ${ticket.notes ? `<p class="ticket-notes">${escapeHtml(ticket.notes)}</p>` : ""}
+        ${note ? `<p class="ticket-notes">${escapeHtml(note)}</p>` : ""}
         ${actionButton(ticket)}
       </article>
     `;
@@ -632,6 +715,7 @@ export function createDraftBoard({ adminMode }) {
     updateAdminState();
     renderParticipants();
     renderDraftOrder();
+    renderFairnessSummary();
     renderPickedLog();
     renderBoard();
     applyDraftDefaultsToSetup();
@@ -1034,6 +1118,179 @@ export function createDraftBoard({ adminMode }) {
     setSetupStatus("ok", `Season ${plan.season} created. Imported ${plan.tickets.length} games and draft order.`);
   }
 
+  function parseSequenceInput(text) {
+    return String(text || "")
+      .split(/\r?\n/g)
+      .map(normalizeName)
+      .filter(Boolean);
+  }
+
+  function parsePickedAssignmentsInput(text) {
+    const assignments = new Map();
+    const lines = String(text || "").split(/\r?\n/g);
+
+    lines.forEach((raw, idx) => {
+      const line = raw.trim();
+      if (!line || line.startsWith("#")) return;
+
+      const commaAt = line.indexOf(",");
+      if (commaAt < 0) {
+        throw new Error(`Line ${idx + 1}: use ticketId,pickedBy format.`);
+      }
+
+      const ticketId = line.slice(0, commaAt).trim();
+      const pickedBy = line.slice(commaAt + 1).trim();
+      if (!ticketId || !pickedBy) {
+        throw new Error(`Line ${idx + 1}: ticketId and pickedBy are both required.`);
+      }
+      if (assignments.has(ticketId)) {
+        throw new Error(`Line ${idx + 1}: duplicate ticketId '${ticketId}'.`);
+      }
+      assignments.set(ticketId, pickedBy);
+    });
+
+    return assignments;
+  }
+
+  function loadDraftOrderEditorFromState() {
+    if (!el.draftOrderEditor) return;
+    el.draftOrderEditor.value = state.draft.sequence.join("\n");
+  }
+
+  function loadPickedAssignmentsEditorFromState() {
+    if (!el.pickedAssignmentsInput) return;
+    const lines = state.tickets
+      .filter((t) => t.status === "PICKED")
+      .sort((a, b) => a.gameDate.localeCompare(b.gameDate))
+      .map((t) => `${t.ticketId},${t.pickedBy || ""}`);
+    el.pickedAssignmentsInput.value = lines.join("\n");
+  }
+
+  function buildBaseOrderFromSequence(sequence) {
+    const seen = new Set();
+    const base = [];
+    sequence.forEach((name) => {
+      if (seen.has(name)) return;
+      seen.add(name);
+      base.push(name);
+    });
+    return base;
+  }
+
+  async function saveDraftOrderFromEditor() {
+    const sequence = parseSequenceInput(el.draftOrderEditor?.value || "");
+    if (!sequence.length) {
+      throw new Error("Draft order cannot be empty.");
+    }
+    if (sequence.length !== state.tickets.length) {
+      throw new Error(`Draft order lines (${sequence.length}) must match game count (${state.tickets.length}).`);
+    }
+
+    const season = String(state.filters.season || config.season || "").trim();
+    if (!season) {
+      throw new Error("Season is required.");
+    }
+
+    const participants = tallyParticipantsFromSequence(sequence);
+    const baseOrder = buildBaseOrderFromSequence(sequence);
+    const payload = {
+      season,
+      mode: state.draft.mode || "manual-sequence",
+      seed: state.draft.seed || "",
+      participants,
+      baseOrder,
+      sequence
+    };
+
+    if (!config.apiBaseUrl) {
+      state.draft = parseDraftConfigPayload(payload, state.tickets.length);
+      hydrateFilters();
+      refreshAll();
+      return;
+    }
+
+    await postAdminJson("/admin/draft-config", payload);
+    await loadDraftConfig();
+    hydrateFilters();
+    refreshAll();
+  }
+
+  async function applyPickedAssignmentsFromEditor() {
+    const assignments = parsePickedAssignmentsInput(el.pickedAssignmentsInput?.value || "");
+    const ticketsById = new Map(state.tickets.map((t) => [t.ticketId, t]));
+    const unknownIds = [...assignments.keys()].filter((id) => !ticketsById.has(id));
+    if (unknownIds.length) {
+      throw new Error(`Unknown ticketId(s): ${unknownIds.slice(0, 8).join(", ")}`);
+    }
+
+    const updates = state.tickets
+      .map((ticket) => {
+        const wantedPickedBy = assignments.get(ticket.ticketId) || "";
+        const wantedStatus = wantedPickedBy ? "PICKED" : "AVAILABLE";
+        const sameStatus = ticket.status === wantedStatus;
+        const samePicker = wantedStatus !== "PICKED" || ticket.pickedBy === wantedPickedBy;
+        if (sameStatus && samePicker) return null;
+        return {
+          ticketId: ticket.ticketId,
+          wantedStatus,
+          wantedPickedBy
+        };
+      })
+      .filter(Boolean);
+
+    if (!updates.length) {
+      return 0;
+    }
+
+    if (!config.apiBaseUrl) {
+      const now = new Date().toISOString();
+      const updatesById = new Map(updates.map((u) => [u.ticketId, u]));
+      state.tickets = state.tickets.map((ticket) => {
+        const update = updatesById.get(ticket.ticketId);
+        if (!update) return ticket;
+
+        if (update.wantedStatus === "PICKED") {
+          return {
+            ...ticket,
+            status: "PICKED",
+            pickedBy: update.wantedPickedBy,
+            pickedAt: now
+          };
+        }
+
+        return {
+          ...ticket,
+          status: "AVAILABLE",
+          pickedBy: "",
+          pickedAt: ""
+        };
+      });
+
+      hydrateFilters();
+      refreshAll();
+      return updates.length;
+    }
+
+    const season = String(state.filters.season || config.season || "").trim();
+    for (const update of updates) {
+      if (update.wantedStatus === "PICKED") {
+        await postAdminJson("/admin/pick", {
+          season,
+          ticketId: update.ticketId,
+          pickedBy: update.wantedPickedBy
+        });
+      } else {
+        await postAdminJson("/admin/unpick", {
+          season,
+          ticketId: update.ticketId
+        });
+      }
+    }
+
+    await loadTickets();
+    return updates.length;
+  }
+
   async function rotateAdminKeyFromUi() {
     const newKey = String(el.newAdminKeyInput?.value || "").trim();
     if (!newKey || newKey.length < 8) {
@@ -1133,9 +1390,52 @@ export function createDraftBoard({ adminMode }) {
       });
     }
 
+    if (el.loadDraftOrderBtn) {
+      el.loadDraftOrderBtn.addEventListener("click", () => {
+        loadDraftOrderEditorFromState();
+        setDraftEditStatus("ok", "Loaded current draft sequence into the editor.");
+      });
+    }
+
+    if (el.saveDraftOrderBtn) {
+      el.saveDraftOrderBtn.addEventListener("click", async () => {
+        try {
+          setDraftEditStatus("warn", "Saving draft order...");
+          await saveDraftOrderFromEditor();
+          setDraftEditStatus("ok", "Draft order saved.");
+        } catch (err) {
+          setDraftEditStatus("error", err.message || "Failed to save draft order.");
+        }
+      });
+    }
+
+    if (el.loadPickedAssignmentsBtn) {
+      el.loadPickedAssignmentsBtn.addEventListener("click", () => {
+        loadPickedAssignmentsEditorFromState();
+        setDraftEditStatus("ok", "Loaded current picked assignments.");
+      });
+    }
+
+    if (el.applyPickedAssignmentsBtn) {
+      el.applyPickedAssignmentsBtn.addEventListener("click", async () => {
+        try {
+          setDraftEditStatus("warn", "Applying picked assignments...");
+          const changed = await applyPickedAssignmentsFromEditor();
+          setDraftEditStatus("ok", changed
+            ? `Applied ${changed} pick update${changed === 1 ? "" : "s"}.`
+            : "No changes to apply.");
+        } catch (err) {
+          setDraftEditStatus("error", err.message || "Failed to apply pick assignments.");
+        }
+      });
+    }
+
     updateAdminState();
     setRotateStatus("warn", "Use current admin key to rotate to a new one.");
     renderSetupPreview(null);
+    loadDraftOrderEditorFromState();
+    loadPickedAssignmentsEditorFromState();
+    setDraftEditStatus("warn", "Load current values before editing if someone else may have made recent changes.");
   }
 
   async function init() {
@@ -1144,6 +1444,10 @@ export function createDraftBoard({ adminMode }) {
 
     try {
       await loadTickets();
+      if (adminMode) {
+        loadDraftOrderEditorFromState();
+        loadPickedAssignmentsEditorFromState();
+      }
     } catch (err) {
       console.error(err);
     }

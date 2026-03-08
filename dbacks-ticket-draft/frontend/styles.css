@@ -691,3 +691,132 @@ input, select {
     max-width: min(80vw, 320px);
   }
 }
+
+/* Admin collapsible modules */
+.expando-card {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f8fbff;
+  overflow: hidden;
+}
+
+.expando-card > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--dbacks-teal);
+  padding: 10px 12px;
+  list-style: none;
+}
+
+.expando-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.expando-card > summary::after {
+  content: "+";
+  float: right;
+  color: #4b5563;
+}
+
+.expando-card[open] > summary::after {
+  content: "-";
+}
+
+.expando-body {
+  padding: 0 12px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.expando-body .season-setup {
+  margin-top: 0;
+}
+
+.draft-edit-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.draft-edit-wrap textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+/* Ticket status visual emphasis */
+.ticket-chip.status-available {
+  background: var(--available-bg);
+  border-color: #86efac;
+}
+
+.ticket-chip.status-picked {
+  background: var(--picked-bg);
+  border-color: #fdba74;
+}
+
+.ticket-chip.status-available .ticket-top h4,
+.ticket-chip.status-available .ticket-time,
+.ticket-chip.status-available .ticket-pick,
+.ticket-chip.status-available .ticket-notes {
+  color: #14532d;
+}
+
+.ticket-chip.status-picked .ticket-top h4,
+.ticket-chip.status-picked .ticket-time,
+.ticket-chip.status-picked .ticket-pick,
+.ticket-chip.status-picked .ticket-notes {
+  color: #9a3412;
+}
+
+
+.fairness-summary {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 10px;
+}
+
+.fairness-meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.fairness-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.fairness-row {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 8px;
+}
+
+.fairness-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: #0f172a;
+}
+
+.fairness-count {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.fairness-stats,
+.fairness-split {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #334155;
+}
