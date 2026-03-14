@@ -820,3 +820,48 @@ input, select {
   font-size: 12px;
   color: #334155;
 }
+
+
+.generated-preview {
+  margin-top: 10px;
+}
+
+.generated-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.generated-order-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 8px;
+}
+
+.generated-order-card.active {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.generated-order-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 12px;
+  color: #1f2937;
+}
+
+.generated-order-metrics,
+.generated-order-base {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #334155;
+}
+
+.generated-order-btn {
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+}

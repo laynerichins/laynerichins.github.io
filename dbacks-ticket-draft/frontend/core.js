@@ -229,6 +229,8 @@ export function createDraftBoard({ adminMode }) {
     socket: null,
     connected: false,
     adminKey: localStorage.getItem("dbacksAdminKey") || "",
+    generatedCandidates: [],
+    activeGeneratedCandidateId: "",
     filters: {
       season: config.season || "2026",
       status: "ALL",
@@ -282,7 +284,8 @@ export function createDraftBoard({ adminMode }) {
     pickedAssignmentsInput: document.getElementById("pickedAssignmentsInput"),
     loadPickedAssignmentsBtn: document.getElementById("loadPickedAssignmentsBtn"),
     applyPickedAssignmentsBtn: document.getElementById("applyPickedAssignmentsBtn"),
-    draftEditStatus: document.getElementById("draftEditStatus")
+    draftEditStatus: document.getElementById("draftEditStatus"),
+    generatedOrders: document.getElementById("generatedOrders")
   };
 
   function getPickedCount(items = state.tickets) {
@@ -455,6 +458,102 @@ export function createDraftBoard({ adminMode }) {
       <div class="fairness-meta">Picks: ${total} | Third size: ${segment}</div>
       <div class="fairness-list">${rows}</div>
     `;
+  }
+
+  function calculateFairnessMetrics(sequence, participantNamesInput) {
+    const items = Array.isArray(sequence) ? sequence : [];
+    const names = Array.isArray(participantNamesInput) && participantNamesInput.length
+      ? participantNamesInput.map(normalizeName).filter((name, idx, arr) => name && arr.indexOf(name) === idx)
+      : [...new Set(items.map(normalizeName).filter(Boolean))].sort();
+
+    const total = items.length;
+    const segment = Math.max(1, Math.ceil(total / 3));
+    const positionsByName = new Map();
+
+    items.forEach((name, idx) => {
+      const n = normalizeName(name);
+      if (!n) return;
+      if (!positionsByName.has(n)) positionsByName.set(n, []);
+      positionsByName.get(n).push(idx + 1);
+    });
+
+    const rows = names.map((name) => {
+      const picks = positionsByName.get(name) || [];
+      const count = picks.length;
+      const first = count ? picks[0] : 0;
+      const last = count ? picks[picks.length - 1] : 0;
+      const avg = count ? (picks.reduce((sum, n) => sum + n, 0) / count) : 0;
+      const early = count ? picks.filter((n) => n <= segment).length : 0;
+      const late = count ? picks.filter((n) => n > total - segment).length : 0;
+      const middle = count ? count - early - late : 0;
+
+      return { name, count, first, last, avg, early, middle, late };
+    });
+
+    const imbalanceScore = rows.reduce((sum, row) => sum + Math.abs(row.early - row.late), 0);
+    const worstGap = rows.reduce((max, row) => Math.max(max, Math.abs(row.early - row.late)), 0);
+
+    return { total, segment, rows, imbalanceScore, worstGap };
+  }
+
+  function applyGeneratedCandidate(candidateId) {
+    const candidate = state.generatedCandidates.find((c) => c.id === candidateId);
+    if (!candidate) return;
+
+    state.activeGeneratedCandidateId = candidate.id;
+    state.draft.seed = candidate.seed;
+    state.draft.baseOrder = [...candidate.baseOrder];
+    state.draft.sequence = [...candidate.sequence];
+
+    if (!state.draft.participants.length) {
+      state.draft.participants = normalizeParticipants(tallyParticipantsFromSequence(candidate.sequence));
+    }
+
+    if (el.draftOrderEditor) {
+      el.draftOrderEditor.value = candidate.sequence.join("\n");
+    }
+
+    refreshAll();
+  }
+
+  function renderGeneratedCandidates() {
+    if (!el.generatedOrders) return;
+
+    el.generatedOrders.innerHTML = "";
+    if (!state.generatedCandidates.length) {
+      el.generatedOrders.innerHTML = '<div class="empty">Generate orders to compare here.</div>';
+      return;
+    }
+
+    state.generatedCandidates.forEach((candidate, idx) => {
+      const card = document.createElement("div");
+      const active = candidate.id === state.activeGeneratedCandidateId;
+      card.className = `generated-order-card ${active ? "active" : ""}`;
+
+      card.innerHTML = `
+        <div class="generated-order-head">
+          <strong>Candidate ${idx + 1}</strong>
+          <span>${escapeHtml(candidate.createdAt)}</span>
+        </div>
+        <div class="generated-order-metrics">
+          Imbalance: ${candidate.metrics.imbalanceScore} | Worst gap: ${candidate.metrics.worstGap}
+        </div>
+        <div class="generated-order-base">Base: ${escapeHtml(candidate.baseOrder.join(" -> "))}</div>
+      `;
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn subtle generated-order-btn";
+      btn.textContent = active ? "Previewing" : "Preview";
+      btn.disabled = active;
+      btn.addEventListener("click", () => {
+        applyGeneratedCandidate(candidate.id);
+        setDraftEditStatus("ok", "Previewed selected generated order.");
+      });
+
+      card.appendChild(btn);
+      el.generatedOrders.appendChild(card);
+    });
   }
 
   function updateAdminState() {
@@ -772,6 +871,7 @@ export function createDraftBoard({ adminMode }) {
     renderParticipants();
     renderDraftOrder();
     renderFairnessSummary();
+    renderGeneratedCandidates();
     renderPickedLog();
     renderBoard();
     applyDraftDefaultsToSetup();
@@ -1259,19 +1359,17 @@ export function createDraftBoard({ adminMode }) {
     }
 
     const participantNames = participants.map((p) => p.name);
-    const existingBase = (Array.isArray(state.draft.baseOrder) ? state.draft.baseOrder : [])
-      .map(normalizeName)
-      .filter((name) => participantNames.includes(name));
+    const seasonTag = String(state.filters.season || "draft");
+    const randomSuffix = Math.random().toString(36).slice(2, 10);
+    const seed = seasonTag + "-equitable-snake-" + Date.now() + "-" + randomSuffix;
+    const baseOrder = shuffle(participantNames, makeRng(seed));
+    const sequence = generateSnakeSequence(participants, baseOrder);
 
-    const missing = participantNames.filter((name) => !existingBase.includes(name));
-    let baseOrder = [...existingBase, ...missing];
-
-    if (!baseOrder.length) {
-      const seed = String(state.draft.seed || (String(state.filters.season || "draft") + "-equitable-snake")).trim();
-      baseOrder = shuffle(participantNames, makeRng(seed));
-    }
-
-    return generateSnakeSequence(participants, baseOrder);
+    return {
+      seed,
+      baseOrder,
+      sequence
+    };
   }
 
   function buildBaseOrderFromSequence(sequence) {
@@ -1559,11 +1657,34 @@ export function createDraftBoard({ adminMode }) {
     if (el.rebalanceDraftOrderBtn) {
       el.rebalanceDraftOrderBtn.addEventListener("click", () => {
         try {
-          const sequence = generateSnakeDraftOrderFromCurrentState();
+          const generated = generateSnakeDraftOrderFromCurrentState();
+          const participants = getDraftParticipantsForRegeneration();
+          const participantNames = participants.map((p) => p.name);
+          const metrics = calculateFairnessMetrics(generated.sequence, participantNames);
+          const candidate = {
+            id: String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8),
+            createdAt: new Date().toLocaleTimeString(),
+            seed: generated.seed,
+            baseOrder: [...generated.baseOrder],
+            sequence: [...generated.sequence],
+            metrics
+          };
+
+          state.generatedCandidates.unshift(candidate);
+          state.generatedCandidates = state.generatedCandidates.slice(0, 8);
+
+          state.activeGeneratedCandidateId = candidate.id;
+          state.draft.seed = generated.seed;
+          state.draft.baseOrder = [...generated.baseOrder];
+          state.draft.sequence = [...generated.sequence];
+          state.draft.participants = participants;
+
           if (el.draftOrderEditor) {
-            el.draftOrderEditor.value = sequence.join("\n");
+            el.draftOrderEditor.value = generated.sequence.join("\n");
           }
-          setDraftEditStatus("ok", "Generated equitable snake order in editor. Review, then click Save Draft Order.");
+
+          refreshAll();
+          setDraftEditStatus("ok", "Generated and previewed a new equitable snake order. Compare candidates below, then Save when ready.");
         } catch (err) {
           setDraftEditStatus("error", err.message || "Failed to generate equitable snake order.");
         }
